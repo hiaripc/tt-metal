@@ -131,7 +131,9 @@ def device(request, device_params):
 
     num_devices = ttnn.GetNumPCIeDevices()
     assert device_id < num_devices, "CreateDevice not supported for non-mmio device"
+    logger.info(f"Opening device... ")
     updated_device_params = get_updated_device_params(device_params)
+    logger.info(f"device params: {updated_device_params}")
     device = ttnn.CreateDevice(device_id=device_id, **updated_device_params)
     ttnn.SetDefaultDevice(device)
 

@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "common/base_types.hpp"
+#include "tt_metal/common/base_types.hpp"
 #include "tt_metal/impl/kernels/data_types.hpp"
 #include "tt_metal/llrt/tt_cluster.hpp"
 #include "tt_metal/detail/util.hpp"

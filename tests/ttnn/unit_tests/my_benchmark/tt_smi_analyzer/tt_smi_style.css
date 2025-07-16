@@ -1,0 +1,116 @@
+/*
+SPDX-FileCopyrightText: © 2023 Tenstorrent Inc.
+SPDX-License-Identifier: Apache-2.0
+*/
+
+$green: #1eb57d;
+
+#app_grid {
+  layout: grid;
+  grid-gutter: 1 1;
+}
+
+#tab_container {
+  overflow: auto auto;
+}
+
+#left_col {
+  width: 40;
+  column-span: 1;
+  dock: left
+}
+
+#sw_ver_menu {
+  height: 10.5;
+}
+
+#right_col {
+  width: 35;
+  column-span: 1;
+  dock: right
+}
+
+TabPane {
+  width: 100%;
+  /* Enable scrolling on tabs */
+  overflow: auto hidden;
+}
+
+#tt_smi {
+  width: 100
+}
+
+#host_info {
+  height: 12;
+}
+
+DataTable {
+  text-align: center;
+}
+
+DataTable>.datatable--header-hover {
+  background: 0%;
+  color: white 0%;
+}
+
+/* TTMenu Style */
+
+TTHealthMenu,
+TTTextMenu,
+TTTestOutput {
+  padding: 1 2;
+  border: solid $green;
+  color: $green;
+}
+
+#settings_menu_box {
+  padding: 1 1;
+  grid-size: 2 5;
+  grid-gutter: 1 1;
+  width: 63;
+  height: 15;
+  grid-rows: 1 1 3 3;
+  border: solid $green;
+  background: $surface;
+}
+
+#heading,
+#instruction {
+  column-span: 2;
+  height: 5;
+  width: 1fr;
+  content-align: center middle;
+}
+
+#dark_label,
+#sw_label {
+  column-span: 1;
+  height: 3;
+  width: 1fr;
+  content-align: center middle;
+}
+
+#dark_switch,
+#sw_switch {
+  column-span: 1;
+  height: 3;
+  width: 12;
+  content-align: center middle;
+}
+
+#dark_label #setting_grid {
+  padding: 1 1;
+  grid-size: 2 2;
+  column-span: 2;
+  height: 7;
+}
+
+#help_menu_box {
+  padding: 1 2;
+  width: 110;
+  height: 33;
+  border: solid $green;
+  background: $surface;
+  color: white;
+
+}

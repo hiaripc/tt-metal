@@ -150,7 +150,7 @@ matmul_configs = [
 ]
 
 
-@pytest.mark.skip(reason="WH didt hang, need to skip CI and run locally only")
+# @pytest.mark.skip(reason="WH didt hang, need to skip CI and run locally only")
 @pytest.mark.parametrize("device_params", [{"l1_small_size": 24576, "trace_region_size": 3855488}], indirect=True)
 @pytest.mark.parametrize("grid_size", [(8, 8)])
 @pytest.mark.parametrize("tile_h", [32])
@@ -419,6 +419,15 @@ matmul_shapes_oob = [
     (4096, 4096, 4096),
 ]
 
+matmul_shapes_oob = [
+    (512, 512, 512),
+    (1024, 1024, 1024),
+    (2048, 2048, 2048),
+    (3072, 3072, 3072),
+    (4096, 4096, 4096),
+    (8192, 8192, 8192)
+]
+
 matmul_configs_oob = [
     (ttnn.bfloat16, False),
     (ttnn.bfloat16, True),
@@ -429,13 +438,13 @@ matmul_configs_oob = [
 ]
 
 
-@pytest.mark.skip(reason="WH didt hang, need to skip CI and run locally only")
+# @pytest.mark.skip(reason="WH didt hang, need to skip CI and run locally only")
 @pytest.mark.parametrize("device_params", [{"l1_small_size": 24576, "trace_region_size": 3855488}], indirect=True)
 @pytest.mark.parametrize("grid_size", [(8, 8)])
 @pytest.mark.parametrize("tile_h", [32])
 @pytest.mark.parametrize("tile_w", [32])
 @pytest.mark.parametrize("num_warmup_iterations", [5])
-@pytest.mark.parametrize("num_measurement_iterations", [100])
+@pytest.mark.parametrize("num_measurement_iterations", [1])
 def test_matmul_2d_host_perf_out_of_box(
     device,
     grid_size,

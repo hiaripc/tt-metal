@@ -257,6 +257,7 @@ fi
 
 if [ "$build_programming_examples" = "ON" ]; then
     cmake_args+=("-DBUILD_PROGRAMMING_EXAMPLES=ON")
+    cmake_args+=("-DCMAKE_BUILD_TYPE=Debug")
 fi
 
 if [ "$build_tt_train" = "ON" ]; then
@@ -280,6 +281,9 @@ if [ "$build_all" = "ON" ]; then
     cmake_args+=("-DBUILD_PROGRAMMING_EXAMPLES=ON")
     cmake_args+=("-DBUILD_TT_TRAIN=ON")
 fi
+
+# log level
+cmake_args+=("--log-level=TRACE")
 
 # Create and link the build directory
 mkdir -p $build_dir
