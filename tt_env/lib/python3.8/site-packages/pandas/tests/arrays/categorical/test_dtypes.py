@@ -29,12 +29,8 @@ class TestCategoricalDtypes:
         assert not c1._categories_match_up_to_permutation(Index(list("aabca")))
         assert not c1._categories_match_up_to_permutation(c1.astype(object))
         assert c1._categories_match_up_to_permutation(CategoricalIndex(c1))
-        assert c1._categories_match_up_to_permutation(
-            CategoricalIndex(c1, categories=list("cab"))
-        )
-        assert not c1._categories_match_up_to_permutation(
-            CategoricalIndex(c1, ordered=True)
-        )
+        assert c1._categories_match_up_to_permutation(CategoricalIndex(c1, categories=list("cab")))
+        assert not c1._categories_match_up_to_permutation(CategoricalIndex(c1, ordered=True))
 
         # GH 16659
         s1 = Series(c1)
@@ -133,7 +129,5 @@ class TestCategoricalDtypes:
         index = IntervalIndex.from_breaks(np.arange(3, dtype="uint64"))
 
         result = CategoricalIndex(index).dtype.categories
-        expected = IntervalIndex.from_arrays(
-            [0, 1], [1, 2], dtype="interval[uint64, right]"
-        )
+        expected = IntervalIndex.from_arrays([0, 1], [1, 2], dtype="interval[uint64, right]")
         tm.assert_index_equal(result, expected)

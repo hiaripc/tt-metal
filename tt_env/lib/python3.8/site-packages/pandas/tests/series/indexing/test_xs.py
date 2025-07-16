@@ -33,9 +33,7 @@ class TestXSWithMultiIndex:
 
     def test_series_getitem_multiindex_xs_by_label(self):
         # GH#5684
-        idx = MultiIndex.from_tuples(
-            [("a", "one"), ("a", "two"), ("b", "one"), ("b", "two")]
-        )
+        idx = MultiIndex.from_tuples([("a", "one"), ("a", "two"), ("b", "one"), ("b", "two")])
         ser = Series([1, 2, 3, 4], index=idx)
         return_value = ser.index.set_names(["L1", "L2"], inplace=True)
         assert return_value is None
@@ -58,16 +56,12 @@ class TestXSWithMultiIndex:
 
     def test_series_xs_droplevel_false(self):
         # GH: 19056
-        mi = MultiIndex.from_tuples(
-            [("a", "x"), ("a", "y"), ("b", "x")], names=["level1", "level2"]
-        )
+        mi = MultiIndex.from_tuples([("a", "x"), ("a", "y"), ("b", "x")], names=["level1", "level2"])
         ser = Series([1, 1, 1], index=mi)
         result = ser.xs("a", axis=0, drop_level=False)
         expected = Series(
             [1, 1],
-            index=MultiIndex.from_tuples(
-                [("a", "x"), ("a", "y")], names=["level1", "level2"]
-            ),
+            index=MultiIndex.from_tuples([("a", "x"), ("a", "y")], names=["level1", "level2"]),
         )
         tm.assert_series_equal(result, expected)
 

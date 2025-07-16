@@ -44,9 +44,7 @@ warnings.warn(
 # XMLParse is a typo, keep it for backwards compatibility
 XMLTreeBuilder = XMLParse = XMLParser = DefusedXMLParser
 
-parse, iterparse, fromstring = _generate_etree_functions(
-    DefusedXMLParser, _TreeBuilder, _parse, _iterparse
-)
+parse, iterparse, fromstring = _generate_etree_functions(DefusedXMLParser, _TreeBuilder, _parse, _iterparse)
 XML = fromstring
 
 __all__ = [

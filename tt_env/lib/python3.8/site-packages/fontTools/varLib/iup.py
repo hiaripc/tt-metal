@@ -37,9 +37,7 @@ MAX_LOOKBACK = 8
     x=cython.double,
     d=cython.double,
 )
-def iup_segment(
-    coords: _PointSegment, rc1: _Point, rd1: _Delta, rc2: _Point, rd2: _Delta
-):  # -> _DeltaSegment:
+def iup_segment(coords: _PointSegment, rc1: _Point, rd1: _Delta, rc2: _Point, rd2: _Delta):  # -> _DeltaSegment:
     """Given two reference coordinates `rc1` & `rc2` and their respective
     delta vectors `rd1` & `rd2`, returns interpolated deltas for the set of
     coordinates `coords`."""
@@ -111,38 +109,24 @@ def iup_contour(deltas: _DeltaOrNoneSegment, coords: _PointSegment) -> _DeltaSeg
     if start != 0:
         # Initial segment that wraps around
         i1, i2, ri1, ri2 = 0, start, start, indices[-1]
-        out.extend(
-            iup_segment(
-                coords[i1:i2], coords[ri1], deltas[ri1], coords[ri2], deltas[ri2]
-            )
-        )
+        out.extend(iup_segment(coords[i1:i2], coords[ri1], deltas[ri1], coords[ri2], deltas[ri2]))
     out.append(deltas[start])
     for end in it:
         if end - start > 1:
             i1, i2, ri1, ri2 = start + 1, end, start, end
-            out.extend(
-                iup_segment(
-                    coords[i1:i2], coords[ri1], deltas[ri1], coords[ri2], deltas[ri2]
-                )
-            )
+            out.extend(iup_segment(coords[i1:i2], coords[ri1], deltas[ri1], coords[ri2], deltas[ri2]))
         out.append(deltas[end])
         start = end
     if start != n - 1:
         # Final segment that wraps around
         i1, i2, ri1, ri2 = start + 1, n, start, indices[0]
-        out.extend(
-            iup_segment(
-                coords[i1:i2], coords[ri1], deltas[ri1], coords[ri2], deltas[ri2]
-            )
-        )
+        out.extend(iup_segment(coords[i1:i2], coords[ri1], deltas[ri1], coords[ri2], deltas[ri2]))
 
     assert len(deltas) == len(out), (len(deltas), len(out))
     return out
 
 
-def iup_delta(
-    deltas: _DeltaOrNoneSegment, coords: _PointSegment, ends: _Endpoints
-) -> _DeltaSegment:
+def iup_delta(deltas: _DeltaOrNoneSegment, coords: _PointSegment, ends: _Endpoints) -> _DeltaSegment:
     """For the outline given in `coords`, with contour endpoints given
     in sorted increasing order in `ends`, interpolate any missing
     delta values in delta vector `deltas`.
@@ -193,10 +177,7 @@ def can_iup_in_between(
     interp = iup_segment(coords[i + 1 : j], coords[i], deltas[i], coords[j], deltas[j])
     deltas = deltas[i + 1 : j]
 
-    return all(
-        abs(complex(x - p, y - q)) <= tolerance
-        for (x, y), (p, q) in zip(deltas, interp)
-    )
+    return all(abs(complex(x - p, y - q)) <= tolerance for (x, y), (p, q) in zip(deltas, interp))
 
 
 @cython.locals(
@@ -209,9 +190,7 @@ def can_iup_in_between(
     force=cython.int,
     forced=set,
 )
-def _iup_contour_bound_forced_set(
-    deltas: _DeltaSegment, coords: _PointSegment, tolerance: Real = 0
-) -> set:
+def _iup_contour_bound_forced_set(deltas: _DeltaSegment, coords: _PointSegment, tolerance: Real = 0) -> set:
     """The forced set is a conservative set of points on the contour that must be encoded
     explicitly (ie. cannot be interpolated).  Calculating this set allows for significantly
     speeding up the dynamic-programming, as well as resolve circularity in DP.
@@ -269,18 +248,10 @@ def _iup_contour_bound_forced_set(
             else:  # cj < c1 or c2 < cj
                 if d1 != d2:
                     if cj < c1:
-                        if (
-                            abs(dj) > tolerance
-                            and abs(dj - d1) > tolerance
-                            and ((dj - tolerance < d1) != (d1 < d2))
-                        ):
+                        if abs(dj) > tolerance and abs(dj - d1) > tolerance and ((dj - tolerance < d1) != (d1 < d2)):
                             force = True
                     else:  # c2 < cj
-                        if (
-                            abs(dj) > tolerance
-                            and abs(dj - d2) > tolerance
-                            and ((d2 < dj + tolerance) != (d1 < d2))
-                        ):
+                        if abs(dj) > tolerance and abs(dj - d2) > tolerance and ((d2 < dj + tolerance) != (d1 < d2)):
                             force = True
 
             if force:
@@ -360,9 +331,7 @@ def _rot_set(s: set, k: int, n: int):
     return {(v + k) % n for v in s}
 
 
-def iup_contour_optimize(
-    deltas: _DeltaSegment, coords: _PointSegment, tolerance: Real = 0.0
-) -> _DeltaOrNoneSegment:
+def iup_contour_optimize(deltas: _DeltaSegment, coords: _PointSegment, tolerance: Real = 0.0) -> _DeltaOrNoneSegment:
     """For contour with coordinates `coords`, optimize a set of delta
     values `deltas` within error `tolerance`.
 
@@ -433,9 +402,7 @@ def iup_contour_optimize(
         # Repeat the contour an extra time, solve the new case, then look for solutions of the
         # circular n-length problem in the solution for new linear case.  I cannot prove that
         # this always produces the optimal solution...
-        chain, costs = _iup_contour_optimize_dp(
-            deltas + deltas, coords + coords, forced, tolerance, n
-        )
+        chain, costs = _iup_contour_optimize_dp(deltas + deltas, coords + coords, forced, tolerance, n)
         best_sol, best_cost = None, n + 1
 
         for start in range(n - 1, len(costs) - 1):
@@ -480,9 +447,7 @@ def iup_delta_optimize(
     out = []
     start = 0
     for end in ends:
-        contour = iup_contour_optimize(
-            deltas[start : end + 1], coords[start : end + 1], tolerance
-        )
+        contour = iup_contour_optimize(deltas[start : end + 1], coords[start : end + 1], tolerance)
         assert len(contour) == end - start + 1
         out.extend(contour)
         start = end + 1

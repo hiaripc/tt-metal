@@ -25,6 +25,7 @@ class TensorboardEventHandler:
         >>> writer = SummaryWriter("log_dir")
         >>> register_event_handler(TensorboardEventHandler(writer))
     """
+
     def __init__(self, writer: "SummaryWriter") -> None:
         """
         Constructs the ``TensorboardEventHandler``.

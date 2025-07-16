@@ -3,17 +3,17 @@ from sympy.functions import adjoint, conjugate, transpose
 from sympy.matrices.expressions import MatrixSymbol, Adjoint, trace, Transpose
 from sympy.matrices import eye, Matrix
 
-n, m, l, k, p = symbols('n m l k p', integer=True)
-A = MatrixSymbol('A', n, m)
-B = MatrixSymbol('B', m, l)
-C = MatrixSymbol('C', n, n)
+n, m, l, k, p = symbols("n m l k p", integer=True)
+A = MatrixSymbol("A", n, m)
+B = MatrixSymbol("B", m, l)
+C = MatrixSymbol("C", n, n)
 
 
 def test_adjoint():
-    Sq = MatrixSymbol('Sq', n, n)
+    Sq = MatrixSymbol("Sq", n, n)
 
     assert Adjoint(A).shape == (m, n)
-    assert Adjoint(A*B).shape == (l, n)
+    assert Adjoint(A * B).shape == (l, n)
     assert adjoint(Adjoint(A)) == A
     assert isinstance(Adjoint(Adjoint(A)), Adjoint)
 
@@ -31,4 +31,4 @@ def test_adjoint():
 
     assert Adjoint(Sq)[0, 1] == conjugate(Sq[1, 0])
 
-    assert Adjoint(A*B).doit() == Adjoint(B) * Adjoint(A)
+    assert Adjoint(A * B).doit() == Adjoint(B) * Adjoint(A)

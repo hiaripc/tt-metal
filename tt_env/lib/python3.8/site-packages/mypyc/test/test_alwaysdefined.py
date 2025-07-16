@@ -39,8 +39,6 @@ class TestAlwaysDefined(MypycDataSuite):
                 for cl in ir.classes:
                     if cl.name.startswith("_"):
                         continue
-                    actual.append(
-                        "{}: [{}]".format(cl.name, ", ".join(sorted(cl._always_initialized_attrs)))
-                    )
+                    actual.append("{}: [{}]".format(cl.name, ", ".join(sorted(cl._always_initialized_attrs))))
 
             assert_test_output(testcase, actual, "Invalid test output", testcase.output)

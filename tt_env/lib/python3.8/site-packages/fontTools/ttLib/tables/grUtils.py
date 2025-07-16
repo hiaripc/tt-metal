@@ -32,9 +32,7 @@ def compress(scheme, data):
     if scheme == 0:
         return data
     elif scheme == 1 and lz4:
-        res = lz4.block.compress(
-            data, mode="high_compression", compression=16, store_size=False
-        )
+        res = lz4.block.compress(data, mode="high_compression", compression=16, store_size=False)
         return hdr + res
     else:
         warnings.warn("Table failed to compress by unsupported compression scheme")
@@ -79,9 +77,7 @@ def num2tag(n):
     if n < 0x200000:
         return str(n)
     else:
-        return (
-            struct.unpack("4s", struct.pack(">L", n))[0].replace(b"\000", b"").decode()
-        )
+        return struct.unpack("4s", struct.pack(">L", n))[0].replace(b"\000", b"").decode()
 
 
 def tag2num(n):

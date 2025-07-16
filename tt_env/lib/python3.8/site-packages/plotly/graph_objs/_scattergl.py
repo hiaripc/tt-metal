@@ -3,7 +3,6 @@ import copy as _copy
 
 
 class Scattergl(_BaseTraceType):
-
     # class properties
     # --------------------
     _parent_path_str = ""

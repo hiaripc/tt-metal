@@ -74,11 +74,7 @@ def test_insert(idx):
 
 def test_insert2():
     # GH9250
-    idx = (
-        [("test1", i) for i in range(5)]
-        + [("test2", i) for i in range(6)]
-        + [("test", 17), ("test", 18)]
-    )
+    idx = [("test1", i) for i in range(5)] + [("test2", i) for i in range(6)] + [("test", 17), ("test", 18)]
 
     left = pd.Series(np.linspace(0, 10, 11), MultiIndex.from_tuples(idx[:-2]))
 

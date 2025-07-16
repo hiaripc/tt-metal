@@ -81,12 +81,7 @@ class FigureMarkdown(SphinxDirective):
             state._renderer.md_config.enable_extensions = myst_extensions
 
         if len(node.children) != 2:
-            return [
-                self.figure_error(
-                    "content should be one image, "
-                    "followed by a single paragraph caption"
-                )
-            ]
+            return [self.figure_error("content should be one image, " "followed by a single paragraph caption")]
 
         image_node, caption_para = node.children
         if isinstance(image_node, nodes.paragraph):
@@ -94,18 +89,12 @@ class FigureMarkdown(SphinxDirective):
 
         if not isinstance(image_node, nodes.image):
             return [
-                self.figure_error(
-                    "content should be one image (not found), "
-                    "followed by single paragraph caption"
-                )
+                self.figure_error("content should be one image (not found), " "followed by single paragraph caption")
             ]
 
         if not isinstance(caption_para, nodes.paragraph):
             return [
-                self.figure_error(
-                    "content should be one image, "
-                    "followed by single paragraph caption (not found)"
-                )
+                self.figure_error("content should be one image, " "followed by single paragraph caption (not found)")
             ]
 
         caption_node = nodes.caption(caption_para.rawsource, "", *caption_para.children)

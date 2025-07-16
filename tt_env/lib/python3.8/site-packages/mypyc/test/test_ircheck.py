@@ -105,9 +105,7 @@ class TestIrcheck(unittest.TestCase):
         ret = Return(value=LoadLiteral(value="foo", rtype=str_rprimitive))
         block = self.basic_block([ret])
         fn = FuncIR(decl=self.func_decl(name="func_1"), arg_regs=[], blocks=[block])
-        assert_has_error(
-            fn, FnError(source=ret, desc="Invalid op reference to op of type LoadLiteral")
-        )
+        assert_has_error(fn, FnError(source=ret, desc="Invalid op reference to op of type LoadLiteral"))
 
     def test_invalid_return_type(self) -> None:
         ret = Return(value=Integer(value=5, rtype=int32_rprimitive))
@@ -116,9 +114,7 @@ class TestIrcheck(unittest.TestCase):
             arg_regs=[],
             blocks=[self.basic_block([ret])],
         )
-        assert_has_error(
-            fn, FnError(source=ret, desc="Cannot coerce source type i32 to dest type i64")
-        )
+        assert_has_error(fn, FnError(source=ret, desc="Cannot coerce source type i32 to dest type i64"))
 
     def test_invalid_assign(self) -> None:
         arg_reg = Register(type=int64_rprimitive, name="r1")
@@ -129,9 +125,7 @@ class TestIrcheck(unittest.TestCase):
             arg_regs=[arg_reg],
             blocks=[self.basic_block([assign, ret])],
         )
-        assert_has_error(
-            fn, FnError(source=assign, desc="Cannot coerce source type i32 to dest type i64")
-        )
+        assert_has_error(fn, FnError(source=assign, desc="Cannot coerce source type i32 to dest type i64"))
 
     def test_can_coerce_to(self) -> None:
         cls = ClassIR(name="Cls", module_name="cls")
@@ -190,10 +184,6 @@ class TestIrcheck(unittest.TestCase):
             FuncIR(
                 decl=self.func_decl(name="func_1"),
                 arg_regs=[],
-                blocks=[
-                    self.basic_block(
-                        ops=[load_addr, Assign(ry, load_addr), Return(value=NONE_VALUE)]
-                    )
-                ],
+                blocks=[self.basic_block(ops=[load_addr, Assign(ry, load_addr), Return(value=NONE_VALUE)])],
             )
         )

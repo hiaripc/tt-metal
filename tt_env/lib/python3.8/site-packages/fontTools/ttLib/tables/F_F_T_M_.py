@@ -31,9 +31,7 @@ class table_F_F_T_M_(DefaultTable.DefaultTable):
         return data
 
     def toXML(self, writer, ttFont):
-        writer.comment(
-            "FontForge's timestamp, font source creation and modification dates"
-        )
+        writer.comment("FontForge's timestamp, font source creation and modification dates")
         writer.newline()
         formatstring, names, fixes = sstruct.getformat(FFTMFormat)
         for name in names:

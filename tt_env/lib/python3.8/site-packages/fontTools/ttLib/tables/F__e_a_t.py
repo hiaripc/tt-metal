@@ -37,14 +37,10 @@ class table_F__e_a_t(DefaultTable.DefaultTable):
         maxsetting = 0
         for i in range(numFeats):
             if self.version >= 2.0:
-                (fid, nums, _, offset, flags, lid) = struct.unpack(
-                    ">LHHLHH", data[16 * i : 16 * (i + 1)]
-                )
+                (fid, nums, _, offset, flags, lid) = struct.unpack(">LHHLHH", data[16 * i : 16 * (i + 1)])
                 offset = int((offset - 12 - 16 * numFeats) / 4)
             else:
-                (fid, nums, offset, flags, lid) = struct.unpack(
-                    ">HHLHH", data[12 * i : 12 * (i + 1)]
-                )
+                (fid, nums, offset, flags, lid) = struct.unpack(">HHLHH", data[12 * i : 12 * (i + 1)])
                 offset = int((offset - 12 - 12 * numFeats) / 4)
             allfeats.append((fid, nums, offset, flags, lid))
             maxsetting = max(maxsetting, offset + nums)
@@ -99,9 +95,7 @@ class table_F__e_a_t(DefaultTable.DefaultTable):
                     v.flags,
                     v.label,
                 )
-            for s, l in sorted(
-                v.settings.items(), key=lambda x: (-1, x[1]) if x[0] == v.default else x
-            ):
+            for s, l in sorted(v.settings.items(), key=lambda x: (-1, x[1]) if x[0] == v.default else x):
                 vdat += struct.pack(">HH", s, l)
             offset += len(v.settings)
         hdr = sstruct.pack(Feat_hdr_format, self)

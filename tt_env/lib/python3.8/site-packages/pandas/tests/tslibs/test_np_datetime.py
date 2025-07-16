@@ -141,10 +141,7 @@ class TestAstypeOverflowSafe:
         arr = np.arange(5)
         dtype = np.dtype("M8[ns]")
 
-        msg = (
-            "astype_overflowsafe values.dtype and dtype must be either "
-            "both-datetime64 or both-timedelta64"
-        )
+        msg = "astype_overflowsafe values.dtype and dtype must be either " "both-datetime64 or both-timedelta64"
         with pytest.raises(TypeError, match=msg):
             astype_overflowsafe(arr, dtype, copy=True)
 
@@ -156,10 +153,7 @@ class TestAstypeOverflowSafe:
         arr = np.arange(5, dtype="i8").view("M8[D]")
         dtype = np.dtype("m8[ns]")
 
-        msg = (
-            "astype_overflowsafe values.dtype and dtype must be either "
-            "both-datetime64 or both-timedelta64"
-        )
+        msg = "astype_overflowsafe values.dtype and dtype must be either " "both-datetime64 or both-timedelta64"
         with pytest.raises(TypeError, match=msg):
             astype_overflowsafe(arr, dtype, copy=True)
 

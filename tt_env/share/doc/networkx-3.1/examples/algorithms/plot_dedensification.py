@@ -54,9 +54,7 @@ ax1 = plt.subplot(1, 2, 1)
 plt.title("Original (%s edges)" % original_graph.number_of_edges())
 nx.draw_networkx(original_graph, pos=pos, node_color=node_colors, **base_options)
 
-nonexp_graph, compression_nodes = nx.summarization.dedensify(
-    original_graph, threshold=2, copy=False
-)
+nonexp_graph, compression_nodes = nx.summarization.dedensify(original_graph, threshold=2, copy=False)
 nonexp_node_colors = list(node_colors)
 nonexp_node_sizes = list(node_sizes)
 for node in compression_nodes:

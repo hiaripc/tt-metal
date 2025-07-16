@@ -23,9 +23,7 @@ from mypy.types import (
 )
 
 
-def _find_simplecdata_base_arg(
-    tp: Instance, api: mypy.plugin.CheckerPluginInterface
-) -> ProperType | None:
+def _find_simplecdata_base_arg(tp: Instance, api: mypy.plugin.CheckerPluginInterface) -> ProperType | None:
     """Try to find a parametrized _SimpleCData in tp's bases and return its single type argument.
 
     None is returned if _SimpleCData appears nowhere in tp's (direct or indirect) bases.
@@ -115,9 +113,7 @@ def array_constructor_callback(ctx: mypy.plugin.FunctionContext) -> Type:
     et = _get_array_element_type(ctx.default_return_type)
     if et is not None:
         allowed = _autoconvertible_to_cdata(et, ctx.api)
-        assert (
-            len(ctx.arg_types) == 1
-        ), "The stub of the ctypes.Array constructor should have a single vararg parameter"
+        assert len(ctx.arg_types) == 1, "The stub of the ctypes.Array constructor should have a single vararg parameter"
         for arg_num, (arg_kind, arg_type) in enumerate(zip(ctx.arg_kinds[0], ctx.arg_types[0]), 1):
             if arg_kind == nodes.ARG_POS and not is_subtype(arg_type, allowed):
                 ctx.api.msg.fail(
@@ -151,12 +147,8 @@ def array_getitem_callback(ctx: mypy.plugin.MethodContext) -> Type:
     et = _get_array_element_type(ctx.type)
     if et is not None:
         unboxed = _autounboxed_cdata(et)
-        assert (
-            len(ctx.arg_types) == 1
-        ), "The stub of ctypes.Array.__getitem__ should have exactly one parameter"
-        assert (
-            len(ctx.arg_types[0]) == 1
-        ), "ctypes.Array.__getitem__'s parameter should not be variadic"
+        assert len(ctx.arg_types) == 1, "The stub of ctypes.Array.__getitem__ should have exactly one parameter"
+        assert len(ctx.arg_types[0]) == 1, "ctypes.Array.__getitem__'s parameter should not be variadic"
         index_type = get_proper_type(ctx.arg_types[0][0])
         if isinstance(index_type, Instance):
             if index_type.type.has_base("builtins.int"):
@@ -182,9 +174,7 @@ def array_setitem_callback(ctx: mypy.plugin.MethodSigContext) -> CallableType:
             if arg_type is not None:
                 # Note: arg_type can only be None if index_type is invalid, in which case we use
                 # the default signature and let mypy report an error about it.
-                return ctx.default_signature.copy_modified(
-                    arg_types=ctx.default_signature.arg_types[:1] + [arg_type]
-                )
+                return ctx.default_signature.copy_modified(arg_types=ctx.default_signature.arg_types[:1] + [arg_type])
     return ctx.default_signature
 
 
@@ -213,9 +203,7 @@ def array_value_callback(ctx: mypy.plugin.AttributeContext) -> Type:
             else:
                 ctx.api.msg.fail(
                     'Array attribute "value" is only available'
-                    ' with element type "c_char" or "c_wchar", not {}'.format(
-                        format_type(et, ctx.api.options)
-                    ),
+                    ' with element type "c_char" or "c_wchar", not {}'.format(format_type(et, ctx.api.options)),
                     ctx.context,
                 )
         return make_simplified_union(types)
@@ -229,11 +217,7 @@ def array_raw_callback(ctx: mypy.plugin.AttributeContext) -> Type:
         types: list[Type] = []
         for tp in flatten_nested_unions([et]):
             tp = get_proper_type(tp)
-            if (
-                isinstance(tp, AnyType)
-                or isinstance(tp, Instance)
-                and tp.type.fullname == "ctypes.c_char"
-            ):
+            if isinstance(tp, AnyType) or isinstance(tp, Instance) and tp.type.fullname == "ctypes.c_char":
                 types.append(ctx.api.named_generic_type("builtins.bytes", []))
             else:
                 ctx.api.msg.fail(

@@ -126,12 +126,8 @@ class TestGeneratorsBipartite:
         assert not G.is_multigraph()
         assert not G.is_directed()
 
-        pytest.raises(
-            nx.NetworkXError, configuration_model, aseq, bseq, create_using=nx.DiGraph()
-        )
-        pytest.raises(
-            nx.NetworkXError, configuration_model, aseq, bseq, create_using=nx.DiGraph
-        )
+        pytest.raises(nx.NetworkXError, configuration_model, aseq, bseq, create_using=nx.DiGraph())
+        pytest.raises(nx.NetworkXError, configuration_model, aseq, bseq, create_using=nx.DiGraph)
         pytest.raises(
             nx.NetworkXError,
             configuration_model,
@@ -177,12 +173,8 @@ class TestGeneratorsBipartite:
         assert not G.is_multigraph()
         assert not G.is_directed()
 
-        pytest.raises(
-            nx.NetworkXError, havel_hakimi_graph, aseq, bseq, create_using=nx.DiGraph
-        )
-        pytest.raises(
-            nx.NetworkXError, havel_hakimi_graph, aseq, bseq, create_using=nx.DiGraph
-        )
+        pytest.raises(nx.NetworkXError, havel_hakimi_graph, aseq, bseq, create_using=nx.DiGraph)
+        pytest.raises(nx.NetworkXError, havel_hakimi_graph, aseq, bseq, create_using=nx.DiGraph)
         pytest.raises(
             nx.NetworkXError,
             havel_hakimi_graph,

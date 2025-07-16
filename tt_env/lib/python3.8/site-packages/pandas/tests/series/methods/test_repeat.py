@@ -23,9 +23,7 @@ class TestRepeat:
 
     def test_numpy_repeat(self):
         ser = Series(np.arange(3), name="x")
-        expected = Series(
-            ser.values.repeat(2), name="x", index=ser.index.values.repeat(2)
-        )
+        expected = Series(ser.values.repeat(2), name="x", index=ser.index.values.repeat(2))
         tm.assert_series_equal(np.repeat(ser, 2), expected)
 
         msg = "the 'axis' parameter is not supported"

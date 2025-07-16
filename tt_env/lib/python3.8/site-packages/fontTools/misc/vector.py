@@ -121,8 +121,7 @@ class Vector(tuple):
     @property
     def values(self):
         warnings.warn(
-            "the 'values' attribute has been deprecated, use "
-            "the vector object itself instead",
+            "the 'values' attribute has been deprecated, use " "the vector object itself instead",
             DeprecationWarning,
         )
         return list(self)

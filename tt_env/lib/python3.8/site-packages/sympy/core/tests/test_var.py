@@ -1,6 +1,7 @@
-from sympy.core.function import (Function, FunctionClass)
-from sympy.core.symbol import (Symbol, var)
+from sympy.core.function import Function, FunctionClass
+from sympy.core.symbol import Symbol, var
 from sympy.testing.pytest import raises
+
 
 def test_var():
     ns = {"var": var, "raises": raises}
@@ -15,13 +16,13 @@ def test_var():
     assert ns["_x"] == Symbol("_x")
 
     v = eval("var(['d', 'e', 'fg'])", ns)
-    assert ns['d'] == Symbol('d')
-    assert ns['e'] == Symbol('e')
-    assert ns['fg'] == Symbol('fg')
+    assert ns["d"] == Symbol("d")
+    assert ns["e"] == Symbol("e")
+    assert ns["fg"] == Symbol("fg")
 
-# check return value
-    assert v != ['d', 'e', 'fg']
-    assert v == [Symbol('d'), Symbol('e'), Symbol('fg')]
+    # check return value
+    assert v != ["d", "e", "fg"]
+    assert v == [Symbol("d"), Symbol("e"), Symbol("fg")]
 
 
 def test_var_return():
@@ -30,8 +31,8 @@ def test_var_return():
     v2 = eval("var('q')", ns)
     v3 = eval("var('q p')", ns)
 
-    assert v2 == Symbol('q')
-    assert v3 == (Symbol('q'), Symbol('p'))
+    assert v2 == Symbol("q")
+    assert v3 == (Symbol("q"), Symbol("p"))
 
 
 def test_var_accepts_comma():
@@ -47,16 +48,16 @@ def test_var_accepts_comma():
 def test_var_keywords():
     ns = {"var": var}
     eval("var('x y', real=True)", ns)
-    assert ns['x'].is_real and ns['y'].is_real
+    assert ns["x"].is_real and ns["y"].is_real
 
 
 def test_var_cls():
     ns = {"var": var, "Function": Function}
     eval("var('f', cls=Function)", ns)
 
-    assert isinstance(ns['f'], FunctionClass)
+    assert isinstance(ns["f"], FunctionClass)
 
     eval("var('g,h', cls=Function)", ns)
 
-    assert isinstance(ns['g'], FunctionClass)
-    assert isinstance(ns['h'], FunctionClass)
+    assert isinstance(ns["g"], FunctionClass)
+    assert isinstance(ns["h"], FunctionClass)

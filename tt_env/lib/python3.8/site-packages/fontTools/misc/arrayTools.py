@@ -308,8 +308,7 @@ def quantizeRect(rect, factor=1):
 class Vector(_Vector):
     def __init__(self, *args, **kwargs):
         warnings.warn(
-            "fontTools.misc.arrayTools.Vector has been deprecated, please use "
-            "fontTools.misc.vector.Vector instead.",
+            "fontTools.misc.arrayTools.Vector has been deprecated, please use " "fontTools.misc.vector.Vector instead.",
             DeprecationWarning,
         )
 

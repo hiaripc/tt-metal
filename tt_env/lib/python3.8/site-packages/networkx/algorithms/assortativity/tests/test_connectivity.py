@@ -43,15 +43,11 @@ class TestNeighborConnectivity:
 
         answer = {1: 2.0, 2: 1.8}
         D = G.to_directed()
-        nd = nx.average_degree_connectivity(
-            D, weight="weight", source="in", target="in"
-        )
+        nd = nx.average_degree_connectivity(D, weight="weight", source="in", target="in")
         assert nd == answer
 
         D = G.to_directed()
-        nd = nx.average_degree_connectivity(
-            D, source="in", target="out", weight="weight"
-        )
+        nd = nx.average_degree_connectivity(D, source="in", target="out", weight="weight")
         assert nd == answer
 
     def test_weight_keyword(self):

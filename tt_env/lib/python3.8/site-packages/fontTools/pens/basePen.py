@@ -224,9 +224,7 @@ class DecomposingPen(LoggingPen):
         super(DecomposingPen, self).__init__(*args, **kwargs)
         self.glyphSet = glyphSet
         self.skipMissingComponents = (
-            self.__class__.skipMissingComponents
-            if skipMissingComponents is None
-            else skipMissingComponents
+            self.__class__.skipMissingComponents if skipMissingComponents is None else skipMissingComponents
         )
         self.reverseFlipped = reverseFlipped
 
@@ -453,10 +451,7 @@ class _TestPen(BasePen):
         print("%s %s lineto" % (pt[0], pt[1]))
 
     def _curveToOne(self, bcp1, bcp2, pt):
-        print(
-            "%s %s %s %s %s %s curveto"
-            % (bcp1[0], bcp1[1], bcp2[0], bcp2[1], pt[0], pt[1])
-        )
+        print("%s %s %s %s %s %s curveto" % (bcp1[0], bcp1[1], bcp2[0], bcp2[1], pt[0], pt[1]))
 
     def _closePath(self):
         print("closepath")

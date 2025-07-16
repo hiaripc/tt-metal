@@ -224,9 +224,7 @@ def test_check_unknown_with_both_missing_values():
     assert diff[0] is None
     assert np.isnan(diff[1])
 
-    diff, valid_mask = _check_unknown(
-        values, known_values=np.array(["a", "c"], dtype=object), return_mask=True
-    )
+    diff, valid_mask = _check_unknown(values, known_values=np.array(["a", "c"], dtype=object), return_mask=True)
 
     assert diff[0] is None
     assert np.isnan(diff[1])

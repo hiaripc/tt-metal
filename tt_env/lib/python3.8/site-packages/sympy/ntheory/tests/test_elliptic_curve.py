@@ -8,7 +8,7 @@ def test_elliptic_curve():
     q = e3(-1, 3)
     r = p + q
     assert r.x == 1 and r.y == -3
-    r = 2*p + q
+    r = 2 * p + q
     assert r.x == 35 and r.y == 207
     r = -p + q
     assert r.x == 37 and r.y == 225

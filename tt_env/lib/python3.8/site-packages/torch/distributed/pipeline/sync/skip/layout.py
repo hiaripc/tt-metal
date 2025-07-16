@@ -23,7 +23,11 @@ class SkipLayout:
     # Skip routes indexed by partition number 'j': [[next_j]: [(prev_j, ns, name), ...], ...]
     by_partition: List[List[Tuple[int, Namespace, str]]]
 
-    def __init__(self, num_partitions: int, skip_routes: Dict[Tuple[Namespace, str], Tuple[int, int]],) -> None:
+    def __init__(
+        self,
+        num_partitions: int,
+        skip_routes: Dict[Tuple[Namespace, str], Tuple[int, int]],
+    ) -> None:
         # The skip routes are already indexed by 'ns, name'.
         self.by_ns_name = skip_routes
 
@@ -72,6 +76,7 @@ def inspect_skip_layout(partitions: List[nn.Sequential]) -> SkipLayout:
     stashed_at: Dict[Tuple[Namespace, str], int] = {}
 
     for j, partition in enumerate(partitions):
+
         def inspect_layer(layer):
             if not isinstance(layer, Skippable):
                 return

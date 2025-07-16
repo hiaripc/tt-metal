@@ -75,9 +75,7 @@ def constant_fold_expr(builder: IRBuilder, expr: Expression) -> ConstantValue | 
     return None
 
 
-def constant_fold_binary_op_extended(
-    op: str, left: ConstantValue, right: ConstantValue
-) -> ConstantValue | None:
+def constant_fold_binary_op_extended(op: str, left: ConstantValue, right: ConstantValue) -> ConstantValue | None:
     """Like mypy's constant_fold_binary_op(), but includes bytes support.
 
     mypy cannot use constant folded bytes easily so it's simpler to only support them in mypyc.

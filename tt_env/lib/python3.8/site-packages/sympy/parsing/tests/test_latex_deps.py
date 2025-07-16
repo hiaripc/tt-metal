@@ -13,4 +13,4 @@ def test_no_import():
 
     with ignore_warnings(UserWarning):
         with raises(ImportError):
-            parse_latex('1 + 1')
+            parse_latex("1 + 1")

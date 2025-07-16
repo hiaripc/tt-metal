@@ -33,14 +33,10 @@ from fontTools.designspaceLib.types import (
 
 LOGGER = logging.getLogger(__name__)
 
-MakeInstanceFilenameCallable = Callable[
-    [DesignSpaceDocument, InstanceDescriptor, StatNames], str
-]
+MakeInstanceFilenameCallable = Callable[[DesignSpaceDocument, InstanceDescriptor, StatNames], str]
 
 
-def defaultMakeInstanceFilename(
-    doc: DesignSpaceDocument, instance: InstanceDescriptor, statNames: StatNames
-) -> str:
+def defaultMakeInstanceFilename(doc: DesignSpaceDocument, instance: InstanceDescriptor, statNames: StatNames) -> str:
     """Default callable to synthesize an instance filename
     when makeNames=True, for instances that don't specify an instance name
     in the designspace. This part of the name generation can be overriden
@@ -103,10 +99,7 @@ def splitInterpolable(
             )
     valueCombinations = itertools.product(*[axis.values for axis in discreteAxes])
     for values in valueCombinations:
-        discreteUserLocation = {
-            discreteAxis.name: value
-            for discreteAxis, value in zip(discreteAxes, values)
-        }
+        discreteUserLocation = {discreteAxis.name: value for discreteAxis, value in zip(discreteAxes, values)}
         subDoc = _extractSubSpace(
             doc,
             {**interpolableUserRegion, **discreteUserLocation},
@@ -215,11 +208,7 @@ def _extractSubSpace(
                     minimum=max(range.minimum, axis.minimum),
                     default=range.default or axis.default,
                     maximum=min(range.maximum, axis.maximum),
-                    map=[
-                        (user, design)
-                        for user, design in axis.map
-                        if range.minimum <= user <= range.maximum
-                    ],
+                    map=[(user, design) for user, design in axis.map if range.minimum <= user <= range.maximum],
                     # Don't include STAT info
                     axisOrdering=None,
                     axisLabels=None,
@@ -283,9 +272,7 @@ def _extractSubSpace(
                 path=source.path,
                 font=source.font,
                 name=source.name,
-                designLocation=_filterLocation(
-                    userRegion, maybeExpandDesignLocation(source)
-                ),
+                designLocation=_filterLocation(userRegion, maybeExpandDesignLocation(source)),
                 layerName=source.layerName,
                 familyName=source.familyName,
                 styleName=source.styleName,
@@ -331,31 +318,21 @@ def _extractSubSpace(
             styleName = instance.styleName or statNames.styleNames.get("en")
             subDoc.addInstance(
                 InstanceDescriptor(
-                    filename=instance.filename
-                    or makeInstanceFilename(doc, instance, statNames),
+                    filename=instance.filename or makeInstanceFilename(doc, instance, statNames),
                     path=instance.path,
                     font=instance.font,
                     name=instance.name or f"{familyName} {styleName}",
                     userLocation={} if expandLocations else instance.userLocation,
-                    designLocation=_filterLocation(
-                        userRegion, maybeExpandDesignLocation(instance)
-                    ),
+                    designLocation=_filterLocation(userRegion, maybeExpandDesignLocation(instance)),
                     familyName=familyName,
                     styleName=styleName,
-                    postScriptFontName=instance.postScriptFontName
-                    or statNames.postScriptFontName,
-                    styleMapFamilyName=instance.styleMapFamilyName
-                    or statNames.styleMapFamilyNames.get("en"),
-                    styleMapStyleName=instance.styleMapStyleName
-                    or statNames.styleMapStyleName,
-                    localisedFamilyName=instance.localisedFamilyName
-                    or statNames.familyNames,
-                    localisedStyleName=instance.localisedStyleName
-                    or statNames.styleNames,
-                    localisedStyleMapFamilyName=instance.localisedStyleMapFamilyName
-                    or statNames.styleMapFamilyNames,
-                    localisedStyleMapStyleName=instance.localisedStyleMapStyleName
-                    or {},
+                    postScriptFontName=instance.postScriptFontName or statNames.postScriptFontName,
+                    styleMapFamilyName=instance.styleMapFamilyName or statNames.styleMapFamilyNames.get("en"),
+                    styleMapStyleName=instance.styleMapStyleName or statNames.styleMapStyleName,
+                    localisedFamilyName=instance.localisedFamilyName or statNames.familyNames,
+                    localisedStyleName=instance.localisedStyleName or statNames.styleNames,
+                    localisedStyleMapFamilyName=instance.localisedStyleMapFamilyName or statNames.styleMapFamilyNames,
+                    localisedStyleMapStyleName=instance.localisedStyleMapStyleName or {},
                     lib=instance.lib,
                 )
             )
@@ -367,9 +344,7 @@ def _extractSubSpace(
                     font=instance.font,
                     name=instance.name,
                     userLocation={} if expandLocations else instance.userLocation,
-                    designLocation=_filterLocation(
-                        userRegion, maybeExpandDesignLocation(instance)
-                    ),
+                    designLocation=_filterLocation(userRegion, maybeExpandDesignLocation(instance)),
                     familyName=instance.familyName,
                     styleName=instance.styleName,
                     postScriptFontName=instance.postScriptFontName,
@@ -399,9 +374,7 @@ def _conditionSetFrom(conditionSet: List[Dict[str, Any]]) -> ConditionSet:
     return c
 
 
-def _subsetRulesBasedOnConditions(
-    rules: List[RuleDescriptor], designRegion: Region
-) -> List[RuleDescriptor]:
+def _subsetRulesBasedOnConditions(rules: List[RuleDescriptor], designRegion: Region) -> List[RuleDescriptor]:
     # What rules to keep:
     #  - Keep the rule if any conditionset is relevant.
     #  - A conditionset is relevant if all conditions are relevant or it is empty.
@@ -419,9 +392,7 @@ def _subsetRulesBasedOnConditions(
     #       - (C-AR-none) else, whole conditionset can be discarded
     newRules: List[RuleDescriptor] = []
     for rule in rules:
-        newRule: RuleDescriptor = RuleDescriptor(
-            name=rule.name, conditionSets=[], subs=rule.subs
-        )
+        newRule: RuleDescriptor = RuleDescriptor(name=rule.name, conditionSets=[], subs=rule.subs)
         for conditionset in rule.conditionSets:
             cs = _conditionSetFrom(conditionset)
             newConditionset: List[Dict[str, Any]] = []
@@ -469,7 +440,5 @@ def _filterLocation(
     location: Dict[str, float],
 ) -> Dict[str, float]:
     return {
-        name: value
-        for name, value in location.items()
-        if name in userRegion and isinstance(userRegion[name], Range)
+        name: value for name, value in location.items() if name in userRegion and isinstance(userRegion[name], Range)
     }

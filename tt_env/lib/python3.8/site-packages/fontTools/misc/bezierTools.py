@@ -67,9 +67,7 @@ def calcCubicArcLength(pt1, pt2, pt3, pt4, tolerance=0.005):
     Returns:
         Arc length value.
     """
-    return calcCubicArcLengthC(
-        complex(*pt1), complex(*pt2), complex(*pt3), complex(*pt4), tolerance
-    )
+    return calcCubicArcLengthC(complex(*pt1), complex(*pt2), complex(*pt3), complex(*pt4), tolerance)
 
 
 def _split_cubic_into_two(p0, p1, p2, p3):
@@ -96,9 +94,7 @@ def _calcCubicArcLengthCRecurse(mult, p0, p1, p2, p3):
         return (arch + box) * 0.5
     else:
         one, two = _split_cubic_into_two(p0, p1, p2, p3)
-        return _calcCubicArcLengthCRecurse(mult, *one) + _calcCubicArcLengthCRecurse(
-            mult, *two
-        )
+        return _calcCubicArcLengthCRecurse(mult, *one) + _calcCubicArcLengthCRecurse(mult, *two)
 
 
 @cython.returns(cython.double)
@@ -284,13 +280,9 @@ def approximateQuadraticArcLengthC(pt1, pt2, pt3):
 
     # abs(BezierCurveC[2].diff(t).subs({t:T})) for T in sorted(.5, .5±sqrt(3/5)/2),
     # weighted 5/18, 8/18, 5/18 respectively.
-    v0 = abs(
-        -0.492943519233745 * pt1 + 0.430331482911935 * pt2 + 0.0626120363218102 * pt3
-    )
+    v0 = abs(-0.492943519233745 * pt1 + 0.430331482911935 * pt2 + 0.0626120363218102 * pt3)
     v1 = abs(pt3 - pt1) * 0.4444444444444444
-    v2 = abs(
-        -0.0626120363218102 * pt1 - 0.430331482911935 * pt2 + 0.492943519233745 * pt3
-    )
+    v2 = abs(-0.0626120363218102 * pt1 - 0.430331482911935 * pt2 + 0.492943519233745 * pt3)
 
     return v0 + v1 + v2
 
@@ -321,11 +313,7 @@ def calcQuadraticBounds(pt1, pt2, pt3):
         roots.append(-bx / ax2)
     if ay2 != 0:
         roots.append(-by / ay2)
-    points = [
-        (ax * t * t + bx * t + cx, ay * t * t + by * t + cy)
-        for t in roots
-        if 0 <= t < 1
-    ] + [pt1, pt3]
+    points = [(ax * t * t + bx * t + cx, ay * t * t + by * t + cy) for t in roots if 0 <= t < 1] + [pt1, pt3]
     return calcBounds(points)
 
 
@@ -354,9 +342,7 @@ def approximateCubicArcLength(pt1, pt2, pt3, pt4):
         >>> approximateCubicArcLength((0, 0), (50, 0), (100, -50), (-50, 0)) # cusp
         154.80848416537057
     """
-    return approximateCubicArcLengthC(
-        complex(*pt1), complex(*pt2), complex(*pt3), complex(*pt4)
-    )
+    return approximateCubicArcLengthC(complex(*pt1), complex(*pt2), complex(*pt3), complex(*pt4))
 
 
 @cython.returns(cython.double)
@@ -391,19 +377,9 @@ def approximateCubicArcLengthC(pt1, pt2, pt3, pt4):
     # abs(BezierCurveC[3].diff(t).subs({t:T})) for T in sorted(0, .5±(3/7)**.5/2, .5, 1),
     # weighted 1/20, 49/180, 32/90, 49/180, 1/20 respectively.
     v0 = abs(pt2 - pt1) * 0.15
-    v1 = abs(
-        -0.558983582205757 * pt1
-        + 0.325650248872424 * pt2
-        + 0.208983582205757 * pt3
-        + 0.024349751127576 * pt4
-    )
+    v1 = abs(-0.558983582205757 * pt1 + 0.325650248872424 * pt2 + 0.208983582205757 * pt3 + 0.024349751127576 * pt4)
     v2 = abs(pt4 - pt1 + pt3 - pt2) * 0.26666666666666666
-    v3 = abs(
-        -0.024349751127576 * pt1
-        - 0.208983582205757 * pt2
-        - 0.325650248872424 * pt3
-        + 0.558983582205757 * pt4
-    )
+    v3 = abs(-0.024349751127576 * pt1 - 0.208983582205757 * pt2 - 0.325650248872424 * pt3 + 0.558983582205757 * pt4)
     v4 = abs(pt4 - pt3) * 0.15
 
     return v0 + v1 + v2 + v3 + v4
@@ -540,9 +516,7 @@ def splitQuadratic(pt1, pt2, pt3, where, isHorizontal):
         ((50, 50), (75, 50), (100, 0))
     """
     a, b, c = calcQuadraticParameters(pt1, pt2, pt3)
-    solutions = solveQuadratic(
-        a[isHorizontal], b[isHorizontal], c[isHorizontal] - where
-    )
+    solutions = solveQuadratic(a[isHorizontal], b[isHorizontal], c[isHorizontal] - where)
     solutions = sorted(t for t in solutions if 0 <= t < 1)
     if not solutions:
         return [(pt1, pt2, pt3)]
@@ -577,9 +551,7 @@ def splitCubic(pt1, pt2, pt3, pt4, where, isHorizontal):
         ((92.5259, 25), (95.202, 17.5085), (97.7062, 9.17517), (100, 1.77636e-15))
     """
     a, b, c, d = calcCubicParameters(pt1, pt2, pt3, pt4)
-    solutions = solveCubic(
-        a[isHorizontal], b[isHorizontal], c[isHorizontal], d[isHorizontal] - where
-    )
+    solutions = solveCubic(a[isHorizontal], b[isHorizontal], c[isHorizontal], d[isHorizontal] - where)
     solutions = sorted(t for t in solutions if 0 <= t < 1)
     if not solutions:
         return [(pt1, pt2, pt3, pt4)]
@@ -676,9 +648,7 @@ def splitCubicAtTC(pt1, pt2, pt3, pt4, *ts):
     off1=cython.complex,
     off2=cython.complex,
 )
-@cython.locals(
-    t2=cython.double, _1_t=cython.double, _1_t_2=cython.double, _2_t_1_t=cython.double
-)
+@cython.locals(t2=cython.double, _1_t=cython.double, _1_t_2=cython.double, _2_t_1_t=cython.double)
 def splitCubicIntoTwoAtTC(pt1, pt2, pt3, pt4, t):
     """Split a cubic Bezier curve at t.
 
@@ -693,9 +663,7 @@ def splitCubicIntoTwoAtTC(pt1, pt2, pt3, pt4, t):
     _1_t = 1 - t
     _1_t_2 = _1_t * _1_t
     _2_t_1_t = 2 * t * _1_t
-    pointAtT = (
-        _1_t_2 * _1_t * pt1 + 3 * (_1_t_2 * t * pt2 + _1_t * t2 * pt3) + t2 * t * pt4
-    )
+    pointAtT = _1_t_2 * _1_t * pt1 + 3 * (_1_t_2 * t * pt2 + _1_t * t2 * pt3) + t2 * t * pt4
     off1 = _1_t_2 * pt1 + _2_t_1_t * pt2 + t2 * pt3
     off2 = _1_t_2 * pt2 + _2_t_1_t * pt3 + t2 * pt4
 
@@ -760,9 +728,7 @@ def _splitCubicAtT(a, b, c, d, *ts):
         c1y = (2 * by * t1 + cy + 3 * ay * t1_2) * delta
         d1x = ax * t1_3 + bx * t1_2 + cx * t1 + dx
         d1y = ay * t1_3 + by * t1_2 + cy * t1 + dy
-        pt1, pt2, pt3, pt4 = calcCubicPoints(
-            (a1x, a1y), (b1x, b1y), (c1x, c1y), (d1x, d1y)
-        )
+        pt1, pt2, pt3, pt4 = calcCubicPoints((a1x, a1y), (b1x, b1y), (c1x, c1y), (d1x, d1y))
         segments.append((pt1, pt2, pt3, pt4))
     return segments
 
@@ -1078,16 +1044,8 @@ def cubicPointAtT(pt1, pt2, pt3, pt4, t):
     t2 = t * t
     _1_t = 1 - t
     _1_t_2 = _1_t * _1_t
-    x = (
-        _1_t_2 * _1_t * pt1[0]
-        + 3 * (_1_t_2 * t * pt2[0] + _1_t * t2 * pt3[0])
-        + t2 * t * pt4[0]
-    )
-    y = (
-        _1_t_2 * _1_t * pt1[1]
-        + 3 * (_1_t_2 * t * pt2[1] + _1_t * t2 * pt3[1])
-        + t2 * t * pt4[1]
-    )
+    x = _1_t_2 * _1_t * pt1[0] + 3 * (_1_t_2 * t * pt2[0] + _1_t * t2 * pt3[0]) + t2 * t * pt4[0]
+    y = _1_t_2 * _1_t * pt1[1] + 3 * (_1_t_2 * t * pt2[1] + _1_t * t2 * pt3[1]) + t2 * t * pt4[1]
     return (x, y)
 
 
@@ -1178,13 +1136,9 @@ def lineLineIntersections(s1, e1, s2, e2):
     e1x, e1y = e1
     s2x, s2y = s2
     e2x, e2y = e2
-    if (
-        math.isclose(s2x, e2x) and math.isclose(s1x, e1x) and not math.isclose(s1x, s2x)
-    ):  # Parallel vertical
+    if math.isclose(s2x, e2x) and math.isclose(s1x, e1x) and not math.isclose(s1x, s2x):  # Parallel vertical
         return []
-    if (
-        math.isclose(s2y, e2y) and math.isclose(s1y, e1y) and not math.isclose(s1y, s2y)
-    ):  # Parallel horizontal
+    if math.isclose(s2y, e2y) and math.isclose(s1y, e1y) and not math.isclose(s1y, s2y):  # Parallel horizontal
         return []
     if math.isclose(s2x, e2x) and math.isclose(s2y, e2y):  # Line segment is tiny
         return []
@@ -1195,21 +1149,13 @@ def lineLineIntersections(s1, e1, s2, e2):
         slope34 = (e2y - s2y) / (e2x - s2x)
         y = slope34 * (x - s2x) + s2y
         pt = (x, y)
-        return [
-            Intersection(
-                pt=pt, t1=_line_t_of_pt(s1, e1, pt), t2=_line_t_of_pt(s2, e2, pt)
-            )
-        ]
+        return [Intersection(pt=pt, t1=_line_t_of_pt(s1, e1, pt), t2=_line_t_of_pt(s2, e2, pt))]
     if math.isclose(s2x, e2x):
         x = s2x
         slope12 = (e1y - s1y) / (e1x - s1x)
         y = slope12 * (x - s1x) + s1y
         pt = (x, y)
-        return [
-            Intersection(
-                pt=pt, t1=_line_t_of_pt(s1, e1, pt), t2=_line_t_of_pt(s2, e2, pt)
-            )
-        ]
+        return [Intersection(pt=pt, t1=_line_t_of_pt(s1, e1, pt), t2=_line_t_of_pt(s2, e2, pt))]
 
     slope12 = (e1y - s1y) / (e1x - s1x)
     slope34 = (e2y - s2y) / (e2x - s2x)
@@ -1218,14 +1164,8 @@ def lineLineIntersections(s1, e1, s2, e2):
     x = (slope12 * s1x - s1y - slope34 * s2x + s2y) / (slope12 - slope34)
     y = slope12 * (x - s1x) + s1y
     pt = (x, y)
-    if _both_points_are_on_same_side_of_origin(
-        pt, e1, s1
-    ) and _both_points_are_on_same_side_of_origin(pt, s2, e2):
-        return [
-            Intersection(
-                pt=pt, t1=_line_t_of_pt(s1, e1, pt), t2=_line_t_of_pt(s2, e2, pt)
-            )
-        ]
+    if _both_points_are_on_same_side_of_origin(pt, e1, s1) and _both_points_are_on_same_side_of_origin(pt, s2, e2):
+        return [Intersection(pt=pt, t1=_line_t_of_pt(s1, e1, pt), t2=_line_t_of_pt(s2, e2, pt))]
     return []
 
 
@@ -1310,9 +1250,7 @@ def _split_segment_at_t(c, t):
     raise ValueError("Unknown curve degree")
 
 
-def _curve_curve_intersections_t(
-    curve1, curve2, precision=1e-3, range1=None, range2=None
-):
+def _curve_curve_intersections_t(curve1, curve2, precision=1e-3, range1=None, range2=None):
     bounds1 = _curve_bounds(curve1)
     bounds2 = _curve_bounds(curve2)
 
@@ -1342,26 +1280,10 @@ def _curve_curve_intersections_t(
     c22_range = (midpoint(range2), range2[1])
 
     found = []
-    found.extend(
-        _curve_curve_intersections_t(
-            c11, c21, precision, range1=c11_range, range2=c21_range
-        )
-    )
-    found.extend(
-        _curve_curve_intersections_t(
-            c12, c21, precision, range1=c12_range, range2=c21_range
-        )
-    )
-    found.extend(
-        _curve_curve_intersections_t(
-            c11, c22, precision, range1=c11_range, range2=c22_range
-        )
-    )
-    found.extend(
-        _curve_curve_intersections_t(
-            c12, c22, precision, range1=c12_range, range2=c22_range
-        )
-    )
+    found.extend(_curve_curve_intersections_t(c11, c21, precision, range1=c11_range, range2=c21_range))
+    found.extend(_curve_curve_intersections_t(c12, c21, precision, range1=c12_range, range2=c21_range))
+    found.extend(_curve_curve_intersections_t(c11, c22, precision, range1=c11_range, range2=c22_range))
+    found.extend(_curve_curve_intersections_t(c12, c22, precision, range1=c12_range, range2=c22_range))
 
     unique_key = lambda ts: (int(ts[0] / precision), int(ts[1] / precision))
     seen = set()
@@ -1415,10 +1337,7 @@ def curveCurveIntersections(curve1, curve2):
         return curveLineIntersections(curve1, line2)
 
     intersection_ts = _curve_curve_intersections_t(curve1, curve2)
-    return [
-        Intersection(pt=segmentPointAtT(curve1, ts[0]), t1=ts[0], t2=ts[1])
-        for ts in intersection_ts
-    ]
+    return [Intersection(pt=segmentPointAtT(curve1, ts[0]), t1=ts[0], t2=ts[1]) for ts in intersection_ts]
 
 
 def segmentSegmentIntersections(seg1, seg2):

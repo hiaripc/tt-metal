@@ -12,9 +12,7 @@ class ExtendCodec(codecs.Codec):
         self.mapping = mapping
         self.reverse = {v: k for k, v in mapping.items()}
         self.max_len = max(len(v) for v in mapping.values())
-        self.info = codecs.CodecInfo(
-            name=self.name, encode=self.encode, decode=self.decode
-        )
+        self.info = codecs.CodecInfo(name=self.name, encode=self.encode, decode=self.decode)
         codecs.register_error(name, self.error)
 
     def _map(self, mapper, output_type, exc_type, input, errors):

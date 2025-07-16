@@ -6,7 +6,6 @@ import numba
 
 
 class NumpyGeneratorUsageTest(unittest.TestCase):
-
     def test_numpy_gen_usage(self):
         # magictoken.npgen_usage.begin
         x = np.random.default_rng(1)
@@ -34,5 +33,5 @@ class NumpyGeneratorUsageTest(unittest.TestCase):
             self.assertEqual(_np_res, _nb_res)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

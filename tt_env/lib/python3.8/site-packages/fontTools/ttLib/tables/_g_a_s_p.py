@@ -58,6 +58,4 @@ class table__g_a_s_p(DefaultTable.DefaultTable):
             return
         if not hasattr(self, "gaspRange"):
             self.gaspRange = {}
-        self.gaspRange[safeEval(attrs["rangeMaxPPEM"])] = safeEval(
-            attrs["rangeGaspBehavior"]
-        )
+        self.gaspRange[safeEval(attrs["rangeMaxPPEM"])] = safeEval(attrs["rangeGaspBehavior"])

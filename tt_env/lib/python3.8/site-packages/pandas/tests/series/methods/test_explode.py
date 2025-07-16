@@ -8,16 +8,12 @@ import pandas._testing as tm
 def test_basic():
     s = pd.Series([[0, 1, 2], np.nan, [], (3, 4)], index=list("abcd"), name="foo")
     result = s.explode()
-    expected = pd.Series(
-        [0, 1, 2, np.nan, np.nan, 3, 4], index=list("aaabcdd"), dtype=object, name="foo"
-    )
+    expected = pd.Series([0, 1, 2, np.nan, np.nan, 3, 4], index=list("aaabcdd"), dtype=object, name="foo")
     tm.assert_series_equal(result, expected)
 
 
 def test_mixed_type():
-    s = pd.Series(
-        [[0, 1, 2], np.nan, None, np.array([]), pd.Series(["a", "b"])], name="foo"
-    )
+    s = pd.Series([[0, 1, 2], np.nan, None, np.array([]), pd.Series(["a", "b"])], name="foo")
     result = s.explode()
     expected = pd.Series(
         [0, 1, 2, np.nan, None, np.nan, "a", "b"],
@@ -53,9 +49,7 @@ def test_multi_index():
         [("a", 0), ("a", 0), ("a", 0), ("a", 1), ("b", 0), ("b", 1), ("b", 1)],
         names=["foo", "bar"],
     )
-    expected = pd.Series(
-        [0, 1, 2, np.nan, np.nan, 3, 4], index=index, dtype=object, name="foo"
-    )
+    expected = pd.Series([0, 1, 2, np.nan, np.nan, 3, 4], index=index, dtype=object, name="foo")
     tm.assert_series_equal(result, expected)
 
 
@@ -73,9 +67,7 @@ def test_invert_array():
     tm.assert_series_equal(result, df["a"].rename())
 
 
-@pytest.mark.parametrize(
-    "s", [pd.Series([1, 2, 3]), pd.Series(pd.date_range("2019", periods=3, tz="UTC"))]
-)
+@pytest.mark.parametrize("s", [pd.Series([1, 2, 3]), pd.Series(pd.date_range("2019", periods=3, tz="UTC"))])
 def test_non_object_dtype(s):
     result = s.explode()
     tm.assert_series_equal(result, s)
@@ -105,9 +97,7 @@ def test_nested_EA():
         ]
     )
     result = s.explode()
-    expected = pd.Series(
-        pd.date_range("20170101", periods=6, tz="UTC"), index=[0, 0, 0, 1, 1, 1]
-    )
+    expected = pd.Series(pd.date_range("20170101", periods=6, tz="UTC"), index=[0, 0, 0, 1, 1, 1])
     tm.assert_series_equal(result, expected)
 
 

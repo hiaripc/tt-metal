@@ -4,7 +4,7 @@ import numpy as np
 
 import matplotlib.units as units
 
-__all__ = ['StrConverter']
+__all__ = ["StrConverter"]
 
 
 class StrConverter(units.ConversionInterface):
@@ -69,7 +69,7 @@ class StrConverter(units.ConversionInterface):
         # DISABLED         labels = labels[::-1]
 
         # add padding (so they do not appear on the axes themselves)
-        labels = [''] + labels + ['']
+        labels = [""] + labels + [""]
         ticks = list(range(len(labels)))
         ticks[0] = 0.5
         ticks[-1] = ticks[-1] - 0.5

@@ -14,9 +14,7 @@ from . import pulldom as _pulldom
 __origin__ = "xml.dom.minidom"
 
 
-def parse(
-    file, parser=None, bufsize=None, forbid_dtd=False, forbid_entities=True, forbid_external=True
-):
+def parse(file, parser=None, bufsize=None, forbid_dtd=False, forbid_entities=True, forbid_external=True):
     """Parse a file into a DOM by filename or file object."""
     if parser is None and not bufsize:
         return _expatbuilder.parse(
@@ -39,9 +37,7 @@ def parse(
         )
 
 
-def parseString(
-    string, parser=None, forbid_dtd=False, forbid_entities=True, forbid_external=True
-):
+def parseString(string, parser=None, forbid_dtd=False, forbid_entities=True, forbid_external=True):
     """Parse a file into a DOM from a string."""
     if parser is None:
         return _expatbuilder.parseString(

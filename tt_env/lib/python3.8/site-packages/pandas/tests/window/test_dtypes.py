@@ -91,9 +91,7 @@ def dtypes(request):
         ),
     ],
 )
-def test_series_dtypes(
-    method, data, expected_data, coerce_int, dtypes, min_periods, step
-):
+def test_series_dtypes(method, data, expected_data, coerce_int, dtypes, min_periods, step):
     ser = Series(data, dtype=get_dtype(dtypes, coerce_int=coerce_int))
     rolled = ser.rolling(2, min_periods=min_periods, step=step)
 

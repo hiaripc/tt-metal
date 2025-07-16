@@ -17,20 +17,18 @@ class UnitDbl:
         "m": (0.001, "km"),
         "km": (1, "km"),
         "mile": (1.609344, "km"),
-
         "rad": (1, "rad"),
         "deg": (1.745329251994330e-02, "rad"),
-
         "sec": (1, "sec"),
         "min": (60.0, "sec"),
         "hour": (3600, "sec"),
-        }
+    }
 
     _types = {
         "km": "distance",
         "rad": "angle",
         "sec": "time",
-        }
+    }
 
     def __init__(self, value, units):
         """
@@ -71,10 +69,12 @@ class UnitDbl:
             return self._value
         data = _api.check_getitem(self.allowed, units=units)
         if self._units != data[1]:
-            raise ValueError(f"Error trying to convert to different units.\n"
-                             f"    Invalid conversion requested.\n"
-                             f"    UnitDbl: {self}\n"
-                             f"    Units:   {units}\n")
+            raise ValueError(
+                f"Error trying to convert to different units.\n"
+                f"    Invalid conversion requested.\n"
+                f"    UnitDbl: {self}\n"
+                f"    Units:   {units}\n"
+            )
         return self._value / data[0]
 
     def __abs__(self):
@@ -175,6 +175,4 @@ class UnitDbl:
         - func    The name of the function doing the check.
         """
         if self._units != rhs._units:
-            raise ValueError(f"Cannot {func} units of different types.\n"
-                             f"LHS: {self._units}\n"
-                             f"RHS: {rhs._units}")
+            raise ValueError(f"Cannot {func} units of different types.\n" f"LHS: {self._units}\n" f"RHS: {rhs._units}")

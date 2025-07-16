@@ -14,9 +14,7 @@ class TestUnaryOps:
 
         df = pd.DataFrame({"A": a, "B": [True, False, False]}, index=["a", "b", "c"])
         result = ~df
-        expected = pd.DataFrame(
-            {"A": expected, "B": [False, True, True]}, index=["a", "b", "c"]
-        )
+        expected = pd.DataFrame({"A": expected, "B": [False, True, True]}, index=["a", "b", "c"])
         tm.assert_frame_equal(result, expected)
 
     def test_abs(self):

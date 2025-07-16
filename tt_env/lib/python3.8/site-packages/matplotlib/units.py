@@ -76,9 +76,8 @@ class AxisInfo:
     An instance of this class must be returned by
     `ConversionInterface.axisinfo`.
     """
-    def __init__(self, majloc=None, minloc=None,
-                 majfmt=None, minfmt=None, label=None,
-                 default_limits=None):
+
+    def __init__(self, majloc=None, minloc=None, majfmt=None, minfmt=None, label=None, default_limits=None):
         """
         Parameters
         ----------

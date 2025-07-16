@@ -7,7 +7,7 @@ _glv = _global_logic_variables
 
 
 class Var:
-    """ Logic Variable """
+    """Logic Variable"""
 
     _id = 1
 
@@ -24,6 +24,7 @@ class Var:
 
     def __str__(self):
         return "~" + str(self.token)  # type: ignore[attr-defined]
+
     __repr__ = __str__
 
     def __eq__(self, other):
@@ -44,6 +45,7 @@ def vars():
 @dispatch(Var)
 def isvar(v):
     return True
+
 
 isvar
 

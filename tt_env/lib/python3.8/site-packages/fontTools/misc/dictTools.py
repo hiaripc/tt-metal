@@ -40,39 +40,25 @@ class hashdict(dict):
         return hash(self.__key())
 
     def __setitem__(self, key, value):
-        raise TypeError(
-            "{0} does not support item assignment".format(self.__class__.__name__)
-        )
+        raise TypeError("{0} does not support item assignment".format(self.__class__.__name__))
 
     def __delitem__(self, key):
-        raise TypeError(
-            "{0} does not support item assignment".format(self.__class__.__name__)
-        )
+        raise TypeError("{0} does not support item assignment".format(self.__class__.__name__))
 
     def clear(self):
-        raise TypeError(
-            "{0} does not support item assignment".format(self.__class__.__name__)
-        )
+        raise TypeError("{0} does not support item assignment".format(self.__class__.__name__))
 
     def pop(self, *args, **kwargs):
-        raise TypeError(
-            "{0} does not support item assignment".format(self.__class__.__name__)
-        )
+        raise TypeError("{0} does not support item assignment".format(self.__class__.__name__))
 
     def popitem(self, *args, **kwargs):
-        raise TypeError(
-            "{0} does not support item assignment".format(self.__class__.__name__)
-        )
+        raise TypeError("{0} does not support item assignment".format(self.__class__.__name__))
 
     def setdefault(self, *args, **kwargs):
-        raise TypeError(
-            "{0} does not support item assignment".format(self.__class__.__name__)
-        )
+        raise TypeError("{0} does not support item assignment".format(self.__class__.__name__))
 
     def update(self, *args, **kwargs):
-        raise TypeError(
-            "{0} does not support item assignment".format(self.__class__.__name__)
-        )
+        raise TypeError("{0} does not support item assignment".format(self.__class__.__name__))
 
     # update is not ok because it mutates the object
     # __add__ is ok because it creates a new object

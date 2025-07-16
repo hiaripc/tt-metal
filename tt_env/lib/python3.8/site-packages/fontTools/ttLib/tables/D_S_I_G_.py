@@ -52,23 +52,13 @@ class table_D_S_I_G_(DefaultTable.DefaultTable):
         assert self.usFlag & ~1 == 0, "DSIG usFlag must be 0x1 or 0x0"
         self.signatureRecords = sigrecs = []
         for n in range(self.usNumSigs):
-            sigrec, newData = sstruct.unpack2(
-                DSIG_SignatureFormat, newData, SignatureRecord()
-            )
-            assert sigrec.ulFormat == 1, (
-                "DSIG signature record #%d ulFormat must be 1" % n
-            )
+            sigrec, newData = sstruct.unpack2(DSIG_SignatureFormat, newData, SignatureRecord())
+            assert sigrec.ulFormat == 1, "DSIG signature record #%d ulFormat must be 1" % n
             sigrecs.append(sigrec)
         for sigrec in sigrecs:
-            dummy, newData = sstruct.unpack2(
-                DSIG_SignatureBlockFormat, data[sigrec.ulOffset :], sigrec
-            )
-            assert sigrec.usReserved1 == 0, (
-                "DSIG signature record #%d usReserverd1 must be 0" % n
-            )
-            assert sigrec.usReserved2 == 0, (
-                "DSIG signature record #%d usReserverd2 must be 0" % n
-            )
+            dummy, newData = sstruct.unpack2(DSIG_SignatureBlockFormat, data[sigrec.ulOffset :], sigrec)
+            assert sigrec.usReserved1 == 0, "DSIG signature record #%d usReserverd1 must be 0" % n
+            assert sigrec.usReserved2 == 0, "DSIG signature record #%d usReserverd2 must be 0" % n
             sigrec.pkcs7 = newData[: sigrec.cbSignature]
 
     def compile(self, ttFont):
@@ -93,9 +83,7 @@ class table_D_S_I_G_(DefaultTable.DefaultTable):
         return bytesjoin(headers + data)
 
     def toXML(self, xmlWriter, ttFont):
-        xmlWriter.comment(
-            "note that the Digital Signature will be invalid after recompilation!"
-        )
+        xmlWriter.comment("note that the Digital Signature will be invalid after recompilation!")
         xmlWriter.newline()
         xmlWriter.simpletag(
             "tableHeader",

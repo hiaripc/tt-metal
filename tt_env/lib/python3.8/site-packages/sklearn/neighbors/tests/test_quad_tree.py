@@ -50,9 +50,7 @@ def test_quadtree_similar_point():
 
     # check the case where points are arbitrarily close on both axes
     # close to machine epsilon - y axis
-    Xs.append(
-        np.array([[0.0003817754041, 1.0], [0.0003817753750, 2.0]], dtype=np.float32)
-    )
+    Xs.append(np.array([[0.0003817754041, 1.0], [0.0003817753750, 2.0]], dtype=np.float32))
 
     for X in Xs:
         tree = _QuadTree(n_dimensions=2, verbose=0)
@@ -103,9 +101,7 @@ def test_summarize():
     # Simple check for quad tree's summarize
 
     angle = 0.9
-    X = np.array(
-        [[-10.0, -10.0], [9.0, 10.0], [10.0, 9.0], [10.0, 10.0]], dtype=np.float32
-    )
+    X = np.array([[-10.0, -10.0], [9.0, 10.0], [10.0, 9.0], [10.0, 10.0]], dtype=np.float32)
     query_pt = X[0, :]
     n_dimensions = X.shape[1]
     offset = n_dimensions + 2

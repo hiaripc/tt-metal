@@ -39,7 +39,7 @@ __global__ void index_max_cuda_kernel(
     atomicMax(&max_buffer[A_block_idx * 32 + idx / num_block], (int)(index_vals_pt[idx] * 1000));
   }
   __syncthreads();
-  
+
   float *max_vals_pt = &max_vals[batch_idx * A_num_block * 32];
   for (int i = 0; i < A_num_block * 32; i = i + num_thread) {
     int idx = i + thread_idx;
@@ -47,7 +47,7 @@ __global__ void index_max_cuda_kernel(
       max_vals_pt[idx] = (float)max_buffer[idx] / 1000.;
     }
   }
-  
+
   float *max_vals_scatter_pt = &max_vals_scatter[batch_idx * num_block * 32];
   for (int idx_start = 0; idx_start < 32 * num_block; idx_start = idx_start + num_thread) {
     int idx = idx_start + thread_idx;

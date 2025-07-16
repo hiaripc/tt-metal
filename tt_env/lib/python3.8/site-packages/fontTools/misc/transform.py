@@ -470,9 +470,7 @@ class DecomposedTransform:
             skewX = math.atan((a * c + b * d) / (r * r))
         elif c != 0 or d != 0:
             s = math.sqrt(c * c + d * d)
-            rotation = math.pi / 2 - (
-                math.acos(-c / s) if d >= 0 else -math.acos(c / s)
-            )
+            rotation = math.pi / 2 - (math.acos(-c / s) if d >= 0 else -math.acos(c / s))
             scaleX, scaleY = (delta / s, s)
         else:
             # a = b = c = d = 0
@@ -499,9 +497,7 @@ class DecomposedTransform:
                 >>>
         """
         t = Transform()
-        t = t.translate(
-            self.translateX + self.tCenterX, self.translateY + self.tCenterY
-        )
+        t = t.translate(self.translateX + self.tCenterX, self.translateY + self.tCenterY)
         t = t.rotate(math.radians(self.rotation))
         t = t.scale(self.scaleX, self.scaleY)
         t = t.skew(math.radians(self.skewX), math.radians(self.skewY))

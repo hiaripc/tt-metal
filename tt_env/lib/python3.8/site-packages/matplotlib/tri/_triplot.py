@@ -46,8 +46,7 @@ def triplot(ax, *args, **kwargs):
 
     # Insert plot format string into a copy of kwargs (kwargs values prevail).
     kw = cbook.normalize_kwargs(kwargs, mlines.Line2D)
-    for key, val in zip(('linestyle', 'marker', 'color'),
-                        (linestyle, marker, color)):
+    for key, val in zip(("linestyle", "marker", "color"), (linestyle, marker, color)):
         if val is not None:
             kw.setdefault(key, val)
 
@@ -57,28 +56,27 @@ def triplot(ax, *args, **kwargs):
     # Note 2: We insert nan values in the flattened edges arrays rather than
     #         plotting directly (triang.x[edges].T, triang.y[edges].T)
     #         as it considerably speeds-up code execution.
-    linestyle = kw['linestyle']
+    linestyle = kw["linestyle"]
     kw_lines = {
         **kw,
-        'marker': 'None',  # No marker to draw.
-        'zorder': kw.get('zorder', 1),  # Path default zorder is used.
+        "marker": "None",  # No marker to draw.
+        "zorder": kw.get("zorder", 1),  # Path default zorder is used.
     }
-    if linestyle not in [None, 'None', '', ' ']:
+    if linestyle not in [None, "None", "", " "]:
         tri_lines_x = np.insert(x[edges], 2, np.nan, axis=1)
         tri_lines_y = np.insert(y[edges], 2, np.nan, axis=1)
-        tri_lines = ax.plot(tri_lines_x.ravel(), tri_lines_y.ravel(),
-                            **kw_lines)
+        tri_lines = ax.plot(tri_lines_x.ravel(), tri_lines_y.ravel(), **kw_lines)
     else:
         tri_lines = ax.plot([], [], **kw_lines)
 
     # Draw markers separately.
-    marker = kw['marker']
+    marker = kw["marker"]
     kw_markers = {
         **kw,
-        'linestyle': 'None',  # No line to draw.
+        "linestyle": "None",  # No line to draw.
     }
-    kw_markers.pop('label', None)
-    if marker not in [None, 'None', '', ' ']:
+    kw_markers.pop("label", None)
+    if marker not in [None, "None", "", " "]:
         tri_markers = ax.plot(x, y, **kw_markers)
     else:
         tri_markers = ax.plot([], [], **kw_markers)

@@ -96,9 +96,7 @@ class TransformPointPen(FilterPointPen):
         self._transformPoint = transformation.transformPoint
 
     def addPoint(self, pt, segmentType=None, smooth=False, name=None, **kwargs):
-        self._outPen.addPoint(
-            self._transformPoint(pt), segmentType, smooth, name, **kwargs
-        )
+        self._outPen.addPoint(self._transformPoint(pt), segmentType, smooth, name, **kwargs)
 
     def addComponent(self, baseGlyphName, transformation, **kwargs):
         transformation = self._transformation.transform(transformation)

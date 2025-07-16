@@ -25,9 +25,7 @@ from mdit_py_plugins.wordcount import wordcount_plugin
 from myst_parser.config.main import MdParserConfig
 
 
-def create_md_parser(
-    config: MdParserConfig, renderer: Callable[[MarkdownIt], RendererProtocol]
-) -> MarkdownIt:
+def create_md_parser(config: MdParserConfig, renderer: Callable[[MarkdownIt], RendererProtocol]) -> MarkdownIt:
     """Return a Markdown parser with the required MyST configuration."""
 
     # TODO warn if linkify required and linkify-it-py not installed
@@ -35,9 +33,7 @@ def create_md_parser(
 
     if config.commonmark_only:
         # see https://spec.commonmark.org/
-        md = MarkdownIt("commonmark", renderer_cls=renderer).use(
-            wordcount_plugin, per_minute=config.words_per_minute
-        )
+        md = MarkdownIt("commonmark", renderer_cls=renderer).use(wordcount_plugin, per_minute=config.words_per_minute)
         md.options.update({"myst_config": config})
         return md
 

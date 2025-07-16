@@ -47,9 +47,7 @@ class table__h_d_m_x(DefaultTable.DefaultTable):
         for i in range(self.numRecords):
             ppem = byteord(data[0])
             maxSize = byteord(data[1])
-            widths = _GlyphnamedList(
-                ttFont.getReverseGlyphMap(), array.array("B", data[2 : 2 + numGlyphs])
-            )
+            widths = _GlyphnamedList(ttFont.getReverseGlyphMap(), array.array("B", data[2 : 2 + numGlyphs]))
             self.hdmx[ppem] = widths
             data = data[self.recordSize :]
         assert len(data) == 0, "too much hdmx data"

@@ -124,9 +124,7 @@ class DefusedExpatParser(ExpatParser):
     def defused_start_doctype_decl(self, name, sysid, pubid, has_internal_subset):
         raise DTDForbidden(name, sysid, pubid)
 
-    def defused_entity_decl(
-        self, name, is_parameter_entity, value, base, sysid, pubid, notation_name
-    ):
+    def defused_entity_decl(self, name, is_parameter_entity, value, base, sysid, pubid, notation_name):
         raise EntitiesForbidden(name, value, base, sysid, pubid, notation_name)
 
     def defused_unparsed_entity_decl(self, name, base, sysid, pubid, notation_name):

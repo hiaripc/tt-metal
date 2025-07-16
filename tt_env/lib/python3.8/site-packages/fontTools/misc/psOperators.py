@@ -455,9 +455,7 @@ class PSOperators(object):
         obj1 = self.pop()
         if obj1.value == "Encoding":
             pass
-        obj2 = self.pop(
-            "arraytype", "dicttype", "stringtype", "proceduretype", "fonttype"
-        )
+        obj2 = self.pop("arraytype", "dicttype", "stringtype", "proceduretype", "fonttype")
         tp = obj2.type
         if tp in ("arraytype", "proceduretype"):
             self.push(obj2.value[obj1.value])

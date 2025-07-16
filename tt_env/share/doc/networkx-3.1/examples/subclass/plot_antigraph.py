@@ -54,9 +54,7 @@ class AntiGraph(Graph):
            The adjacency dictionary for nodes connected to n.
 
         """
-        return {
-            node: self.all_edge_dict for node in set(self.adj) - set(self.adj[n]) - {n}
-        }
+        return {node: self.all_edge_dict for node in set(self.adj) - set(self.adj[n]) - {n}}
 
     def neighbors(self, n):
         """Return an iterator over all neighbors of node n in the
@@ -106,10 +104,7 @@ class AntiGraph(Graph):
             nodes_nbrs = (
                 (
                     n,
-                    {
-                        v: self.all_edge_dict
-                        for v in set(self.adj) - set(self.adj[n]) - {n}
-                    },
+                    {v: self.all_edge_dict for v in set(self.adj) - set(self.adj[n]) - {n}},
                 )
                 for n in self.nodes()
             )
@@ -120,10 +115,7 @@ class AntiGraph(Graph):
             nodes_nbrs = (
                 (
                     n,
-                    {
-                        v: self.all_edge_dict
-                        for v in set(self.nodes()) - set(self.adj[n]) - {n}
-                    },
+                    {v: self.all_edge_dict for v in set(self.nodes()) - set(self.adj[n]) - {n}},
                 )
                 for n in self.nbunch_iter(nbunch)
             )
@@ -132,10 +124,7 @@ class AntiGraph(Graph):
             return ((n, len(nbrs)) for n, nbrs in nodes_nbrs)
         else:
             # AntiGraph is a ThinGraph so all edges have weight 1
-            return (
-                (n, sum((nbrs[nbr].get(weight, 1)) for nbr in nbrs))
-                for n, nbrs in nodes_nbrs
-            )
+            return ((n, sum((nbrs[nbr].get(weight, 1)) for nbr in nbrs)) for n, nbrs in nodes_nbrs)
 
     def adjacency(self):
         """Return an iterator of (node, adjacency set) tuples for all nodes

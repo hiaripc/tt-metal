@@ -15,9 +15,7 @@ def _is_wrapped_exception(obj: Any) -> bool:
         return False
     if len(obj) != 2:
         return False
-    return isinstance(obj[0], BaseException) and isinstance(
-        obj[1], tb.StackSummary
-    )
+    return isinstance(obj[0], BaseException) and isinstance(obj[1], tb.StackSummary)
 
 
 class CheckpointException(BaseException):

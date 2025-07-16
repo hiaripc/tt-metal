@@ -119,7 +119,7 @@ matmul_shapes_bfloat4_b = [
     # (16384, 16384, 16384, False, False, 4, 4, 4),
 ]
 
-# conf, dtype, math_fidelity, use_trace 
+# conf, dtype, math_fidelity, use_trace
 matmul_configs = [
     ("f16_m2", ttnn.bfloat16, ttnn.MathFidelity.HiFi2, False),
     ("f16_m4", ttnn.bfloat16, ttnn.MathFidelity.HiFi4, False),
@@ -160,7 +160,7 @@ def  test_host_perf(
     HiFi3_cycle = LoFi_cycle * 3
     HiFi4_cycle = LoFi_cycle * 4
 
-    data_info = dict.fromkeys([   
+    data_info = dict.fromkeys([
                 "conf",
                 "m",
                 "grid_size",
@@ -237,7 +237,7 @@ def  test_host_perf(
                     )
                 else:
                     in0_memory_config = ttnn.DRAM_MEMORY_CONFIG
-                
+
                 profiler.start(f"transfer_in0")
                 in0_t = ttnn.from_torch(
                     in0,
@@ -249,7 +249,7 @@ def  test_host_perf(
                 )
                 in0_t = ttnn.tilize(in0_t)
                 profiler.end(f"offload_in0")
-                
+
                 data_info['offload_in0'] = profiler.get("offload_in0")
 
                 profiler.start(f"transfer_in1")
@@ -324,8 +324,8 @@ def  test_host_perf(
                 profiler.end(f"run")
 
                 ttnn.DumpDeviceProfiler(device)
-                
-                data_info['first_run_time'] = profiler.get("first_run_time") 
+
+                data_info['first_run_time'] = profiler.get("first_run_time")
                 data_info['inference_time_avg'] = profiler.get("run") / num_measurement_iterations
                 data_info['tflops'] = 2 * m * k * n / 1e12 / data_info['inference_time_avg']
 
@@ -378,7 +378,7 @@ def test_first_run(
     logger.info(f"\n\nStarting test...")
     with open(FILE_NAME_FIRST_RUN, mode="w", newline="") as file:
         writer = csv.writer(file)
-        writer.writerow([   
+        writer.writerow([
                 "conf",
                 "m",
                 "use_trace",
@@ -398,7 +398,7 @@ def test_first_run(
                 "transfer_time_in1",
             ]
         )
-        
+
         ttnn.disable_and_clear_program_cache(device)
         # ttnn.close_device(device)
 
@@ -430,12 +430,12 @@ def test_first_run(
                 second_run_time_acc = 0
                 offload_in0_acc = 0
                 offload_in1_acc = 0
-                
+
                 for it in range(num_measurement_iterations):
                     # device = ttnn.open_device(device_id=0)
                     ttnn.disable_and_clear_program_cache(device)
                     # ttnn.enable_program_cache(device)
-  
+
                     in0 = torch.ones(in0_shape).bfloat16()
                     in1 = torch.randn(in1_shape).bfloat16()
 
@@ -458,7 +458,7 @@ def test_first_run(
                         )
                     else:
                         in0_memory_config = ttnn.DRAM_MEMORY_CONFIG
-                    
+
                     profiler.start(f"offload_in0")
                     in0_t = ttnn.from_torch(
                         in0,
@@ -469,7 +469,7 @@ def test_first_run(
                         memory_config=in0_memory_config,
                     )
                     profiler.end(f"offload_in0")
-                    
+
 
                     profiler.start(f"offload_in1")
                     in1_t = ttnn.from_torch(
@@ -542,7 +542,7 @@ def test_first_run(
                     profiler.end(f"second_run_time")
 
                     ttnn.DumpDeviceProfiler(device)
-                    
+
                     output_tensor = ttnn.to_torch(output_t)
                     ttnn.deallocate(output_t)
                     ttnn.deallocate(in0_t)
@@ -560,22 +560,22 @@ def test_first_run(
                     first_run_time_acc += first_run_time
                     second_run_time_acc += second_run_time
                     offload_in0_acc += offload_in0
-                    offload_in1_acc += offload_in1 
-                    
+                    offload_in1_acc += offload_in1
+
                     # ttnn.
                     # ttnn.enable_program_cache(device)
                     # ttnn.close_device(device)
 
-                # Retrive data and write 
+                # Retrive data and write
                 kernel_config_time_acc /= num_measurement_iterations
                 first_run_time_acc /= num_measurement_iterations
                 second_run_time_acc /= num_measurement_iterations
                 offload_in0_acc /= num_measurement_iterations
                 offload_in1_acc /= num_measurement_iterations
                 compile_time = first_run_time_acc - second_run_time_acc
-                
-                
-                writer.writerow([   
+
+
+                writer.writerow([
                         conf,
                         m,
                         f"{True}" if use_trace else f"{False}",
@@ -606,7 +606,7 @@ def test_offloading(
     logger.info(f"\n\nStarting test...")
     with open(FILE_NAME_OFFLOADING, mode="w", newline="") as file:
         writer = csv.writer(file)
-        writer.writerow([   
+        writer.writerow([
                 "conf",
                 "m",
                 "grid_size",
@@ -622,7 +622,7 @@ def test_offloading(
                 "to_layout",
                 "to_device",
         ])
-        
+
         for conf, dtype, math_fidelity, use_trace in matmul_configs:
             logger.info(f"\n\nRunning conf {conf} ==> Type: {dtype}, MF: {math_fidelity}, Trace: {use_trace}\n\n")
             if dtype == ttnn.bfloat16:
@@ -668,7 +668,7 @@ def test_offloading(
                     )
                 else:
                     in0_memory_config = ttnn.DRAM_MEMORY_CONFIG
-                
+
                 torch_creation_acc = 0
                 ttnn_creation_acc = 0
                 to_layout_acc = 0
@@ -682,7 +682,7 @@ def test_offloading(
 
                     profiler.start(f"ttnn_tensor_creation")
                     in_layout_t = ttnn.ones(
-                        in0_shape, 
+                        in0_shape,
                         dtype=ttnn.bfloat16,
                         layout=ttnn.ROW_MAJOR_LAYOUT
                     )
@@ -701,8 +701,8 @@ def test_offloading(
 
                     profiler.start(f"to_device")
                     in_layout_t = ttnn.to_device(
-                        in_layout_t, 
-                        device=device, 
+                        in_layout_t,
+                        device=device,
                         memory_config=in0_memory_config)
                     profiler.end(f"to_device")
                     to_device = profiler.get("to_device")
@@ -714,8 +714,8 @@ def test_offloading(
                 ttnn_creation_acc = ttnn_creation_acc/num_measurement_iterations
                 to_layout_acc = to_layout_acc/num_measurement_iterations
                 to_device_acc = to_device_acc/num_measurement_iterations
-                
-                writer.writerow([   
+
+                writer.writerow([
                         conf,
                         m,
                         grid_size,

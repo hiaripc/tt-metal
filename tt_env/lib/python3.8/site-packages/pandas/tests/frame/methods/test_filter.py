@@ -39,9 +39,7 @@ class TestDataFrameFilter:
         # regex with ints in column names
         # from PR #10384
         df = DataFrame(0.0, index=[0, 1, 2], columns=["A1", 1, "B", 2, "C"])
-        expected = DataFrame(
-            0.0, index=[0, 1, 2], columns=pd.Index([1, 2], dtype=object)
-        )
+        expected = DataFrame(0.0, index=[0, 1, 2], columns=pd.Index([1, 2], dtype=object))
         filtered = df.filter(regex="^[0-9]+$")
         tm.assert_frame_equal(filtered, expected)
 
@@ -89,9 +87,7 @@ class TestDataFrameFilter:
         assert "AA" in filtered
 
         # doesn't have to be at beginning
-        df = DataFrame(
-            {"aBBa": [1, 2], "BBaBB": [1, 2], "aCCa": [1, 2], "aCCaBB": [1, 2]}
-        )
+        df = DataFrame({"aBBa": [1, 2], "BBaBB": [1, 2], "aCCa": [1, 2], "aCCaBB": [1, 2]})
 
         result = df.filter(regex="BB")
         exp = df[[x for x in df.columns if "BB" in x]]

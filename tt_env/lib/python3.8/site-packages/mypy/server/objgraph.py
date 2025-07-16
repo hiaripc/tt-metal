@@ -89,9 +89,7 @@ def get_reachable_graph(root: object) -> tuple[dict[int, object], dict[int, tupl
     return seen, parents
 
 
-def get_path(
-    o: object, seen: dict[int, object], parents: dict[int, tuple[int, object]]
-) -> list[tuple[object, object]]:
+def get_path(o: object, seen: dict[int, object], parents: dict[int, tuple[int, object]]) -> list[tuple[object, object]]:
     path = []
     while id(o) in parents:
         pid, attr = parents[id(o)]

@@ -66,9 +66,7 @@ class TarFileSystem(AbstractArchiveFileSystem):
                     name = fo.info()["name"]
 
             except Exception as ex:
-                logger.warning(
-                    f"Unable to determine file name, not inferring compression: {ex}"
-                )
+                logger.warning(f"Unable to determine file name, not inferring compression: {ex}")
 
             if name is not None:
                 compression = infer_compression(name)

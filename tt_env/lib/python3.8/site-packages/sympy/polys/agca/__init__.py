@@ -2,4 +2,4 @@
 
 from .homomorphisms import homomorphism
 
-__all__ = ['homomorphism']
+__all__ = ["homomorphism"]

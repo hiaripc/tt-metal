@@ -10,11 +10,11 @@ import numpy as np
 
 
 # Reduce this number if matrices are too big for large graphs
-UNREACHABLE_NODE_DISTANCE = 510 
+UNREACHABLE_NODE_DISTANCE = 510
 
 def floyd_warshall(adjacency_matrix):
     """
-    Applies the Floyd-Warshall algorithm to the adjacency matrix, to compute the 
+    Applies the Floyd-Warshall algorithm to the adjacency matrix, to compute the
     shortest paths distance between all nodes, up to UNREACHABLE_NODE_DISTANCE.
     """
     (nrows, ncols) = adjacency_matrix.shape

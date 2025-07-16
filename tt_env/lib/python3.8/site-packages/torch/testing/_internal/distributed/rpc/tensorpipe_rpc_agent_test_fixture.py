@@ -10,16 +10,12 @@ from torch.testing._internal.common_distributed import (
 class TensorPipeRpcAgentTestFixture(RpcAgentTestFixture):
     @property
     def rpc_backend(self):
-        return rpc.backend_registry.BackendType[
-            "TENSORPIPE"
-        ]
+        return rpc.backend_registry.BackendType["TENSORPIPE"]
 
     @property
     def rpc_backend_options(self):
         return rpc.backend_registry.construct_rpc_backend_options(
-            self.rpc_backend,
-            init_method=self.init_method,
-            _transports=tp_transports()
+            self.rpc_backend, init_method=self.init_method, _transports=tp_transports()
         )
 
     def get_shutdown_error_regex(self):

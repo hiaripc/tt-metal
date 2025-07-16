@@ -41,9 +41,7 @@ WriteConsoleW = kernel32.WriteConsoleW
 GetConsoleMode = kernel32.GetConsoleMode
 GetLastError = kernel32.GetLastError
 GetCommandLineW = WINFUNCTYPE(LPWSTR)(("GetCommandLineW", windll.kernel32))
-CommandLineToArgvW = WINFUNCTYPE(POINTER(LPWSTR), LPCWSTR, POINTER(c_int))(
-    ("CommandLineToArgvW", windll.shell32)
-)
+CommandLineToArgvW = WINFUNCTYPE(POINTER(LPWSTR), LPCWSTR, POINTER(c_int))(("CommandLineToArgvW", windll.shell32))
 LocalFree = WINFUNCTYPE(c_void_p, c_void_p)(("LocalFree", windll.kernel32))
 
 STDIN_HANDLE = GetStdHandle(-10)
@@ -120,9 +118,7 @@ class _WindowsConsoleReader(_WindowsConsoleRawIOBase):
         if not bytes_to_be_read:
             return 0
         elif bytes_to_be_read % 2:
-            raise ValueError(
-                "cannot read odd number of bytes from UTF-16-LE encoded console"
-            )
+            raise ValueError("cannot read odd number of bytes from UTF-16-LE encoded console")
 
         buffer = get_buffer(b, writable=True)
         code_units_to_be_read = bytes_to_be_read // 2
@@ -263,12 +259,7 @@ def _is_console(f: t.TextIO) -> bool:
 def _get_windows_console_stream(
     f: t.TextIO, encoding: t.Optional[str], errors: t.Optional[str]
 ) -> t.Optional[t.TextIO]:
-    if (
-        get_buffer is not None
-        and encoding in {"utf-16-le", None}
-        and errors in {"strict", None}
-        and _is_console(f)
-    ):
+    if get_buffer is not None and encoding in {"utf-16-le", None} and errors in {"strict", None} and _is_console(f):
         func = _stream_factories.get(f.fileno())
         if func is not None:
             b = getattr(f, "buffer", None)

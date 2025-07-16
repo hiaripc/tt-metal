@@ -177,9 +177,7 @@ class RecordingPointPen(AbstractPointPen):
     def endPath(self):
         self.value.append(("endPath", (), {}))
 
-    def addPoint(
-        self, pt, segmentType=None, smooth=False, name=None, identifier=None, **kwargs
-    ):
+    def addPoint(self, pt, segmentType=None, smooth=False, name=None, identifier=None, **kwargs):
         if identifier is not None:
             kwargs["identifier"] = identifier
         self.value.append(("addPoint", (pt, segmentType, smooth, name), kwargs))
@@ -189,14 +187,10 @@ class RecordingPointPen(AbstractPointPen):
             kwargs["identifier"] = identifier
         self.value.append(("addComponent", (baseGlyphName, transformation), kwargs))
 
-    def addVarComponent(
-        self, baseGlyphName, transformation, location, identifier=None, **kwargs
-    ):
+    def addVarComponent(self, baseGlyphName, transformation, location, identifier=None, **kwargs):
         if identifier is not None:
             kwargs["identifier"] = identifier
-        self.value.append(
-            ("addVarComponent", (baseGlyphName, transformation, location), kwargs)
-        )
+        self.value.append(("addVarComponent", (baseGlyphName, transformation, location), kwargs))
 
     def replay(self, pointPen):
         for operator, args, kwargs in self.value:
@@ -308,19 +302,14 @@ def lerpRecordings(recording1, recording2, factor=0.5):
     Returns a generator with the new recording.
     """
     if len(recording1) != len(recording2):
-        raise ValueError(
-            "Mismatched lengths: %d and %d" % (len(recording1), len(recording2))
-        )
+        raise ValueError("Mismatched lengths: %d and %d" % (len(recording1), len(recording2)))
     for (op1, args1), (op2, args2) in zip(recording1, recording2):
         if op1 != op2:
             raise ValueError("Mismatched operations: %s, %s" % (op1, op2))
         if op1 == "addComponent":
             raise ValueError("Cannot interpolate components")
         else:
-            mid_args = [
-                (x1 + (x2 - x1) * factor, y1 + (y2 - y1) * factor)
-                for (x1, y1), (x2, y2) in zip(args1, args2)
-            ]
+            mid_args = [(x1 + (x2 - x1) * factor, y1 + (y2 - y1) * factor) for (x1, y1), (x2, y2) in zip(args1, args2)]
         yield (op1, mid_args)
 
 

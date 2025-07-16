@@ -50,9 +50,7 @@ class MockInliner:
 
         self.rfc_url = "rfc%d.html"
 
-    def problematic(
-        self, text: str, rawsource: str, message: nodes.system_message
-    ) -> nodes.problematic:
+    def problematic(self, text: str, rawsource: str, message: nodes.system_message) -> nodes.problematic:
         """Record a system message from parsing."""
         msgid = self.document.set_id(message, self.parent)
         problematic = nodes.problematic(rawsource, text, refid=msgid)
@@ -190,9 +188,7 @@ class MockState:
         reference = "".join(["".join(line.split()) for line in block])
         return "refuri", unescape(reference)
 
-    def inline_text(
-        self, text: str, lineno: int
-    ) -> tuple[list[nodes.Element], list[nodes.Element]]:
+    def inline_text(self, text: str, lineno: int) -> tuple[list[nodes.Element], list[nodes.Element]]:
         """Parse text with only inline rules.
 
         :returns: (list of nodes, list of messages)
@@ -402,21 +398,15 @@ class MockIncludeDirective:
         try:
             file_content = path.read_text(encoding=encoding, errors=error_handler)
         except FileNotFoundError as error:
-            raise DirectiveError(
-                4, f'Directive "{self.name}": file not found: {str(path)!r}'
-            ) from error
+            raise DirectiveError(4, f'Directive "{self.name}": file not found: {str(path)!r}') from error
         except Exception as error:
-            raise DirectiveError(
-                4, f'Directive "{self.name}": error reading file: {path}\n{error}.'
-            ) from error
+            raise DirectiveError(4, f'Directive "{self.name}": error reading file: {path}\n{error}.') from error
 
         if self.renderer.sphinx_env is not None:
             # Emit the "include-read" event
             # see: https://github.com/sphinx-doc/sphinx/commit/ff18318613db56d0000db47e5c8f0140556cef0c
             arg = [file_content]
-            relative_path = Path(
-                os.path.relpath(path, start=self.renderer.sphinx_env.srcdir)
-            )
+            relative_path = Path(os.path.relpath(path, start=self.renderer.sphinx_env.srcdir))
             parent_docname = Path(self.renderer.document["source"]).stem
             self.renderer.sphinx_env.app.events.emit(
                 "include-read",
@@ -448,18 +438,14 @@ class MockIncludeDirective:
                 file_content = file_content[:split_index]
 
         if "literal" in self.options:
-            literal_block = nodes.literal_block(
-                file_content, source=str(path), classes=self.options.get("class", [])
-            )
+            literal_block = nodes.literal_block(file_content, source=str(path), classes=self.options.get("class", []))
             literal_block.line = 1  # TODO don;t think this should be 1?
             self.add_name(literal_block)
             if "number-lines" in self.options:
                 try:
                     startline = int(self.options["number-lines"] or 1)
                 except ValueError as err:
-                    raise DirectiveError(
-                        3, ":number-lines: with non-integer start value"
-                    ) from err
+                    raise DirectiveError(3, ":number-lines: with non-integer start value") from err
                 endline = startline + len(file_content.splitlines())
                 if file_content.endswith("\n"):
                     file_content = file_content[:-1]
@@ -499,9 +485,7 @@ class MockIncludeDirective:
             self.renderer.reporter.source = str(path)
             self.renderer.reporter.get_source_and_line = lambda li: (str(path), li)
             if "relative-images" in self.options:
-                self.renderer.md_env["relative-images"] = os.path.relpath(
-                    path.parent, source_dir
-                )
+                self.renderer.md_env["relative-images"] = os.path.relpath(path.parent, source_dir)
             if "relative-docs" in self.options:
                 self.renderer.md_env["relative-docs"] = (
                     self.options["relative-docs"],

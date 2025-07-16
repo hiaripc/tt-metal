@@ -166,10 +166,7 @@ class TestLXMLXMLTreeBuilder(XMLTreeBuilderSmokeTest):
         assert soup.select_one("prefix|tag3") is None
 
         # But you can always explicitly specify a namespace dictionary.
-        assert (
-            soup.select_one("prefix|tag3", namespaces=soup.subtag._namespaces).name
-            == "tag3"
-        )
+        assert soup.select_one("prefix|tag3", namespaces=soup.subtag._namespaces).name == "tag3"
 
         # And a Tag (as opposed to the BeautifulSoup object) will
         # have a set of default namespaces scoped to that Tag.

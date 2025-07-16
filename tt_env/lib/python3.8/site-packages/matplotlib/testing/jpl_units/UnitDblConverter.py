@@ -5,7 +5,7 @@ import numpy as np
 from matplotlib import cbook, units
 import matplotlib.projections.polar as polar
 
-__all__ = ['UnitDblConverter']
+__all__ = ["UnitDblConverter"]
 
 
 # A special function for use with the matplotlib FuncFormatter class
@@ -17,25 +17,26 @@ def rad_fn(x, pos=None):
     if n == 0:
         return str(x)
     elif n == 1:
-        return r'$\pi/2$'
+        return r"$\pi/2$"
     elif n == 2:
-        return r'$\pi$'
+        return r"$\pi$"
     elif n % 2 == 0:
-        return fr'${n//2}\pi$'
+        return rf"${n//2}\pi$"
     else:
-        return fr'${n}\pi/2$'
+        return rf"${n}\pi/2$"
 
 
 class UnitDblConverter(units.ConversionInterface):
     """
     Provides Matplotlib conversion functionality for the Monte UnitDbl class.
     """
+
     # default for plotting
     defaults = {
-       "distance": 'km',
-       "angle": 'deg',
-       "time": 'sec',
-       }
+        "distance": "km",
+        "angle": "deg",
+        "time": "sec",
+    }
 
     @staticmethod
     def axisinfo(unit, axis):

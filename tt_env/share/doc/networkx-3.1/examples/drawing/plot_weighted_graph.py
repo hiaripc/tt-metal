@@ -27,9 +27,7 @@ nx.draw_networkx_nodes(G, pos, node_size=700)
 
 # edges
 nx.draw_networkx_edges(G, pos, edgelist=elarge, width=6)
-nx.draw_networkx_edges(
-    G, pos, edgelist=esmall, width=6, alpha=0.5, edge_color="b", style="dashed"
-)
+nx.draw_networkx_edges(G, pos, edgelist=esmall, width=6, alpha=0.5, edge_color="b", style="dashed")
 
 # node labels
 nx.draw_networkx_labels(G, pos, font_size=20, font_family="sans-serif")

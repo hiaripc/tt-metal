@@ -77,12 +77,13 @@ from tt_metal.tools.profiler.common import PROFILER_LOGS_DIR, PROFILER_DEVICE_SI
 profiler_log_path = PROFILER_LOGS_DIR / PROFILER_DEVICE_SIDE_LOG
 
 
-def   get_device_freq():
+def get_device_freq():
     setup = device_post_proc_config.default_setup()
     setup.deviceInputLog = profiler_log_path
     deviceData = import_log_run_stats(setup)
     freq = deviceData["deviceInfo"]["freq"]
     return freq
+
 
 # m, k, n, in0_sharded, out_sharded, in0_block_w_div, num_out_blocks_h, num_out_blocks_w
 matmul_shapes_bfloat16 = [
@@ -118,13 +119,13 @@ matmul_shapes_bfloat4_b = [
     # (16384, 16384, 16384, False, False, 4, 4, 4),
 ]
 
-# conf, dtype, math_fidelity, use_trace 
+# conf, dtype, math_fidelity, use_trace
 matmul_configs = [
     ("f16_m4", ttnn.bfloat16, ttnn.MathFidelity.HiFi4, False),
     ("f16_m2", ttnn.bfloat16, ttnn.MathFidelity.HiFi2, False),
     ("f8b_m2", ttnn.bfloat8_b, ttnn.MathFidelity.HiFi2, False),
     ("f8b_m0", ttnn.bfloat8_b, ttnn.MathFidelity.LoFi, False),
-    ("f4b_m0", ttnn.bfloat4_b, ttnn.MathFidelity.LoFi, False)
+    ("f4b_m0", ttnn.bfloat4_b, ttnn.MathFidelity.LoFi, False),
 ]
 
 """
@@ -136,7 +137,6 @@ matmul_configs = [
 """
 
 
-
 # @pytest.mark.skip(reason="WH didt hang, need to skip CI and run locally only")
 @pytest.mark.parametrize("device_params", [{"l1_small_size": 24576, "trace_region_size": 3855488}], indirect=True)
 @pytest.mark.parametrize("grid_size", [GRID_SIZE])
@@ -144,7 +144,7 @@ matmul_configs = [
 @pytest.mark.parametrize("tile_w", [32])
 @pytest.mark.parametrize("num_warmup_iterations", [WARMUP_ITERS])
 @pytest.mark.parametrize("num_measurement_iterations", [MEASURE_ITERS])
-def  test_host_perf(
+def test_host_perf(
     device,
     grid_size,
     tile_h,
@@ -153,16 +153,15 @@ def  test_host_perf(
     num_measurement_iterations,
     use_program_cache,
 ):
-
     LoFi_cycle = 16
     HiFi2_cycle = LoFi_cycle * 2
     HiFi3_cycle = LoFi_cycle * 3
     HiFi4_cycle = LoFi_cycle * 4
 
-
     with open(FILE_NAME_HOST_PERF, mode="w", newline="") as file:
         writer = csv.writer(file)
-        writer.writerow([   
+        writer.writerow(
+            [
                 "conf",
                 "m",
                 "use_trace",
@@ -236,7 +235,7 @@ def  test_host_perf(
                     )
                 else:
                     in0_memory_config = ttnn.DRAM_MEMORY_CONFIG
-                
+
                 profiler.start(f"offload_in0")
                 in0_t = ttnn.from_torch(
                     in0,
@@ -247,7 +246,7 @@ def  test_host_perf(
                     memory_config=in0_memory_config,
                 )
                 profiler.end(f"offload_in0")
-                
+
                 offload_in0 = profiler.get("offload_in0")
 
                 profiler.start(f"offload_in1")
@@ -305,7 +304,6 @@ def  test_host_perf(
                 )
                 profiler.end(f"first_run_time")
 
-
                 for iter in range(0, num_warmup_iterations):
                     output_t = ttnn.matmul(
                         in0_t,
@@ -354,8 +352,8 @@ def  test_host_perf(
                     profiler.end(f"run")
 
                 ttnn.DumpDeviceProfiler(device)
-                
-                first_run_time = profiler.get("first_run_time") 
+
+                first_run_time = profiler.get("first_run_time")
                 trace_time = profiler.get("trace") if use_trace else 0
 
                 inference_time_avg = profiler.get("run") / num_measurement_iterations
@@ -379,16 +377,19 @@ def  test_host_perf(
                 utilization_full_grid_percentage = f"{utilization_full_grid * 100:.2f}%"
                 utilization_user_grid_percentage = f"{utilization_user_grid * 100:.2f}%"
                 logger.info(
-                    (f"M={m} ==> \n" 
-                    f"inference time (avg): {inference_time_avg}, trace_time: {trace_time},  transfer_time_in0: {offload_in0}, transfer_time_in1_ {offload_in1}, first_run_time {first_run_time}" 
-                    f"tflops (avg): {tflops}, utilization (vs user grid): {utilization_user_grid_percentage}, utilization (vs 8x11 grid): {utilization_full_grid_percentage}")
+                    (
+                        f"M={m} ==> \n"
+                        f"inference time (avg): {inference_time_avg}, trace_time: {trace_time},  transfer_time_in0: {offload_in0}, transfer_time_in1_ {offload_in1}, first_run_time {first_run_time}"
+                        f"tflops (avg): {tflops}, utilization (vs user grid): {utilization_user_grid_percentage}, utilization (vs 8x11 grid): {utilization_full_grid_percentage}"
+                    )
                 )
 
                 output_tensor = ttnn.to_torch(output_t)
                 ttnn.deallocate(output_t)
                 ttnn.deallocate(in0_t)
                 ttnn.deallocate(in1_t)
-                writer.writerow([   
+                writer.writerow(
+                    [
                         conf,
                         m,
                         k,
@@ -414,7 +415,6 @@ def  test_host_perf(
                 )
 
 
-
 # @pytest.mark.skip(reason="WH didt hang, need to skip CI and run locally only")
 # @pytest.mark.parametrize("device_params", [{"l1_small_size": 24576, "trace_region_size": 3855488}], indirect=True)
 @pytest.mark.parametrize("grid_size", [GRID_SIZE])
@@ -423,19 +423,13 @@ def  test_host_perf(
 @pytest.mark.parametrize("num_warmup_iterations", [WARMUP_ITERS])
 @pytest.mark.parametrize("num_measurement_iterations", [MEASURE_ITERS])
 def test_first_run(
-    device,
-    grid_size,
-    tile_h,
-    tile_w,
-    num_warmup_iterations,
-    num_measurement_iterations,
-    use_program_cache
+    device, grid_size, tile_h, tile_w, num_warmup_iterations, num_measurement_iterations, use_program_cache
 ):
-
     logger.info(f"\n\nStarting test...")
     with open(FILE_NAME_FIRST_RUN, mode="w", newline="") as file:
         writer = csv.writer(file)
-        writer.writerow([   
+        writer.writerow(
+            [
                 "conf",
                 "m",
                 "use_trace",
@@ -455,7 +449,7 @@ def test_first_run(
                 "transfer_time_in1",
             ]
         )
-        
+
         ttnn.disable_and_clear_program_cache(device)
         # ttnn.close_device(device)
 
@@ -483,7 +477,7 @@ def test_first_run(
                 logger.info(f"\nM:{m} out_subblock_h: {out_subblock_h}, out_subblock_w: {out_subblock_w}")
 
                 if in0_sharded:
-                        in0_storage_type = "L1"
+                    in0_storage_type = "L1"
                 else:
                     in0_storage_type = "DRAM"
                 in1_storage_type = "DRAM"
@@ -508,12 +502,10 @@ def test_first_run(
                 offload_in0_acc = 0
                 offload_in1_acc = 0
 
-                
                 for it in range(num_measurement_iterations):
-  
                     in0 = torch.ones(in0_shape).bfloat16()
-                    in1 = torch.randn(in1_shape).bfloat16()                    
-                    
+                    in1 = torch.randn(in1_shape).bfloat16()
+
                     profiler.start(f"offload_in0")
                     in0_t = ttnn.from_torch(
                         in0,
@@ -524,7 +516,6 @@ def test_first_run(
                         memory_config=in0_memory_config,
                     )
                     profiler.end(f"offload_in0")
-                    
 
                     profiler.start(f"offload_in1")
                     in1_t = ttnn.from_torch(
@@ -582,7 +573,6 @@ def test_first_run(
                     ttnn.synchronize_device(device)
                     profiler.end(f"first_run_time")
 
-
                     profiler.start(f"second_run_time")
                     output_t = ttnn.matmul(
                         in0_t,
@@ -597,7 +587,7 @@ def test_first_run(
                     profiler.end(f"second_run_time")
 
                     ttnn.DumpDeviceProfiler(device)
-                    
+
                     output_tensor = ttnn.to_torch(output_t)
                     ttnn.deallocate(output_t)
                     ttnn.deallocate(in0_t)
@@ -609,25 +599,26 @@ def test_first_run(
                     offload_in0 = profiler.get("offload_in0")
                     offload_in1 = profiler.get("offload_in1")
 
-                    logger.info(f"\nIT {it} => FR: {first_run_time}, SR: {second_run_time}, T1: {offload_in0}, T2: {offload_in1}")
+                    logger.info(
+                        f"\nIT {it} => FR: {first_run_time}, SR: {second_run_time}, T1: {offload_in0}, T2: {offload_in1}"
+                    )
 
                     kernel_config_time_acc += kernel_config_time
                     first_run_time_acc += first_run_time
                     second_run_time_acc += second_run_time
                     offload_in0_acc += offload_in0
-                    offload_in1_acc += offload_in1 
-                    
+                    offload_in1_acc += offload_in1
 
-                # Retrive data and write 
+                # Retrive data and write
                 kernel_config_time_acc /= num_measurement_iterations
                 first_run_time_acc /= num_measurement_iterations
                 second_run_time_acc /= num_measurement_iterations
                 offload_in0_acc /= num_measurement_iterations
                 offload_in1_acc /= num_measurement_iterations
                 compile_time = first_run_time_acc - second_run_time_acc
-                
-                
-                writer.writerow([   
+
+                writer.writerow(
+                    [
                         conf,
                         m,
                         f"{True}" if use_trace else f"{False}",
@@ -648,17 +639,15 @@ def test_first_run(
                     ]
                 )
 
+
 @pytest.mark.parametrize("grid_size", [(8, 8)])
 @pytest.mark.parametrize("num_measurement_iterations", [MEASURE_ITERS])
-def test_offloading(
-    device,
-    grid_size,
-    num_measurement_iterations
-):
+def test_offloading(device, grid_size, num_measurement_iterations):
     logger.info(f"\n\nStarting test...")
     with open(FILE_NAME_OFFLOADING, mode="w", newline="") as file:
         writer = csv.writer(file)
-        writer.writerow([   
+        writer.writerow(
+            [
                 "conf",
                 "m",
                 "grid_size",
@@ -672,9 +661,10 @@ def test_offloading(
                 "to_device_in0",
                 "tilize_in0",
                 "to_device_in1",
-                "tilize_in1"
-        ])
-        
+                "tilize_in1",
+            ]
+        )
+
         for conf, dtype, math_fidelity, use_trace in matmul_configs:
             logger.info(f"\n\nRunning conf {conf} ==> Type: {dtype}, MF: {math_fidelity}, Trace: {use_trace}\n\n")
             if dtype == ttnn.bfloat16:
@@ -720,14 +710,13 @@ def test_offloading(
                     )
                 else:
                     in0_memory_config = ttnn.DRAM_MEMORY_CONFIG
-                
+
                 to_device_in0_acc = 0
                 to_device_in1_acc = 0
                 tilize_in0_acc = 0
                 tilize_in1_acc = 0
 
                 for it in range(num_measurement_iterations):
-
                     profiler.start(f"to_device_in0")
                     in0_t = ttnn.from_torch(
                         in0,
@@ -766,17 +755,19 @@ def test_offloading(
                     tilize_in1 = profiler.get("tilize_in1")
                     tilize_in1_acc += tilize_in1
 
-                    logger.info(f"\nIT{it} =>"
-                                f"to_device_in0: {to_device_in0}, to_device_in1: {to_device_in1}, tilize_in0: {tilize_in0}, tilize_in1: {tilize_in1}")
+                    logger.info(
+                        f"\nIT{it} =>"
+                        f"to_device_in0: {to_device_in0}, to_device_in1: {to_device_in1}, tilize_in0: {tilize_in0}, tilize_in1: {tilize_in1}"
+                    )
 
-                to_device_in0_acc = to_device_in0_acc/num_measurement_iterations
-                to_device_in1_acc = to_device_in1_acc/num_measurement_iterations
+                to_device_in0_acc = to_device_in0_acc / num_measurement_iterations
+                to_device_in1_acc = to_device_in1_acc / num_measurement_iterations
 
-                tilize_in0_acc += tilize_in0/num_measurement_iterations
-                tilize_in1_acc += tilize_in1/num_measurement_iterations
+                tilize_in0_acc += tilize_in0 / num_measurement_iterations
+                tilize_in1_acc += tilize_in1 / num_measurement_iterations
 
-                
-                writer.writerow([   
+                writer.writerow(
+                    [
                         conf,
                         m,
                         grid_size,
@@ -801,13 +792,5 @@ def test_offloading(
 @pytest.mark.parametrize("tile_w", [32])
 @pytest.mark.parametrize("num_warmup_iterations", [WARMUP_ITERS])
 @pytest.mark.parametrize("num_measurement_iterations", [MEASURE_ITERS])
-def test_dummy(
-    device,
-    grid_size,
-    tile_h,
-    tile_w,
-    num_warmup_iterations,
-    num_measurement_iterations,
-    use_program_cache
-):
+def test_dummy(device, grid_size, tile_h, tile_w, num_warmup_iterations, num_measurement_iterations, use_program_cache):
     pass

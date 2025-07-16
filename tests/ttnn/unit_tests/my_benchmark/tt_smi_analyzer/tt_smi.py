@@ -80,9 +80,7 @@ class TTSMI(App):
     ]
 
     try:
-        common_style_file_path = files("tt_tools_common.ui_common").joinpath(
-            "common_style.css"
-        )
+        common_style_file_path = files("tt_tools_common.ui_common").joinpath("common_style.css")
     except:
         raise Exception(
             "Cannot find common_style.css file, please make sure tt_tools_common lib is installed correctly."
@@ -133,9 +131,7 @@ class TTSMI(App):
                     title="Latest SW Versions",
                     data=get_sw_ver_info(self.get_latest_sw_vers, board_ids),
                 )
-            with TabbedContent(
-                "Information (1)", "Telemetry (2)", "FW Version (3)", id="tab_container"
-            ):
+            with TabbedContent("Information (1)", "Telemetry (2)", "FW Version (3)", id="tab_container"):
                 yield TTDataTable(
                     title="Device Information",
                     id="tt_smi_device_info",
@@ -188,21 +184,15 @@ class TTSMI(App):
             for fw in constants.FW_LIST:
                 val = self.backend.firmware_infos[i][fw]
                 if val == "N/A":
-                    rows.append(
-                        Text(f"{val}", style=self.theme["gray"], justify="center")
-                    )
+                    rows.append(Text(f"{val}", style=self.theme["gray"], justify="center"))
                 else:
-                    rows.append(
-                        Text(f"{val}", style=self.theme["text_green"], justify="center")
-                    )
+                    rows.append(Text(f"{val}", style=self.theme["text_green"], justify="center"))
             all_rows.append(rows)
         return all_rows
 
     def format_bh_telemetry_rows(self, board_num: int) -> List[Text]:
         """BH spefic telemetry rows - subject to change post qual"""
-        bh_row = [
-            Text(f"{board_num}", style=self.theme["yellow_bold"], justify="center")
-        ]
+        bh_row = [Text(f"{board_num}", style=self.theme["yellow_bold"], justify="center")]
         for telem in constants.TELEM_LIST:
             val = self.backend.device_telemetrys[board_num][telem]
             bh_row.append(
@@ -370,9 +360,7 @@ class TTSMI(App):
                             )
                         )
                 else:
-                    rows.append(
-                        Text(f"{val}", style=self.theme["text_green"], justify="center")
-                    )
+                    rows.append(Text(f"{val}", style=self.theme["text_green"], justify="center"))
             all_rows.append(rows)
         return all_rows
 
@@ -522,9 +510,7 @@ class TTSMI(App):
                 elif info == "dram_status":
                     # TODO: Update once DRAM status becomes availible
                     if device.as_bh():
-                        rows.append(
-                            Text("N/A", style=self.theme["gray"], justify="center")
-                        )
+                        rows.append(Text("N/A", style=self.theme["gray"], justify="center"))
                     else:
                         if val:
                             rows.append(
@@ -535,17 +521,11 @@ class TTSMI(App):
                                 )
                             )
                         else:
-                            rows.append(
-                                Text(
-                                    "N", style=self.theme["attention"], justify="center"
-                                )
-                            )
+                            rows.append(Text("N", style=self.theme["attention"], justify="center"))
                 elif info == "dram_speed":
                     # TODO: Update once DRAM status becomes availible
                     if device.as_bh():
-                        rows.append(
-                            Text("N/A", style=self.theme["gray"], justify="center")
-                        )
+                        rows.append(Text("N/A", style=self.theme["gray"], justify="center"))
                     else:
                         if val:
                             rows.append(
@@ -565,9 +545,7 @@ class TTSMI(App):
                             )
                 else:
                     if val == "N/A":
-                        rows.append(
-                            Text(f"{val}", style=self.theme["gray"], justify="center")
-                        )
+                        rows.append(Text(f"{val}", style=self.theme["gray"], justify="center"))
                     else:
                         rows.append(
                             Text(
@@ -589,9 +567,7 @@ class TTSMI(App):
         exit_message = Text(f"Exiting TT-SMI.", style="yellow")
         if self.snapshot:
             log_name = self.backend.save_logs(self.result_filename)
-            exit_message = exit_message + Text(
-                f"\nSaved tt-smi log to: {log_name}", style="purple"
-            )
+            exit_message = exit_message + Text(f"\nSaved tt-smi log to: {log_name}", style="purple")
         INTERRUPT_RECEIVED = True
         for thread in TELEM_THREADS:
             thread.join(timeout=0.1)
@@ -628,9 +604,7 @@ class TTSMI(App):
 
     def action_help(self) -> None:
         """Pop up the help menu"""
-        tt_confirm_box = TTHelperMenuBox(
-            text=constants.HELP_MENU_MARKDOWN, theme=self.theme
-        )
+        tt_confirm_box = TTHelperMenuBox(text=constants.HELP_MENU_MARKDOWN, theme=self.theme)
         self.push_screen(tt_confirm_box)
 
 
@@ -734,9 +708,7 @@ def tt_smi_main(backend: TTSMIBackend, args):
             CMD_LINE_COLOR.ENDC,
         )
         sys.exit(0)
-    tt_smi_app = TTSMI(
-        backend=backend, snapshot=args.snapshot, result_filename=args.filename
-    )
+    tt_smi_app = TTSMI(backend=backend, snapshot=args.snapshot, result_filename=args.filename)
     tt_smi_app.run()
 
 
@@ -746,9 +718,7 @@ def check_fw_version(pyluwen_chip, board_num):
     For Grayskull, we only support fw version >= 1.3.0.0
     """
     if pyluwen_chip.as_gs():
-        fw_version, exit_code = pyluwen_chip.arc_msg(
-            constants.MSG_TYPE_FW_VERSION, arg0=0, arg1=0
-        )
+        fw_version, exit_code = pyluwen_chip.arc_msg(constants.MSG_TYPE_FW_VERSION, arg0=0, arg1=0)
         if fw_version < constants.MAGIC_FW_VERSION:
             print(
                 CMD_LINE_COLOR.RED,
@@ -785,9 +755,7 @@ def main():
 
     # Handle reset first, without setting up backend or
     if args.reset is not None:
-        if isinstance(args.reset, list) and all(
-            isinstance(item, int) for item in args.reset
-        ):
+        if isinstance(args.reset, list) and all(isinstance(item, int) for item in args.reset):
             # If input is just reset board
             pci_board_reset(args.reset, reinit=True)
         else:
@@ -829,9 +797,7 @@ def main():
         sys.exit(0)
 
     try:
-        devices = detect_chips_with_callback(
-            local_only=args.local, ignore_ethernet=args.local
-        )
+        devices = detect_chips_with_callback(local_only=args.local, ignore_ethernet=args.local)
     except Exception as e:
         print(
             CMD_LINE_COLOR.RED,

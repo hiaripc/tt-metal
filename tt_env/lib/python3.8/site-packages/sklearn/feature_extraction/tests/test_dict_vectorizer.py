@@ -30,9 +30,7 @@ def test_dictvectorizer(sparse, dtype, sort, iterable):
 
     if sparse:
         # CSR matrices can't be compared for equality
-        assert_array_equal(
-            X.toarray(), v.transform(iter(D) if iterable else D).toarray()
-        )
+        assert_array_equal(X.toarray(), v.transform(iter(D) if iterable else D).toarray())
     else:
         assert_array_equal(X, v.transform(iter(D) if iterable else D))
 
@@ -99,10 +97,7 @@ def test_iterable_value():
 
 
 def test_iterable_not_string_error():
-    error_value = (
-        "Unsupported type <class 'int'> in iterable value. "
-        "Only iterables of string are supported."
-    )
+    error_value = "Unsupported type <class 'int'> in iterable value. " "Only iterables of string are supported."
     D2 = [{"foo": "1", "bar": "2"}, {"foo": "3", "baz": "1"}, {"foo": [1, "three"]}]
     v = DictVectorizer(sparse=False)
     with pytest.raises(TypeError) as error:
@@ -201,9 +196,7 @@ def test_dictvectorizer_dense_sparse_equivalence():
     assert_allclose(dense_vector_transform, sparse_vector_transform.toarray())
 
     dense_inverse_transform = dense_vectorizer.inverse_transform(dense_vector_transform)
-    sparse_inverse_transform = sparse_vectorizer.inverse_transform(
-        sparse_vector_transform
-    )
+    sparse_inverse_transform = sparse_vectorizer.inverse_transform(sparse_vector_transform)
 
     expected_inverse = [{"category=thriller": 1.0}]
     assert dense_inverse_transform == expected_inverse

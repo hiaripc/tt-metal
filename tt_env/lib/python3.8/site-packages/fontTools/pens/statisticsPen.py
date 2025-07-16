@@ -46,9 +46,7 @@ class StatisticsBase:
             correlation = max(-1, min(1, correlation))
         self.correlation = correlation if abs(correlation) > 1e-3 else 0
 
-        slant = (
-            self.covariance / self.varianceY if self.varianceY != 0 else float("NaN")
-        )
+        slant = self.covariance / self.varianceY if self.varianceY != 0 else float("NaN")
         self.slant = slant if abs(slant) > 1e-3 else 0
 
 
@@ -136,13 +134,7 @@ class StatisticsControlPen(StatisticsBase, BasePen):
         n = len(nodes)
 
         # Triangle formula
-        self.area = (
-            sum(
-                (p0.real * p1.imag - p1.real * p0.imag)
-                for p0, p1 in zip(nodes, nodes[1:] + nodes[:1])
-            )
-            / 2
-        )
+        self.area = sum((p0.real * p1.imag - p1.real * p0.imag) for p0, p1 in zip(nodes, nodes[1:] + nodes[:1])) / 2
 
         # Center of mass
         # https://en.wikipedia.org/wiki/Center_of_mass#A_system_of_particles
@@ -153,19 +145,16 @@ class StatisticsControlPen(StatisticsBase, BasePen):
         if n > 1:
             # Var(X) = (sum[X^2] - sum[X]^2 / n) / (n - 1)
             # https://www.statisticshowto.com/probability-and-statistics/descriptive-statistics/sample-variance/
-            self.varianceX = varianceX = (
-                sum(p.real * p.real for p in nodes)
-                - (sumNodes.real * sumNodes.real) / n
-            ) / (n - 1)
-            self.varianceY = varianceY = (
-                sum(p.imag * p.imag for p in nodes)
-                - (sumNodes.imag * sumNodes.imag) / n
-            ) / (n - 1)
+            self.varianceX = varianceX = (sum(p.real * p.real for p in nodes) - (sumNodes.real * sumNodes.real) / n) / (
+                n - 1
+            )
+            self.varianceY = varianceY = (sum(p.imag * p.imag for p in nodes) - (sumNodes.imag * sumNodes.imag) / n) / (
+                n - 1
+            )
 
             # Covariance(X,Y) = (sum[X.Y] - sum[X].sum[Y] / n) / (n - 1)
             self.covariance = covariance = (
-                sum(p.real * p.imag for p in nodes)
-                - (sumNodes.real * sumNodes.imag) / n
+                sum(p.real * p.imag for p in nodes) - (sumNodes.real * sumNodes.imag) / n
             ) / (n - 1)
         else:
             self.varianceX = varianceX = 0
@@ -268,9 +257,7 @@ def main(args):
         action="store_true",
         help="Use the control-box pen instead of the Green therem.",
     )
-    parser.add_argument(
-        "-q", "--quiet", action="store_true", help="Only report font-wide statistics."
-    )
+    parser.add_argument("-q", "--quiet", action="store_true", help="Only report font-wide statistics.")
     parser.add_argument(
         "--variations",
         metavar="AXIS=LOC",

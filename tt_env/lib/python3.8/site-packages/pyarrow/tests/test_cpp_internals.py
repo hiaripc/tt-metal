@@ -26,10 +26,12 @@ def inject_cpp_tests(ns):
     Inject C++ tests as Python functions into namespace `ns` (a dict).
     """
     for case in get_cpp_tests():
+
         def wrapper(case=case):
             case()
+
         wrapper.__name__ = wrapper.__qualname__ = case.name
-        wrapper.__module__ = ns['__name__']
+        wrapper.__module__ = ns["__name__"]
         ns[case.name] = wrapper
 
 
@@ -42,9 +44,9 @@ def test_pyarrow_include():
     # Arrow C++ and PyArrow C++ header files together
 
     source = os.path.dirname(os.path.abspath(__file__))
-    pyarrow_dir = pjoin(source, '..')
-    pyarrow_include = pjoin(pyarrow_dir, 'include')
-    pyarrow_cpp_include = pjoin(pyarrow_include, 'arrow', 'python')
+    pyarrow_dir = pjoin(source, "..")
+    pyarrow_include = pjoin(pyarrow_dir, "include")
+    pyarrow_cpp_include = pjoin(pyarrow_include, "arrow", "python")
 
     assert os.path.exists(pyarrow_include)
     assert os.path.exists(pyarrow_cpp_include)

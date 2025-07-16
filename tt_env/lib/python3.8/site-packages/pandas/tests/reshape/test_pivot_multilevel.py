@@ -12,8 +12,7 @@ import pandas._testing as tm
 
 
 @pytest.mark.parametrize(
-    "input_index, input_columns, input_values, "
-    "expected_values, expected_columns, expected_index",
+    "input_index, input_columns, input_values, " "expected_values, expected_columns, expected_index",
     [
         (
             ["lev4"],
@@ -65,9 +64,7 @@ import pandas._testing as tm
             "values",
             [[0, 1], [2, 3], [4, 5], [6, 7]],
             Index([1, 2], name="lev3"),
-            MultiIndex.from_tuples(
-                [(1, 1), (1, 2), (2, 1), (2, 2)], names=["lev1", "lev2"]
-            ),
+            MultiIndex.from_tuples([(1, 1), (1, 2), (2, 1), (2, 2)], names=["lev1", "lev2"]),
         ),
         (
             ["lev1", "lev2"],
@@ -78,9 +75,7 @@ import pandas._testing as tm
                 [("lev4", 1), ("lev4", 2), ("values", 1), ("values", 2)],
                 names=[None, "lev3"],
             ),
-            MultiIndex.from_tuples(
-                [(1, 1), (1, 2), (2, 1), (2, 2)], names=["lev1", "lev2"]
-            ),
+            MultiIndex.from_tuples([(1, 1), (1, 2), (2, 1), (2, 2)], names=["lev1", "lev2"]),
         ),
     ],
 )
@@ -104,15 +99,12 @@ def test_pivot_list_like_index(
     )
 
     result = df.pivot(index=input_index, columns=input_columns, values=input_values)
-    expected = pd.DataFrame(
-        expected_values, columns=expected_columns, index=expected_index
-    )
+    expected = pd.DataFrame(expected_values, columns=expected_columns, index=expected_index)
     tm.assert_frame_equal(result, expected)
 
 
 @pytest.mark.parametrize(
-    "input_index, input_columns, input_values, "
-    "expected_values, expected_columns, expected_index",
+    "input_index, input_columns, input_values, " "expected_values, expected_columns, expected_index",
     [
         (
             "lev4",
@@ -137,18 +129,14 @@ def test_pivot_list_like_index(
             "values",
             [[0, 1], [2, 3], [4, 5], [6, 7]],
             Index([1, 2], name="lev3"),
-            MultiIndex.from_tuples(
-                [(1, 1), (1, 2), (2, 1), (2, 2)], names=["lev1", "lev2"]
-            ),
+            MultiIndex.from_tuples([(1, 1), (1, 2), (2, 1), (2, 2)], names=["lev1", "lev2"]),
         ),
         (
             ["lev1"],
             ["lev2", "lev3"],
             "values",
             [[0, 1, 2, 3], [4, 5, 6, 7]],
-            MultiIndex.from_tuples(
-                [(1, 1), (1, 2), (2, 1), (2, 2)], names=["lev2", "lev3"]
-            ),
+            MultiIndex.from_tuples([(1, 1), (1, 2), (2, 1), (2, 2)], names=["lev2", "lev3"]),
             Index([1, 2], name="lev1"),
         ),
         (
@@ -165,9 +153,7 @@ def test_pivot_list_like_index(
                 [(1, 1), (2, 2), (1, 3), (2, 4), (1, 5), (2, 6), (1, 7), (2, 8)],
                 names=["lev3", "lev4"],
             ),
-            MultiIndex.from_tuples(
-                [(1, 1), (1, 2), (2, 1), (2, 2)], names=["lev1", "lev2"]
-            ),
+            MultiIndex.from_tuples([(1, 1), (1, 2), (2, 1), (2, 2)], names=["lev1", "lev2"]),
         ),
     ],
 )
@@ -191,9 +177,7 @@ def test_pivot_list_like_columns(
     )
 
     result = df.pivot(index=input_index, columns=input_columns, values=input_values)
-    expected = pd.DataFrame(
-        expected_values, columns=expected_columns, index=expected_index
-    )
+    expected = pd.DataFrame(expected_values, columns=expected_columns, index=expected_index)
     tm.assert_frame_equal(result, expected)
 
 
@@ -202,9 +186,7 @@ def test_pivot_multiindexed_rows_and_cols(using_array_manager):
 
     df = pd.DataFrame(
         data=np.arange(12).reshape(4, 3),
-        columns=MultiIndex.from_tuples(
-            [(0, 0), (0, 1), (0, 2)], names=["col_L0", "col_L1"]
-        ),
+        columns=MultiIndex.from_tuples([(0, 0), (0, 1), (0, 2)], names=["col_L0", "col_L1"]),
         index=MultiIndex.from_tuples(
             [(0, 0, 0), (0, 0, 1), (1, 1, 1), (1, 0, 0)],
             names=["idx_L0", "idx_L1", "idx_L2"],
@@ -220,9 +202,7 @@ def test_pivot_multiindexed_rows_and_cols(using_array_manager):
 
     expected = pd.DataFrame(
         data=[[5, np.nan], [10, 7.0]],
-        columns=MultiIndex.from_tuples(
-            [(0, 1, 0), (0, 1, 1)], names=["col_L0", "col_L1", "idx_L1"]
-        ),
+        columns=MultiIndex.from_tuples([(0, 1, 0), (0, 1, 1)], names=["col_L0", "col_L1", "idx_L1"]),
         index=Index([0, 1], dtype="int64", name="idx_L0"),
     )
     if not using_array_manager:

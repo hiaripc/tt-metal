@@ -33,17 +33,13 @@ def buildVFStatTable(ttFont: TTFont, doc: DesignSpaceDocument, vfName: str) -> N
         if vf.name == vfName:
             break
     else:
-        raise DesignSpaceDocumentError(
-            f"Cannot find the variable font by name {vfName}"
-        )
+        raise DesignSpaceDocumentError(f"Cannot find the variable font by name {vfName}")
 
     region = getVFUserRegion(doc, vf)
 
     # if there are not currently any mac names don't add them here, that's inconsistent
     # https://github.com/fonttools/fonttools/issues/683
-    macNames = any(
-        nr.platformID == 1 for nr in getattr(ttFont.get("name"), "names", ())
-    )
+    macNames = any(nr.platformID == 1 for nr in getattr(ttFont.get("name"), "names", ()))
 
     return fontTools.otlLib.builder.buildStatTable(
         ttFont,
@@ -100,10 +96,7 @@ def getStatLocations(doc: DesignSpaceDocument, userRegion: Region) -> List[Dict]
             name={"en": label.name, **label.labelNames},
             # Location in the designspace is keyed by axis name
             # Location in buildStatTable by axis tag
-            location={
-                axesByName[name].tag: value
-                for name, value in label.getFullUserLocation(doc).items()
-            },
+            location={axesByName[name].tag: value for name, value in label.getFullUserLocation(doc).items()},
             flags=_labelToFlags(label),
         )
         for label in doc.locationLabels

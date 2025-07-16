@@ -31,4 +31,3 @@ You should see output similar to::
   Ran 2 tests in 0.016s
 
   OK
-

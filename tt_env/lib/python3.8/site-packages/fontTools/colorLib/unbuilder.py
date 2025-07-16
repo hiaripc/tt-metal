@@ -7,10 +7,7 @@ def unbuildColrV1(layerList, baseGlyphList):
     if layerList:
         layers = layerList.Paint
     unbuilder = LayerListUnbuilder(layers)
-    return {
-        rec.BaseGlyph: unbuilder.unbuildPaint(rec.Paint)
-        for rec in baseGlyphList.BaseGlyphPaintRecord
-    }
+    return {rec.BaseGlyph: unbuilder.unbuildPaint(rec.Paint) for rec in baseGlyphList.BaseGlyphPaintRecord}
 
 
 def _flatten_layers(lst):
@@ -45,8 +42,7 @@ class LayerListUnbuilder:
                 [
                     self.unbuildPaint(childPaint)
                     for childPaint in self.layers[
-                        source["FirstLayerIndex"] : source["FirstLayerIndex"]
-                        + source["NumLayers"]
+                        source["FirstLayerIndex"] : source["FirstLayerIndex"] + source["NumLayers"]
                     ]
                 ]
             )

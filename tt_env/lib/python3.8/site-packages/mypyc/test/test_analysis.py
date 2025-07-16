@@ -66,12 +66,8 @@ class TestAnalysis(MypycDataSuite):
 
                     names = generate_names_for_ir(fn.arg_regs, fn.blocks)
 
-                    for key in sorted(
-                        analysis_result.before.keys(), key=lambda x: (x[0].label, x[1])
-                    ):
+                    for key in sorted(analysis_result.before.keys(), key=lambda x: (x[0].label, x[1])):
                         pre = ", ".join(sorted(names[reg] for reg in analysis_result.before[key]))
                         post = ", ".join(sorted(names[reg] for reg in analysis_result.after[key]))
-                        actual.append(
-                            "%-8s %-23s %s" % ((key[0].label, key[1]), "{%s}" % pre, "{%s}" % post)
-                        )
+                        actual.append("%-8s %-23s %s" % ((key[0].label, key[1]), "{%s}" % pre, "{%s}" % post))
             assert_test_output(testcase, actual, "Invalid source code output")

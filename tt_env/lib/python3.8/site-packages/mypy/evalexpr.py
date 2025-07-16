@@ -112,10 +112,7 @@ class _NodeEvaluator(ExpressionVisitor[object]):
         return UNKNOWN
 
     def visit_dict_expr(self, o: mypy.nodes.DictExpr) -> object:
-        items = [
-            (UNKNOWN if key is None else key.accept(self), value.accept(self))
-            for key, value in o.items
-        ]
+        items = [(UNKNOWN if key is None else key.accept(self), value.accept(self)) for key, value in o.items]
         if all(key is not UNKNOWN and value is not None for key, value in items):
             return dict(items)
         return UNKNOWN

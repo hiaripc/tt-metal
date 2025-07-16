@@ -41,10 +41,7 @@ def normalise_path(path: str) -> str:
 
 
 def normalise_build_source_list(sources: list[BuildSource]) -> list[tuple[str, str | None]]:
-    return sorted(
-        (s.module, (normalise_path(s.base_dir) if s.base_dir is not None else None))
-        for s in sources
-    )
+    return sorted((s.module, (normalise_path(s.base_dir) if s.base_dir is not None else None)) for s in sources)
 
 
 def crawl(finder: SourceFinder, f: str) -> tuple[str, str]:
@@ -56,9 +53,7 @@ def find_sources_in_dir(finder: SourceFinder, f: str) -> list[tuple[str, str | N
     return normalise_build_source_list(finder.find_sources_in_dir(os.path.abspath(f)))
 
 
-def find_sources(
-    paths: list[str], options: Options, fscache: FileSystemCache
-) -> list[tuple[str, str | None]]:
+def find_sources(paths: list[str], options: Options, fscache: FileSystemCache) -> list[tuple[str, str | None]]:
     paths = [os.path.abspath(p) for p in paths]
     return normalise_build_source_list(create_source_list(paths, options, fscache))
 
@@ -95,9 +90,7 @@ class SourceFinderSuite(unittest.TestCase):
         finder = SourceFinder(FakeFSCache({"/a/b/setup.py", "/a/__init__.py"}), options)
         assert crawl(finder, "/a/b/setup.py") == ("setup", "/a/b")
 
-        finder = SourceFinder(
-            FakeFSCache({"/a/b/c/setup.py", "/a/__init__.py", "/a/b/c/__init__.py"}), options
-        )
+        finder = SourceFinder(FakeFSCache({"/a/b/c/setup.py", "/a/__init__.py", "/a/b/c/__init__.py"}), options)
         assert crawl(finder, "/a/b/c/setup.py") == ("c.setup", "/a/b")
 
     def test_crawl_namespace(self) -> None:
@@ -122,9 +115,7 @@ class SourceFinderSuite(unittest.TestCase):
         finder = SourceFinder(FakeFSCache({"/a/b/setup.py", "/a/__init__.py"}), options)
         assert crawl(finder, "/a/b/setup.py") == ("a.b.setup", "/")
 
-        finder = SourceFinder(
-            FakeFSCache({"/a/b/c/setup.py", "/a/__init__.py", "/a/b/c/__init__.py"}), options
-        )
+        finder = SourceFinder(FakeFSCache({"/a/b/c/setup.py", "/a/__init__.py", "/a/b/c/__init__.py"}), options)
         assert crawl(finder, "/a/b/c/setup.py") == ("a.b.c.setup", "/")
 
     def test_crawl_namespace_explicit_base(self) -> None:
@@ -150,9 +141,7 @@ class SourceFinderSuite(unittest.TestCase):
         finder = SourceFinder(FakeFSCache({"/a/b/setup.py", "/a/__init__.py"}), options)
         assert crawl(finder, "/a/b/setup.py") == ("a.b.setup", "/")
 
-        finder = SourceFinder(
-            FakeFSCache({"/a/b/c/setup.py", "/a/__init__.py", "/a/b/c/__init__.py"}), options
-        )
+        finder = SourceFinder(FakeFSCache({"/a/b/c/setup.py", "/a/__init__.py", "/a/b/c/__init__.py"}), options)
         assert crawl(finder, "/a/b/c/setup.py") == ("a.b.c.setup", "/")
 
         # set mypy path, so we actually have some explicit base dirs
@@ -161,9 +150,7 @@ class SourceFinderSuite(unittest.TestCase):
         finder = SourceFinder(FakeFSCache({"/a/b/c/setup.py"}), options)
         assert crawl(finder, "/a/b/c/setup.py") == ("c.setup", "/a/b")
 
-        finder = SourceFinder(
-            FakeFSCache({"/a/b/c/setup.py", "/a/__init__.py", "/a/b/c/__init__.py"}), options
-        )
+        finder = SourceFinder(FakeFSCache({"/a/b/c/setup.py", "/a/__init__.py", "/a/b/c/__init__.py"}), options)
         assert crawl(finder, "/a/b/c/setup.py") == ("c.setup", "/a/b")
 
         options.mypy_path = ["/a/b", "/a/b/c"]
@@ -271,9 +258,7 @@ class SourceFinderSuite(unittest.TestCase):
             assert find_sources(["/"], options, fscache) == [("a", "/dir")]
             with pytest.raises(InvalidSourceList):
                 find_sources(["/dir/venv/"], options, fscache)
-            assert find_sources([f"/dir/venv/{excluded_dir}"], options, fscache) == [
-                ("b", f"/dir/venv/{excluded_dir}")
-            ]
+            assert find_sources([f"/dir/venv/{excluded_dir}"], options, fscache) == [("b", f"/dir/venv/{excluded_dir}")]
             assert find_sources([f"/dir/venv/{excluded_dir}/b.py"], options, fscache) == [
                 ("b", f"/dir/venv/{excluded_dir}")
             ]

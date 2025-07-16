@@ -31,7 +31,7 @@ __global__ void kernel_forward(
         F e1 = exp(pp - p);
         F e2 = exp(ww - p);
         y[ii] = (e1 * aa + e2 * vv) / (e1 * bb + e2);
-        
+
         ww = w + pp;
         p = max(ww, kk);
         e1 = exp(ww - p);
@@ -72,7 +72,7 @@ __global__ void kernel_forward_with_state(
         F e1 = exp(pp - p);
         F e2 = exp(ww - p);
         y[ii] = (e1 * aa + e2 * vv) / (e1 * bb + e2);
-        
+
         ww = w + pp;
         p = max(ww, kk);
         e1 = exp(ww - p);

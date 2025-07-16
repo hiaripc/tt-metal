@@ -8,10 +8,7 @@ MAX_ERR = 0.05
 
 
 def generate_curve():
-    return [
-        tuple(float(random.randint(0, 2048)) for coord in range(2))
-        for point in range(4)
-    ]
+    return [tuple(float(random.randint(0, 2048)) for coord in range(2)) for point in range(4)]
 
 
 def setup_curve_to_quadratic():

@@ -233,9 +233,7 @@ def merge(self, m, tables):
 ttLib.getTableClass("prep").mergeMap = lambda self, lst: first(lst)
 ttLib.getTableClass("fpgm").mergeMap = lambda self, lst: first(lst)
 ttLib.getTableClass("cvt ").mergeMap = lambda self, lst: first(lst)
-ttLib.getTableClass("gasp").mergeMap = lambda self, lst: first(
-    lst
-)  # FIXME? Appears irreconcilable
+ttLib.getTableClass("gasp").mergeMap = lambda self, lst: first(lst)  # FIXME? Appears irreconcilable
 
 
 @add_method(ttLib.getTableClass("CFF "))
@@ -270,9 +268,7 @@ def merge(self, m, tables):
             font.Private.defaultWidthX,
             font.Private.nominalWidthX,
         )
-        widthsDiffer = (
-            defaultWidthX != newDefaultWidthX or nominalWidthX != newNominalWidthX
-        )
+        widthsDiffer = defaultWidthX != newDefaultWidthX or nominalWidthX != newNominalWidthX
         font.Private = private
         fontGlyphOrder = set(font.getGlyphOrder())
         for name in font.strings.strings:

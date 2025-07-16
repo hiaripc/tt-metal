@@ -197,9 +197,7 @@ class Resource(object):
             attr: attributes.
     """
 
-    def __init__(
-        self, resType=None, resData=None, resID=None, resName=None, resAttr=None
-    ):
+    def __init__(self, resType=None, resData=None, resID=None, resName=None, resAttr=None):
         self.type = resType
         self.data = resData
         self.id = resID

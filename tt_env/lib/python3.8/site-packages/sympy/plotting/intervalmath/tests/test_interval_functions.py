@@ -1,53 +1,74 @@
 from sympy.external import import_module
 from sympy.plotting.intervalmath import (
-    Abs, acos, acosh, And, asin, asinh, atan, atanh, ceil, cos, cosh,
-    exp, floor, imax, imin, interval, log, log10, Or, sin, sinh, sqrt,
-    tan, tanh,
+    Abs,
+    acos,
+    acosh,
+    And,
+    asin,
+    asinh,
+    atan,
+    atanh,
+    ceil,
+    cos,
+    cosh,
+    exp,
+    floor,
+    imax,
+    imin,
+    interval,
+    log,
+    log10,
+    Or,
+    sin,
+    sinh,
+    sqrt,
+    tan,
+    tanh,
 )
 
-np = import_module('numpy')
+np = import_module("numpy")
 if not np:
     disabled = True
 
 
-#requires Numpy. Hence included in interval_functions
+# requires Numpy. Hence included in interval_functions
 
 
 def test_interval_pow():
-    a = 2**interval(1, 2) == interval(2, 4)
+    a = 2 ** interval(1, 2) == interval(2, 4)
     assert a == (True, True)
-    a = interval(1, 2)**interval(1, 2) == interval(1, 4)
+    a = interval(1, 2) ** interval(1, 2) == interval(1, 4)
     assert a == (True, True)
-    a = interval(-1, 1)**interval(0.5, 2)
+    a = interval(-1, 1) ** interval(0.5, 2)
     assert a.is_valid is None
     a = interval(-2, -1) ** interval(1, 2)
     assert a.is_valid is False
     a = interval(-2, -1) ** (1.0 / 2)
     assert a.is_valid is False
-    a = interval(-1, 1)**(1.0 / 2)
+    a = interval(-1, 1) ** (1.0 / 2)
     assert a.is_valid is None
-    a = interval(-1, 1)**(1.0 / 3) == interval(-1, 1)
+    a = interval(-1, 1) ** (1.0 / 3) == interval(-1, 1)
     assert a == (True, True)
-    a = interval(-1, 1)**2 == interval(0, 1)
+    a = interval(-1, 1) ** 2 == interval(0, 1)
     assert a == (True, True)
     a = interval(-1, 1) ** (1.0 / 29) == interval(-1, 1)
     assert a == (True, True)
-    a = -2**interval(1, 1) == interval(-2, -2)
+    a = -(2 ** interval(1, 1)) == interval(-2, -2)
     assert a == (True, True)
 
-    a = interval(1, 2, is_valid=False)**2
+    a = interval(1, 2, is_valid=False) ** 2
     assert a.is_valid is False
 
-    a = (-3)**interval(1, 2)
+    a = (-3) ** interval(1, 2)
     assert a.is_valid is False
-    a = (-4)**interval(0.5, 0.5)
+    a = (-4) ** interval(0.5, 0.5)
     assert a.is_valid is False
-    assert ((-3)**interval(1, 1) == interval(-3, -3)) == (True, True)
+    assert ((-3) ** interval(1, 1) == interval(-3, -3)) == (True, True)
 
-    a = interval(8, 64)**(2.0 / 3)
+    a = interval(8, 64) ** (2.0 / 3)
     assert abs(a.start - 4) < 1e-10  # eps
     assert abs(a.end - 16) < 1e-10
-    a = interval(-8, 64)**(2.0 / 3)
+    a = interval(-8, 64) ** (2.0 / 3)
     assert abs(a.start - 4) < 1e-10  # eps
     assert abs(a.end - 16) < 1e-10
 
@@ -157,7 +178,7 @@ def test_cos():
     assert a.start == -1
     assert a.end == 1
 
-    a = cos(interval(- np.pi / 3, 5 * np.pi / 4))
+    a = cos(interval(-np.pi / 3, 5 * np.pi / 4))
     assert a.start == -1
     assert a.end == 1
 
@@ -169,10 +190,10 @@ def test_tan():
     a = tan(interval(0, np.pi / 4))
     assert a.start == 0
     # must match lib_interval definition of tan:
-    assert a.end == np.sin(np.pi / 4)/np.cos(np.pi / 4)
+    assert a.end == np.sin(np.pi / 4) / np.cos(np.pi / 4)
 
     a = tan(interval(np.pi / 4, 3 * np.pi / 4))
-    #discontinuity
+    # discontinuity
     assert a.is_valid is None
 
 

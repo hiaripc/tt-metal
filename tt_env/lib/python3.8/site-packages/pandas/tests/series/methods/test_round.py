@@ -10,9 +10,7 @@ class TestSeriesRound:
     def test_round(self, datetime_series):
         datetime_series.index.name = "index_name"
         result = datetime_series.round(2)
-        expected = Series(
-            np.round(datetime_series.values, 2), index=datetime_series.index, name="ts"
-        )
+        expected = Series(np.round(datetime_series.values, 2), index=datetime_series.index, name="ts")
         tm.assert_series_equal(result, expected)
         assert result.name == datetime_series.name
 
@@ -42,15 +40,11 @@ class TestSeriesRound:
             dtype=any_float_dtype,
         )
         result = round(ser)
-        expected_rounded0 = Series(
-            [1.0, 2.0, 3.0], index=range(3), dtype=any_float_dtype
-        )
+        expected_rounded0 = Series([1.0, 2.0, 3.0], index=range(3), dtype=any_float_dtype)
         tm.assert_series_equal(result, expected_rounded0)
 
         decimals = 2
-        expected_rounded = Series(
-            [1.12, 2.12, 3.12], index=range(3), dtype=any_float_dtype
-        )
+        expected_rounded = Series([1.12, 2.12, 3.12], index=range(3), dtype=any_float_dtype)
         result = round(ser, decimals)
         tm.assert_series_equal(result, expected_rounded)
 

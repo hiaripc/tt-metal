@@ -45,9 +45,7 @@ def diagnose(data: "_IncomingMarkup") -> None:
                 break
         else:
             basic_parsers.remove(name)
-            print(
-                ("I noticed that %s is not installed. Installing it may help." % name)
-            )
+            print(("I noticed that %s is not installed. Installing it may help." % name))
 
     if "lxml" in basic_parsers:
         basic_parsers.append("lxml-xml")

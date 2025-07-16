@@ -16,31 +16,21 @@ class ConstraintsSuite(Suite):
     def test_basic_type_variable(self) -> None:
         fx = self.fx
         for direction in [SUBTYPE_OF, SUPERTYPE_OF]:
-            assert infer_constraints(fx.gt, fx.ga, direction) == [
-                Constraint(type_var=fx.t, op=direction, target=fx.a)
-            ]
+            assert infer_constraints(fx.gt, fx.ga, direction) == [Constraint(type_var=fx.t, op=direction, target=fx.a)]
 
     def test_basic_type_var_tuple_subtype(self) -> None:
         fx = self.fx
-        assert infer_constraints(
-            Instance(fx.gvi, [UnpackType(fx.ts)]), Instance(fx.gvi, [fx.a, fx.b]), SUBTYPE_OF
-        ) == [
+        assert infer_constraints(Instance(fx.gvi, [UnpackType(fx.ts)]), Instance(fx.gvi, [fx.a, fx.b]), SUBTYPE_OF) == [
             Constraint(type_var=fx.ts, op=SUBTYPE_OF, target=TupleType([fx.a, fx.b], fx.std_tuple))
         ]
 
     def test_basic_type_var_tuple(self) -> None:
         fx = self.fx
         assert set(
-            infer_constraints(
-                Instance(fx.gvi, [UnpackType(fx.ts)]), Instance(fx.gvi, [fx.a, fx.b]), SUPERTYPE_OF
-            )
+            infer_constraints(Instance(fx.gvi, [UnpackType(fx.ts)]), Instance(fx.gvi, [fx.a, fx.b]), SUPERTYPE_OF)
         ) == {
-            Constraint(
-                type_var=fx.ts, op=SUPERTYPE_OF, target=TupleType([fx.a, fx.b], fx.std_tuple)
-            ),
-            Constraint(
-                type_var=fx.ts, op=SUBTYPE_OF, target=TupleType([fx.a, fx.b], fx.std_tuple)
-            ),
+            Constraint(type_var=fx.ts, op=SUPERTYPE_OF, target=TupleType([fx.a, fx.b], fx.std_tuple)),
+            Constraint(type_var=fx.ts, op=SUBTYPE_OF, target=TupleType([fx.a, fx.b], fx.std_tuple)),
         }
 
     def test_type_var_tuple_with_prefix_and_suffix(self) -> None:
@@ -53,12 +43,8 @@ class ConstraintsSuite(Suite):
             )
         ) == {
             Constraint(type_var=fx.t, op=SUPERTYPE_OF, target=fx.a),
-            Constraint(
-                type_var=fx.ts, op=SUPERTYPE_OF, target=TupleType([fx.b, fx.c], fx.std_tuple)
-            ),
-            Constraint(
-                type_var=fx.ts, op=SUBTYPE_OF, target=TupleType([fx.b, fx.c], fx.std_tuple)
-            ),
+            Constraint(type_var=fx.ts, op=SUPERTYPE_OF, target=TupleType([fx.b, fx.c], fx.std_tuple)),
+            Constraint(type_var=fx.ts, op=SUBTYPE_OF, target=TupleType([fx.b, fx.c], fx.std_tuple)),
             Constraint(type_var=fx.s, op=SUPERTYPE_OF, target=fx.d),
         }
 

@@ -19,18 +19,14 @@ class table_V_O_R_G_(DefaultTable.DefaultTable):
     """
 
     def decompile(self, data, ttFont):
-        self.getGlyphName = (
-            ttFont.getGlyphName
-        )  # for use in get/set item functions, for access by GID
+        self.getGlyphName = ttFont.getGlyphName  # for use in get/set item functions, for access by GID
         (
             self.majorVersion,
             self.minorVersion,
             self.defaultVertOriginY,
             self.numVertOriginYMetrics,
         ) = struct.unpack(">HHhH", data[:8])
-        assert (
-            self.majorVersion <= 1
-        ), "Major version of VORG table is higher than I know how to handle"
+        assert self.majorVersion <= 1, "Major version of VORG table is higher than I know how to handle"
         data = data[8:]
         vids = []
         gids = []
@@ -91,10 +87,7 @@ class table_V_O_R_G_(DefaultTable.DefaultTable):
             try:
                 gid = ttFont.getGlyphID(glyphName)
             except:
-                assert 0, (
-                    "VORG table contains a glyph name not in ttFont.getGlyphNames(): "
-                    + str(glyphName)
-                )
+                assert 0, "VORG table contains a glyph name not in ttFont.getGlyphNames(): " + str(glyphName)
             vOriginTable.append([gid, glyphName, self.VOriginRecords[glyphName]])
         vOriginTable.sort()
         for entry in vOriginTable:
@@ -104,9 +97,7 @@ class table_V_O_R_G_(DefaultTable.DefaultTable):
     def fromXML(self, name, attrs, content, ttFont):
         if not hasattr(self, "VOriginRecords"):
             self.VOriginRecords = {}
-        self.getGlyphName = (
-            ttFont.getGlyphName
-        )  # for use in get/set item functions, for access by GID
+        self.getGlyphName = ttFont.getGlyphName  # for use in get/set item functions, for access by GID
         if name == "VOriginRecord":
             vOriginRec = VOriginRecord()
             for element in content:

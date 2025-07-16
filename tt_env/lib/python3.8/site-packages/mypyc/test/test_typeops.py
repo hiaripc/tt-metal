@@ -84,14 +84,14 @@ class TestUnionSimplification(unittest.TestCase):
         assert RUnion.make_simplified_union([int_rprimitive, int_rprimitive]) == int_rprimitive
 
     def test_cannot_simplify(self) -> None:
-        assert RUnion.make_simplified_union(
+        assert RUnion.make_simplified_union([int_rprimitive, str_rprimitive, object_rprimitive]) == RUnion(
             [int_rprimitive, str_rprimitive, object_rprimitive]
-        ) == RUnion([int_rprimitive, str_rprimitive, object_rprimitive])
+        )
 
     def test_nested(self) -> None:
-        assert RUnion.make_simplified_union(
-            [int_rprimitive, RUnion([str_rprimitive, int_rprimitive])]
-        ) == RUnion([int_rprimitive, str_rprimitive])
+        assert RUnion.make_simplified_union([int_rprimitive, RUnion([str_rprimitive, int_rprimitive])]) == RUnion(
+            [int_rprimitive, str_rprimitive]
+        )
         assert RUnion.make_simplified_union(
             [int_rprimitive, RUnion([str_rprimitive, RUnion([int_rprimitive])])]
         ) == RUnion([int_rprimitive, str_rprimitive])

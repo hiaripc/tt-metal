@@ -62,9 +62,7 @@ def _flatten_sharded_tensors(state_dict: STATE_DICT_TYPE) -> STATE_DICT_TYPE:
             return
 
         if len(inner_st.local_shards()) != 1:
-            raise ValueError(
-                "Cannot handle inner tensor with more than 1 shard"
-            )
+            raise ValueError("Cannot handle inner tensor with more than 1 shard")
         inner_shard = inner_st.local_shards()[0]
 
         local_shards = [

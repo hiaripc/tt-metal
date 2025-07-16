@@ -118,7 +118,6 @@ def test_matmul_2d_host_perf_out_of_box(
 ):
     FILE_NAME = "/home/bach/wd/nn/matmul/results/matmul2d_oob.csv"
 
-
     LoFi_cycle = 16
     HiFi2_cycle = LoFi_cycle * 2
     HiFi3_cycle = LoFi_cycle * 3

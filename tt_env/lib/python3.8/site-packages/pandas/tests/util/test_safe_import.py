@@ -22,9 +22,7 @@ def test_safe_import_versions(min_version, valid):
     assert result
 
 
-@pytest.mark.parametrize(
-    "min_version,valid", [(None, False), ("1.0", True), ("2.0", False)]
-)
+@pytest.mark.parametrize("min_version,valid", [(None, False), ("1.0", True), ("2.0", False)])
 def test_safe_import_dummy(monkeypatch, min_version, valid):
     mod_name = "hello123"
 

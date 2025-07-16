@@ -67,9 +67,9 @@ def test_is_valid(check_valid=_is_valid_args, incomplete=False):
 
     f = functools.partial
     assert orig_check_valid(f, (), {}) is incomplete
-    assert orig_check_valid(f, (), {'func': 1}) is incomplete
+    assert orig_check_valid(f, (), {"func": 1}) is incomplete
     assert orig_check_valid(f, (1,), {})
-    assert orig_check_valid(f, (1,), {'func': 1})
+    assert orig_check_valid(f, (1,), {"func": 1})
     assert orig_check_valid(f, (1, 2), {})
 
 

@@ -15,11 +15,11 @@ class Epoch:
     allowed = {
         "ET": {
             "UTC": +64.1839,
-            },
+        },
         "UTC": {
             "ET": -64.1839,
-            },
-        }
+        },
+    }
 
     def __init__(self, frame, sec=None, jd=None, daynum=None, dt=None):
         """
@@ -43,22 +43,23 @@ class Epoch:
         - daynum    The matplotlib day number of the epoch.
         - dt         A python datetime instance.
         """
-        if ((sec is None and jd is not None) or
-                (sec is not None and jd is None) or
-                (daynum is not None and
-                 (sec is not None or jd is not None)) or
-                (daynum is None and dt is None and
-                 (sec is None or jd is None)) or
-                (daynum is not None and dt is not None) or
-                (dt is not None and (sec is not None or jd is not None)) or
-                ((dt is not None) and not isinstance(dt, DT.datetime))):
+        if (
+            (sec is None and jd is not None)
+            or (sec is not None and jd is None)
+            or (daynum is not None and (sec is not None or jd is not None))
+            or (daynum is None and dt is None and (sec is None or jd is None))
+            or (daynum is not None and dt is not None)
+            or (dt is not None and (sec is not None or jd is not None))
+            or ((dt is not None) and not isinstance(dt, DT.datetime))
+        ):
             raise ValueError(
                 "Invalid inputs.  Must enter sec and jd together, "
                 "daynum by itself, or dt (must be a python datetime).\n"
                 "Sec = %s\n"
                 "JD  = %s\n"
                 "dnum= %s\n"
-                "dt  = %s" % (sec, jd, daynum, dt))
+                "dt  = %s" % (sec, jd, daynum, dt)
+            )
 
         _api.check_in_list(self.allowed, frame=frame)
         self._frame = frame
@@ -170,7 +171,7 @@ class Epoch:
         days = t._jd - rhs._jd
         sec = t._seconds - rhs._seconds
 
-        return U.Duration(rhs._frame, days*86400 + sec)
+        return U.Duration(rhs._frame, days * 86400 + sec)
 
     def __str__(self):
         """Print the Epoch."""

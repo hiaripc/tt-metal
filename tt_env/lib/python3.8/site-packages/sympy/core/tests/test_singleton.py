@@ -2,12 +2,12 @@ from sympy.core.basic import Basic
 from sympy.core.numbers import Rational
 from sympy.core.singleton import S, Singleton
 
-def test_Singleton():
 
+def test_Singleton():
     class MySingleton(Basic, metaclass=Singleton):
         pass
 
-    MySingleton() # force instantiation
+    MySingleton()  # force instantiation
     assert MySingleton() is not Basic()
     assert MySingleton() is MySingleton()
     assert S.MySingleton is MySingleton()
@@ -19,6 +19,7 @@ def test_Singleton():
     assert MySingleton_sub() is not MySingleton()
     assert MySingleton_sub() is MySingleton_sub()
 
+
 def test_singleton_redefinition():
     class TestSingleton(Basic, metaclass=Singleton):
         pass
@@ -29,6 +30,7 @@ def test_singleton_redefinition():
         pass
 
     assert TestSingleton() is S.TestSingleton
+
 
 def test_names_in_namespace():
     # Every singleton name should be accessible from the 'from sympy import *'
@@ -54,21 +56,21 @@ def test_names_in_namespace():
     # str printer should print a form that does not use S. This is because
     # sympify() disables attribute lookups by default for safety purposes.
     d = {}
-    exec('from sympy import *', d)
+    exec("from sympy import *", d)
 
     for name in dir(S) + list(S._classes_to_install):
-        if name.startswith('_'):
+        if name.startswith("_"):
             continue
-        if name == 'register':
+        if name == "register":
             continue
         if isinstance(getattr(S, name), Rational):
             continue
-        if getattr(S, name).__module__.startswith('sympy.physics'):
+        if getattr(S, name).__module__.startswith("sympy.physics"):
             continue
-        if name in ['MySingleton', 'MySingleton_sub', 'TestSingleton']:
+        if name in ["MySingleton", "MySingleton_sub", "TestSingleton"]:
             # From the tests above
             continue
-        if name == 'NegativeInfinity':
+        if name == "NegativeInfinity":
             # Accessible by -oo
             continue
 

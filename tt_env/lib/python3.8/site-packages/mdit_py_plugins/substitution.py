@@ -5,9 +5,7 @@ from markdown_it.rules_inline import StateInline
 from mdit_py_plugins.utils import is_code_block
 
 
-def substitution_plugin(
-    md: MarkdownIt, start_delimiter: str = "{", end_delimiter: str = "}"
-) -> None:
+def substitution_plugin(md: MarkdownIt, start_delimiter: str = "{", end_delimiter: str = "}") -> None:
     """A plugin to create substitution tokens.
 
     These, token should be handled by the renderer.
@@ -22,10 +20,7 @@ def substitution_plugin(
 
     def _substitution_inline(state: StateInline, silent: bool) -> bool:
         try:
-            if (
-                state.src[state.pos] != start_delimiter
-                or state.src[state.pos + 1] != start_delimiter
-            ):
+            if state.src[state.pos] != start_delimiter or state.src[state.pos + 1] != start_delimiter:
                 return False
         except IndexError:
             return False
@@ -63,9 +58,7 @@ def substitution_plugin(
 
         return True
 
-    def _substitution_block(
-        state: StateBlock, startLine: int, endLine: int, silent: bool
-    ) -> bool:
+    def _substitution_block(state: StateBlock, startLine: int, endLine: int, silent: bool) -> bool:
         if is_code_block(state, startLine):
             return False
 

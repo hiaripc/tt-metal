@@ -30,18 +30,14 @@ def test_fix_connected_components_precomputed():
     assert n_connected_components > 1
 
     distances = pairwise_distances(X)
-    graph = _fix_connected_components(
-        distances, graph, n_connected_components, labels, metric="precomputed"
-    )
+    graph = _fix_connected_components(distances, graph, n_connected_components, labels, metric="precomputed")
 
     n_connected_components, labels = connected_components(graph)
     assert n_connected_components == 1
 
     # but it does not work with precomputed neighbors graph
     with pytest.raises(RuntimeError, match="does not work with a sparse"):
-        _fix_connected_components(
-            graph, graph, n_connected_components, labels, metric="precomputed"
-        )
+        _fix_connected_components(graph, graph, n_connected_components, labels, metric="precomputed")
 
 
 def test_fix_connected_components_wrong_mode():
@@ -51,9 +47,7 @@ def test_fix_connected_components_wrong_mode():
     n_connected_components, labels = connected_components(graph)
 
     with pytest.raises(ValueError, match="Unknown mode"):
-        graph = _fix_connected_components(
-            X, graph, n_connected_components, labels, mode="foo"
-        )
+        graph = _fix_connected_components(X, graph, n_connected_components, labels, mode="foo")
 
 
 def test_fix_connected_components_connectivity_mode():
@@ -61,9 +55,7 @@ def test_fix_connected_components_connectivity_mode():
     X = np.array([0, 1, 6, 7])[:, None]
     graph = kneighbors_graph(X, n_neighbors=1, mode="connectivity")
     n_connected_components, labels = connected_components(graph)
-    graph = _fix_connected_components(
-        X, graph, n_connected_components, labels, mode="connectivity"
-    )
+    graph = _fix_connected_components(X, graph, n_connected_components, labels, mode="connectivity")
     assert np.all(graph.data == 1)
 
 
@@ -74,7 +66,5 @@ def test_fix_connected_components_distance_mode():
     assert np.all(graph.data == 1)
 
     n_connected_components, labels = connected_components(graph)
-    graph = _fix_connected_components(
-        X, graph, n_connected_components, labels, mode="distance"
-    )
+    graph = _fix_connected_components(X, graph, n_connected_components, labels, mode="distance")
     assert not np.all(graph.data == 1)

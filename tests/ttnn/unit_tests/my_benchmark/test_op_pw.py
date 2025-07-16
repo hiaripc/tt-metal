@@ -18,12 +18,14 @@ import numpy as np
 ta = TelemetryAnalyzer()
 profiler_log_path = PROFILER_LOGS_DIR / PROFILER_DEVICE_SIDE_LOG
 
+
 def get_device_freq():
     setup = device_post_proc_config.default_setup()
     setup.deviceInputLog = profiler_log_path
     deviceData = import_log_run_stats(setup)
     freq = deviceData["deviceInfo"]["freq"]
     return freq
+
 
 WARMUP_ITERS = 5
 MEASURE_ITERS = 300
@@ -34,7 +36,7 @@ FILE_NAME_OOB = "/home/bach/wd/nn/matmul/results/oob_pw.csv"
 
 # tilziation on device only supports bf16
 matmul_configs = [
-    #  ("f32_m4", ttnn.float32, ttnn.MathFidelity.HiFi4), 
+    #  ("f32_m4", ttnn.float32, ttnn.MathFidelity.HiFi4),
     ("f16_m2", ttnn.bfloat16, ttnn.MathFidelity.HiFi2),
     ("f16_m4", ttnn.bfloat16, ttnn.MathFidelity.HiFi4),
     # ("f8b_m2", ttnn.bfloat8_b, ttnn.MathFidelity.HiFi2),
@@ -76,8 +78,8 @@ SUBBLOCK_HW_CHOICES = [
     (1, 1),  # subblock_hw = 1
 ]
 
-def get_subblock_sizes(m_tiles_per_core, n_tiles_per_core, out_sharded=False, fp32_dest_acc_en=False):
 
+def get_subblock_sizes(m_tiles_per_core, n_tiles_per_core, out_sharded=False, fp32_dest_acc_en=False):
     for subblock_hw in SUBBLOCK_HW_CHOICES:
         out_subblock_h = subblock_hw[0]
         out_subblock_w = subblock_hw[1]
@@ -112,25 +114,25 @@ from tt_metal.tools.profiler.common import PROFILER_LOGS_DIR, PROFILER_DEVICE_SI
 profiler_log_path = PROFILER_LOGS_DIR / PROFILER_DEVICE_SIDE_LOG
 
 
-def   get_device_freq():
+def get_device_freq():
     setup = device_post_proc_config.default_setup()
     setup.deviceInputLog = profiler_log_path
     deviceData = import_log_run_stats(setup)
     freq = deviceData["deviceInfo"]["freq"]
     return freq
 
+
 @pytest.mark.parametrize("device_params", [{"l1_small_size": 24576, "trace_region_size": 3855488}], indirect=True)
-@pytest.mark.parametrize("warmup_iters", [WARMUP_ITERS]) 
+@pytest.mark.parametrize("warmup_iters", [WARMUP_ITERS])
 @pytest.mark.parametrize("measure_iters", [MEASURE_ITERS])
-@pytest.mark.parametrize("grid_size", [GRID_SIZE]) 
-def  test_op(
+@pytest.mark.parametrize("grid_size", [GRID_SIZE])
+def test_op(
     device,
     warmup_iters,
     measure_iters,
     grid_size,
     use_program_cache,
 ):
-
     LoFi_cycle = 16
     HiFi2_cycle = LoFi_cycle * 2
     HiFi3_cycle = LoFi_cycle * 3
@@ -138,20 +140,30 @@ def  test_op(
 
     data_info = dict()
 
-    conf_infos = ["conf", "m", "grid_size", "in0_storage_type", "in1_storage_type", 
-                  "out_storage_type", "dtype", "math_fidelity", "utilization_vs_user_grid_perc", "utilization_vs_full_grid_perc"]
-    
+    conf_infos = [
+        "conf",
+        "m",
+        "grid_size",
+        "in0_storage_type",
+        "in1_storage_type",
+        "out_storage_type",
+        "dtype",
+        "math_fidelity",
+        "utilization_vs_user_grid_perc",
+        "utilization_vs_full_grid_perc",
+    ]
+
     timing_infos = ["run", "tflops"]
-    
+
     telemetry_infos = ["voltage", "current", "power", "aiclk", "temp"]
 
-    for k in (conf_infos + timing_infos + telemetry_infos):
+    for k in conf_infos + timing_infos + telemetry_infos:
         data_info[k] = None
 
-    data_info['grid_size'] = grid_size
+    data_info["grid_size"] = grid_size
     grid_y, grid_x = grid_size
-    
-    data_info['iters'] = measure_iters
+
+    data_info["iters"] = measure_iters
 
     if not os.path.exists(FILE_NAME):
         with open(FILE_NAME, mode="w", newline="") as file:
@@ -162,16 +174,25 @@ def  test_op(
         writer = csv.writer(file)
 
         for conf, dtype, math_fidelity in matmul_configs:
-            
-            data_info['conf'] = conf
-            data_info['dtype'] = dtype
-            data_info['math_fidelity'] = math_fidelity
+            data_info["conf"] = conf
+            data_info["dtype"] = dtype
+            data_info["math_fidelity"] = math_fidelity
 
-            logger.info(f"\n\nRunning conf {data_info['dtype']} ==> Type: {data_info['dtype']}, MF: {math_fidelity}\n\n")
-            
-            for m, k, n, in0_sharded, out_sharded, in0_block_w_div, num_out_blocks_h, num_out_blocks_w in matmul_shapes_bfloat16:
-                
-                data_info['m'] = m
+            logger.info(
+                f"\n\nRunning conf {data_info['dtype']} ==> Type: {data_info['dtype']}, MF: {math_fidelity}\n\n"
+            )
+
+            for (
+                m,
+                k,
+                n,
+                in0_sharded,
+                out_sharded,
+                in0_block_w_div,
+                num_out_blocks_h,
+                num_out_blocks_w,
+            ) in matmul_shapes_bfloat16:
+                data_info["m"] = m
                 profiler.clear()
 
                 in0_shape = [1, 1, m, k]
@@ -185,14 +206,14 @@ def  test_op(
                 out_subblock_h, out_subblock_w = get_subblock_sizes(out_block_h, out_block_w, out_sharded)
 
                 if in0_sharded:
-                    data_info['in0_storage_type'] = "L1"
+                    data_info["in0_storage_type"] = "L1"
                 else:
-                    data_info['in0_storage_type'] = "DRAM"
-                data_info['in1_storage_type'] = "DRAM"
+                    data_info["in0_storage_type"] = "DRAM"
+                data_info["in1_storage_type"] = "DRAM"
                 if out_sharded:
-                    data_info['out_storage_type'] = "L1"
+                    data_info["out_storage_type"] = "L1"
                 else:
-                    data_info['out_storage_type'] = "DRAM"
+                    data_info["out_storage_type"] = "DRAM"
 
                 if in0_sharded:
                     in0_memory_config = ttnn.create_sharded_memory_config(
@@ -209,7 +230,7 @@ def  test_op(
                 # set to 0
                 for i in timing_infos:
                     data_info[i] = 0
-                
+
                 for i in telemetry_infos:
                     data_info[i] = 0
 
@@ -262,8 +283,8 @@ def  test_op(
                     device=device,
                     memory_config=ttnn.DRAM_MEMORY_CONFIG,
                 )
-                
-                #Warm up
+
+                # Warm up
                 for i in range(warmup_iters):
                     output_t = ttnn.matmul(
                         in0_t,
@@ -273,7 +294,7 @@ def  test_op(
                         dtype=dtype,
                         compute_kernel_config=compute_kernel_config,
                         output_tile=output_tile,
-                     )
+                    )
 
                 profiler.start(f"run")
                 ta.start_monitoring_online(freq=1)
@@ -288,7 +309,7 @@ def  test_op(
                         output_tile=output_tile,
                     )
                 ttnn.synchronize_device(device)
-                profiler.end(f"run")                    
+                profiler.end(f"run")
                 telemetry_data = ta.stop_monitoring_online()
 
                 ttnn.DumpDeviceProfiler(device)
@@ -297,7 +318,7 @@ def  test_op(
                     data_info[i] += np.mean(v)
 
                 inference_time_avg = profiler.get("run") / measure_iters
-                data_info['tflops'] = 2 * m * k * n / 1e12 / inference_time_avg
+                data_info["tflops"] = 2 * m * k * n / 1e12 / inference_time_avg
                 if math_fidelity == ttnn.MathFidelity.LoFi:
                     cycle_per_tile = LoFi_cycle
                 elif math_fidelity == ttnn.MathFidelity.HiFi2:
@@ -317,9 +338,9 @@ def  test_op(
                 utilization_full_grid_percentage = f"{utilization_full_grid * 100:.2f}%"
                 utilization_user_grid_percentage = f"{utilization_user_grid * 100:.2f}%"
 
-                data_info['run'] = inference_time_avg * 1e6
-                data_info['utilization_vs_full_grid_perc'] = utilization_full_grid_percentage
-                data_info['utilization_vs_user_grid_perc'] = utilization_user_grid_percentage
+                data_info["run"] = inference_time_avg * 1e6
+                data_info["utilization_vs_full_grid_perc"] = utilization_full_grid_percentage
+                data_info["utilization_vs_user_grid_perc"] = utilization_user_grid_percentage
 
                 log_infos = [f"{k}: {v}" for k, v in data_info.items()]
                 logger.info(f"\nM={m} ==> \n {log_infos}")
@@ -334,19 +355,17 @@ def  test_op(
                 device.enable_program_cache()
 
 
-
 @pytest.mark.parametrize("device_params", [{"l1_small_size": 24576, "trace_region_size": 3855488}], indirect=True)
-@pytest.mark.parametrize("warmup_iters", [WARMUP_ITERS]) 
+@pytest.mark.parametrize("warmup_iters", [WARMUP_ITERS])
 @pytest.mark.parametrize("measure_iters", [MEASURE_ITERS])
-@pytest.mark.parametrize("grid_size", [GRID_SIZE]) 
-def  test_oob(
+@pytest.mark.parametrize("grid_size", [GRID_SIZE])
+def test_oob(
     device,
     warmup_iters,
     measure_iters,
     grid_size,
     use_program_cache,
 ):
-
     LoFi_cycle = 16
     HiFi2_cycle = LoFi_cycle * 2
     HiFi3_cycle = LoFi_cycle * 3
@@ -354,20 +373,30 @@ def  test_oob(
 
     data_info = dict()
 
-    conf_infos = ["conf", "m", "grid_size", "in0_storage_type", "in1_storage_type", 
-                  "out_storage_type", "dtype", "math_fidelity", "utilization_vs_user_grid_perc", "utilization_vs_full_grid_perc"]
-    
+    conf_infos = [
+        "conf",
+        "m",
+        "grid_size",
+        "in0_storage_type",
+        "in1_storage_type",
+        "out_storage_type",
+        "dtype",
+        "math_fidelity",
+        "utilization_vs_user_grid_perc",
+        "utilization_vs_full_grid_perc",
+    ]
+
     timing_infos = ["run", "tflops"]
-    
+
     telemetry_infos = ["voltage", "current", "power", "aiclk", "temp"]
 
-    for k in (conf_infos + timing_infos + telemetry_infos):
+    for k in conf_infos + timing_infos + telemetry_infos:
         data_info[k] = None
 
-    data_info['grid_size'] = grid_size
+    data_info["grid_size"] = grid_size
     grid_y, grid_x = grid_size
-    
-    data_info['iters'] = measure_iters
+
+    data_info["iters"] = measure_iters
 
     if not os.path.exists(FILE_NAME_OOB):
         with open(FILE_NAME_OOB, mode="w", newline="") as file:
@@ -378,16 +407,25 @@ def  test_oob(
         writer = csv.writer(file)
 
         for conf, dtype, math_fidelity in matmul_configs:
-            
-            data_info['conf'] = conf
-            data_info['dtype'] = dtype
-            data_info['math_fidelity'] = math_fidelity
+            data_info["conf"] = conf
+            data_info["dtype"] = dtype
+            data_info["math_fidelity"] = math_fidelity
 
-            logger.info(f"\n\nRunning conf {data_info['dtype']} ==> Type: {data_info['dtype']}, MF: {math_fidelity}\n\n")
-            
-            for m, k, n, in0_sharded, out_sharded, in0_block_w_div, num_out_blocks_h, num_out_blocks_w in matmul_shapes_bfloat16:
-                
-                data_info['m'] = m
+            logger.info(
+                f"\n\nRunning conf {data_info['dtype']} ==> Type: {data_info['dtype']}, MF: {math_fidelity}\n\n"
+            )
+
+            for (
+                m,
+                k,
+                n,
+                in0_sharded,
+                out_sharded,
+                in0_block_w_div,
+                num_out_blocks_h,
+                num_out_blocks_w,
+            ) in matmul_shapes_bfloat16:
+                data_info["m"] = m
                 profiler.clear()
 
                 in0_shape = [1, 1, m, k]
@@ -398,7 +436,7 @@ def  test_oob(
                 # set to 0
                 for i in timing_infos:
                     data_info[i] = 0
-                
+
                 for i in telemetry_infos:
                     data_info[i] = 0
 
@@ -407,10 +445,10 @@ def  test_oob(
                     math_approx_mode=True,
                 )
 
-                data_info['in0_storage_type'] = "DRAM"
-                data_info['in1_storage_type'] = "DRAM"
-                data_info['out_storage_type'] = "DRAM"
-                
+                data_info["in0_storage_type"] = "DRAM"
+                data_info["in1_storage_type"] = "DRAM"
+                data_info["out_storage_type"] = "DRAM"
+
                 in0_memory_config = ttnn.DRAM_MEMORY_CONFIG
                 in1_memory_config = ttnn.DRAM_MEMORY_CONFIG
                 out_mem_config = ttnn.DRAM_MEMORY_CONFIG
@@ -436,8 +474,8 @@ def  test_oob(
                     device=device,
                     memory_config=in1_memory_config,
                 )
-                
-                #Warm up
+
+                # Warm up
                 for i in range(warmup_iters):
                     output_t = ttnn.matmul(
                         in0_t,
@@ -446,7 +484,7 @@ def  test_oob(
                         dtype=dtype,
                         compute_kernel_config=compute_kernel_config,
                         output_tile=output_tile,
-                     )
+                    )
 
                 profiler.start(f"run")
                 ta.start_monitoring_online(freq=1)
@@ -460,7 +498,7 @@ def  test_oob(
                         output_tile=output_tile,
                     )
                 ttnn.synchronize_device(device)
-                profiler.end(f"run")                    
+                profiler.end(f"run")
                 telemetry_data = ta.stop_monitoring_online()
 
                 ttnn.DumpDeviceProfiler(device)
@@ -469,7 +507,7 @@ def  test_oob(
                     data_info[i] += np.mean(v)
 
                 inference_time_avg = profiler.get("run") / measure_iters
-                data_info['tflops'] = 2 * m * k * n / 1e12 / inference_time_avg
+                data_info["tflops"] = 2 * m * k * n / 1e12 / inference_time_avg
                 if math_fidelity == ttnn.MathFidelity.LoFi:
                     cycle_per_tile = LoFi_cycle
                 elif math_fidelity == ttnn.MathFidelity.HiFi2:
@@ -489,9 +527,9 @@ def  test_oob(
                 utilization_full_grid_percentage = f"{utilization_full_grid * 100:.2f}%"
                 utilization_user_grid_percentage = f"{utilization_user_grid * 100:.2f}%"
 
-                data_info['run'] = inference_time_avg * 1e6
-                data_info['utilization_vs_full_grid_perc'] = utilization_full_grid_percentage
-                data_info['utilization_vs_user_grid_perc'] = utilization_user_grid_percentage
+                data_info["run"] = inference_time_avg * 1e6
+                data_info["utilization_vs_full_grid_perc"] = utilization_full_grid_percentage
+                data_info["utilization_vs_user_grid_perc"] = utilization_user_grid_percentage
 
                 log_infos = [f"{k}: {v}" for k, v in data_info.items()]
                 logger.info(f"\nM={m} ==> \n {log_infos}")

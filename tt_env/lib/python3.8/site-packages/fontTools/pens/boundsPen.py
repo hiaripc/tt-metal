@@ -82,9 +82,7 @@ class BoundsPen(ControlBoundsPen):
         bounds = self.bounds
         bounds = updateBounds(bounds, pt)
         if not pointInRect(bcp1, bounds) or not pointInRect(bcp2, bounds):
-            bounds = unionRect(
-                bounds, calcCubicBounds(self._getCurrentPoint(), bcp1, bcp2, pt)
-            )
+            bounds = unionRect(bounds, calcCubicBounds(self._getCurrentPoint(), bcp1, bcp2, pt))
         self.bounds = bounds
 
     def _qCurveToOne(self, bcp, pt):
@@ -92,7 +90,5 @@ class BoundsPen(ControlBoundsPen):
         bounds = self.bounds
         bounds = updateBounds(bounds, pt)
         if not pointInRect(bcp, bounds):
-            bounds = unionRect(
-                bounds, calcQuadraticBounds(self._getCurrentPoint(), bcp, pt)
-            )
+            bounds = unionRect(bounds, calcQuadraticBounds(self._getCurrentPoint(), bcp, pt))
         self.bounds = bounds

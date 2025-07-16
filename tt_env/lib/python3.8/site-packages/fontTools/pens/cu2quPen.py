@@ -164,9 +164,7 @@ class Cu2QuPointPen(BasePointToSegmentPen):
             # a "super" bezier; decompose it
             on_curve, smooth, name, kwargs = points[-1]
             num_sub_segments = n - 1
-            for i, sub_points in enumerate(
-                decomposeSuperBezierSegment([pt for pt, _, _, _ in points])
-            ):
+            for i, sub_points in enumerate(decomposeSuperBezierSegment([pt for pt, _, _, _ in points])):
                 new_segment = []
                 for point in sub_points[:-1]:
                     new_segment.append((point, False, None, {}))
@@ -190,8 +188,7 @@ class Cu2QuPointPen(BasePointToSegmentPen):
             if segment_type in points_required:
                 n, op = points_required[segment_type]
                 assert op(len(points), n), (
-                    f"illegal {segment_type!r} segment point count: "
-                    f"expected {n}, got {len(points)}"
+                    f"illegal {segment_type!r} segment point count: " f"expected {n}, got {len(points)}"
                 )
                 offcurves = points[:-1]
                 if i == 0:
@@ -244,10 +241,7 @@ class Cu2QuMultiPen:
 
     def __init__(self, other_pens, max_err, reverse_direction=False):
         if reverse_direction:
-            other_pens = [
-                ReverseContourPen(pen, outputImpliedClosingLine=True)
-                for pen in other_pens
-            ]
+            other_pens = [ReverseContourPen(pen, outputImpliedClosingLine=True) for pen in other_pens]
         self.pens = other_pens
         self.max_err = max_err
         self.start_pts = None

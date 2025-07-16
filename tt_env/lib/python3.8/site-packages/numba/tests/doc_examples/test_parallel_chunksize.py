@@ -9,7 +9,6 @@ from numba.tests.support import TestCase
 
 @skip_parfors_unsupported
 class ChunksizeExamplesTest(TestCase):
-
     _numba_parallel_test_ = False
 
     def setUp(self):
@@ -21,9 +20,10 @@ class ChunksizeExamplesTest(TestCase):
     def test_unbalanced_example(self):
         with captured_stdout():
             # magictoken.ex_unbalanced.begin
-            from numba import (njit,
-                               prange,
-                               )
+            from numba import (
+                njit,
+                prange,
+            )
             import numpy as np
 
             @njit(parallel=True)
@@ -49,20 +49,21 @@ class ChunksizeExamplesTest(TestCase):
     def test_chunksize_manual(self):
         with captured_stdout():
             # magictoken.ex_chunksize_manual.begin
-            from numba import (njit,
-                               prange,
-                               set_parallel_chunksize,
-                               get_parallel_chunksize,
-                               )
+            from numba import (
+                njit,
+                prange,
+                set_parallel_chunksize,
+                get_parallel_chunksize,
+            )
 
             @njit(parallel=True)
             def func1(n):
                 acc = 0
-                print(get_parallel_chunksize()) # Will print 4.
+                print(get_parallel_chunksize())  # Will print 4.
                 for i in prange(n):
-                    print(get_parallel_chunksize()) # Will print 0.
+                    print(get_parallel_chunksize())  # Will print 0.
                     acc += i
-                print(get_parallel_chunksize()) # Will print 4.
+                print(get_parallel_chunksize())  # Will print 4.
                 return acc
 
             @njit(parallel=True)
@@ -118,5 +119,5 @@ class ChunksizeExamplesTest(TestCase):
             self.assertPreciseEqual(result3, func1.py_func(12))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

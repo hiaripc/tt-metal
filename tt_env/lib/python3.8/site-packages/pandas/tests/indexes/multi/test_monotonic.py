@@ -23,17 +23,13 @@ def test_is_monotonic_increasing():
     assert Index(i.values).is_monotonic_increasing is True
     assert i._is_strictly_monotonic_increasing is True
 
-    i = MultiIndex.from_product(
-        [np.arange(10, 0, -1), np.arange(10)], names=["one", "two"]
-    )
+    i = MultiIndex.from_product([np.arange(10, 0, -1), np.arange(10)], names=["one", "two"])
     assert i.is_monotonic_increasing is False
     assert i._is_strictly_monotonic_increasing is False
     assert Index(i.values).is_monotonic_increasing is False
     assert Index(i.values)._is_strictly_monotonic_increasing is False
 
-    i = MultiIndex.from_product(
-        [np.arange(10), np.arange(10, 0, -1)], names=["one", "two"]
-    )
+    i = MultiIndex.from_product([np.arange(10), np.arange(10, 0, -1)], names=["one", "two"])
     assert i.is_monotonic_increasing is False
     assert i._is_strictly_monotonic_increasing is False
     assert Index(i.values).is_monotonic_increasing is False
@@ -83,25 +79,19 @@ def test_is_monotonic_increasing():
 
 
 def test_is_monotonic_decreasing():
-    i = MultiIndex.from_product(
-        [np.arange(9, -1, -1), np.arange(9, -1, -1)], names=["one", "two"]
-    )
+    i = MultiIndex.from_product([np.arange(9, -1, -1), np.arange(9, -1, -1)], names=["one", "two"])
     assert i.is_monotonic_decreasing is True
     assert i._is_strictly_monotonic_decreasing is True
     assert Index(i.values).is_monotonic_decreasing is True
     assert i._is_strictly_monotonic_decreasing is True
 
-    i = MultiIndex.from_product(
-        [np.arange(10), np.arange(10, 0, -1)], names=["one", "two"]
-    )
+    i = MultiIndex.from_product([np.arange(10), np.arange(10, 0, -1)], names=["one", "two"])
     assert i.is_monotonic_decreasing is False
     assert i._is_strictly_monotonic_decreasing is False
     assert Index(i.values).is_monotonic_decreasing is False
     assert Index(i.values)._is_strictly_monotonic_decreasing is False
 
-    i = MultiIndex.from_product(
-        [np.arange(10, 0, -1), np.arange(10)], names=["one", "two"]
-    )
+    i = MultiIndex.from_product([np.arange(10, 0, -1), np.arange(10)], names=["one", "two"])
     assert i.is_monotonic_decreasing is False
     assert i._is_strictly_monotonic_decreasing is False
     assert Index(i.values).is_monotonic_decreasing is False
@@ -162,17 +152,13 @@ def test_is_monotonic_decreasing():
 
 
 def test_is_strictly_monotonic_increasing():
-    idx = MultiIndex(
-        levels=[["bar", "baz"], ["mom", "next"]], codes=[[0, 0, 1, 1], [0, 0, 0, 1]]
-    )
+    idx = MultiIndex(levels=[["bar", "baz"], ["mom", "next"]], codes=[[0, 0, 1, 1], [0, 0, 0, 1]])
     assert idx.is_monotonic_increasing is True
     assert idx._is_strictly_monotonic_increasing is False
 
 
 def test_is_strictly_monotonic_decreasing():
-    idx = MultiIndex(
-        levels=[["baz", "bar"], ["next", "mom"]], codes=[[0, 0, 1, 1], [0, 0, 0, 1]]
-    )
+    idx = MultiIndex(levels=[["baz", "bar"], ["next", "mom"]], codes=[[0, 0, 1, 1], [0, 0, 0, 1]])
     assert idx.is_monotonic_decreasing is True
     assert idx._is_strictly_monotonic_decreasing is False
 

@@ -38,9 +38,7 @@ def skPathFromGlyph(glyphName: str, glyphSet: _TTGlyphMapping) -> pathops.Path:
     return path
 
 
-def skPathFromGlyphComponent(
-    component: _g_l_y_f.GlyphComponent, glyphSet: _TTGlyphMapping
-):
+def skPathFromGlyphComponent(component: _g_l_y_f.GlyphComponent, glyphSet: _TTGlyphMapping):
     baseGlyphName, transformation = component.getComponentInfo()
     path = skPathFromGlyph(baseGlyphName, glyphSet)
     return path.transform(*transformation)
@@ -56,9 +54,7 @@ def componentsOverlap(glyph: _g_l_y_f.Glyph, glyphSet: _TTGlyphMapping) -> bool:
 
     def _get_nth_component_path(index: int) -> pathops.Path:
         if index not in component_paths:
-            component_paths[index] = skPathFromGlyphComponent(
-                glyph.components[index], glyphSet
-            )
+            component_paths[index] = skPathFromGlyphComponent(glyph.components[index], glyphSet)
         return component_paths[index]
 
     return any(
@@ -84,9 +80,7 @@ def ttfGlyphFromSkPath(path: pathops.Path) -> _g_l_y_f.Glyph:
     return glyph
 
 
-def _charString_from_SkPath(
-    path: pathops.Path, charString: T2CharString
-) -> T2CharString:
+def _charString_from_SkPath(path: pathops.Path, charString: T2CharString) -> T2CharString:
     if charString.width == charString.private.defaultWidthX:
         width = None
     else:
@@ -96,9 +90,7 @@ def _charString_from_SkPath(
     return t2Pen.getCharString(charString.private, charString.globalSubrs)
 
 
-def _round_path(
-    path: pathops.Path, round: Callable[[float], float] = otRound
-) -> pathops.Path:
+def _round_path(path: pathops.Path, round: Callable[[float], float] = otRound) -> pathops.Path:
     rounded_path = pathops.Path()
     for verb, points in path:
         rounded_path.add(verb, *((round(p[0]), round(p[1])) for p in points))
@@ -137,9 +129,7 @@ def _simplify(
     except pathops.PathOpsError as e:
         if log.isEnabledFor(logging.DEBUG):
             path.dump()
-        raise RemoveOverlapsError(
-            f"Failed to remove overlaps from glyph {debugGlyphName!r}"
-        ) from e
+        raise RemoveOverlapsError(f"Failed to remove overlaps from glyph {debugGlyphName!r}") from e
 
     raise AssertionError("Unreachable")
 
@@ -157,11 +147,7 @@ def removeTTGlyphOverlaps(
 ) -> bool:
     glyph = glyfTable[glyphName]
     # decompose composite glyphs only if components overlap each other
-    if (
-        glyph.numberOfContours > 0
-        or glyph.isComposite()
-        and componentsOverlap(glyph, glyphSet)
-    ):
+    if glyph.numberOfContours > 0 or glyph.isComposite() and componentsOverlap(glyph, glyphSet):
         path = skPathFromGlyph(glyphName, glyphSet)
 
         # remove overlaps
@@ -211,9 +197,7 @@ def _remove_glyf_overlaps(
     modified = set()
     for glyphName in glyphNames:
         try:
-            if removeTTGlyphOverlaps(
-                glyphName, glyphSet, glyfTable, hmtxTable, removeHinting
-            ):
+            if removeTTGlyphOverlaps(glyphName, glyphSet, glyfTable, hmtxTable, removeHinting):
                 modified.add(glyphName)
         except RemoveOverlapsError:
             if not ignoreErrors:
@@ -312,9 +296,7 @@ def removeOverlaps(
     """
 
     if "glyf" not in font and "CFF " not in font:
-        raise NotImplementedError(
-            "No outline data found in the font: missing 'glyf' or 'CFF ' table"
-        )
+        raise NotImplementedError("No outline data found in the font: missing 'glyf' or 'CFF ' table")
 
     if glyphNames is None:
         glyphNames = font.getGlyphOrder()
@@ -347,9 +329,7 @@ def main(args=None):
 
     import argparse
 
-    parser = argparse.ArgumentParser(
-        "fonttools ttLib.removeOverlaps", description=__doc__
-    )
+    parser = argparse.ArgumentParser("fonttools ttLib.removeOverlaps", description=__doc__)
 
     parser.add_argument("input", metavar="INPUT.ttf", help="Input font file")
     parser.add_argument("output", metavar="OUTPUT.ttf", help="Output font file")
@@ -367,8 +347,7 @@ def main(args=None):
     parser.add_argument(
         "--ignore-errors",
         action="store_true",
-        help="ignore errors while removing overlaps, "
-        "thus keeping the tricky glyphs unchanged",
+        help="ignore errors while removing overlaps, " "thus keeping the tricky glyphs unchanged",
     )
     parser.add_argument(
         "--keep-unused-subroutines",

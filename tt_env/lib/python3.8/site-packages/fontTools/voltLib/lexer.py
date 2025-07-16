@@ -14,9 +14,7 @@ class Lexer(object):
     CHAR_LC_LETTER_ = "abcdefghijklmnopqrstuvwxyz"
     CHAR_UNDERSCORE_ = "_"
     CHAR_PERIOD_ = "."
-    CHAR_NAME_START_ = (
-        CHAR_UC_LETTER_ + CHAR_LC_LETTER_ + CHAR_PERIOD_ + CHAR_UNDERSCORE_
-    )
+    CHAR_NAME_START_ = CHAR_UC_LETTER_ + CHAR_LC_LETTER_ + CHAR_PERIOD_ + CHAR_UNDERSCORE_
     CHAR_NAME_CONTINUATION_ = CHAR_NAME_START_ + CHAR_DIGIT_
 
     def __init__(self, text, filename):

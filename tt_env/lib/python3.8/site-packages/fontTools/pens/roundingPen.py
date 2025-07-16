@@ -42,14 +42,10 @@ class RoundingPen(FilterPen):
         self._outPen.lineTo((self.roundFunc(pt[0]), self.roundFunc(pt[1])))
 
     def curveTo(self, *points):
-        self._outPen.curveTo(
-            *((self.roundFunc(x), self.roundFunc(y)) for x, y in points)
-        )
+        self._outPen.curveTo(*((self.roundFunc(x), self.roundFunc(y)) for x, y in points))
 
     def qCurveTo(self, *points):
-        self._outPen.qCurveTo(
-            *((self.roundFunc(x), self.roundFunc(y)) for x, y in points)
-        )
+        self._outPen.qCurveTo(*((self.roundFunc(x), self.roundFunc(y)) for x, y in points))
 
     def addComponent(self, glyphName, transformation):
         xx, xy, yx, yy, dx, dy = transformation
@@ -101,9 +97,7 @@ class RoundingPointPen(FilterPointPen):
         self.roundFunc = roundFunc
         self.transformRoundFunc = transformRoundFunc
 
-    def addPoint(
-        self, pt, segmentType=None, smooth=False, name=None, identifier=None, **kwargs
-    ):
+    def addPoint(self, pt, segmentType=None, smooth=False, name=None, identifier=None, **kwargs):
         self._outPen.addPoint(
             (self.roundFunc(pt[0]), self.roundFunc(pt[1])),
             segmentType=segmentType,

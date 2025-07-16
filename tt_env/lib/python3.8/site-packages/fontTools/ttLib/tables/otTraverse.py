@@ -32,9 +32,7 @@ def dfs_base_table(
     root_accessor: Optional[str] = None,
     skip_root: bool = False,
     predicate: Optional[Callable[[SubTablePath], bool]] = None,
-    iter_subtables_fn: Optional[
-        Callable[[BaseTable], Iterable[BaseTable.SubTableEntry]]
-    ] = None,
+    iter_subtables_fn: Optional[Callable[[BaseTable], Iterable[BaseTable.SubTableEntry]]] = None,
 ) -> Iterable[SubTablePath]:
     """Depth-first search tree of BaseTables.
 
@@ -72,9 +70,7 @@ def bfs_base_table(
     root_accessor: Optional[str] = None,
     skip_root: bool = False,
     predicate: Optional[Callable[[SubTablePath], bool]] = None,
-    iter_subtables_fn: Optional[
-        Callable[[BaseTable], Iterable[BaseTable.SubTableEntry]]
-    ] = None,
+    iter_subtables_fn: Optional[Callable[[BaseTable], Iterable[BaseTable.SubTableEntry]]] = None,
 ) -> Iterable[SubTablePath]:
     """Breadth-first search tree of BaseTables.
 
@@ -114,9 +110,7 @@ def _traverse_ot_data(
     skip_root: bool,
     predicate: Optional[Callable[[SubTablePath], bool]],
     add_to_frontier_fn: AddToFrontierFn,
-    iter_subtables_fn: Optional[
-        Callable[[BaseTable], Iterable[BaseTable.SubTableEntry]]
-    ] = None,
+    iter_subtables_fn: Optional[Callable[[BaseTable], Iterable[BaseTable.SubTableEntry]]] = None,
 ) -> Iterable[SubTablePath]:
     # no visited because general otData cannot cycle (forward-offset only)
     if root_accessor is None:
@@ -140,10 +134,7 @@ def _traverse_ot_data(
     else:
         add_to_frontier_fn(
             frontier,
-            [
-                (root_entry, subtable_entry)
-                for subtable_entry in iter_subtables_fn(root)
-            ],
+            [(root_entry, subtable_entry) for subtable_entry in iter_subtables_fn(root)],
         )
 
     while frontier:
@@ -156,8 +147,6 @@ def _traverse_ot_data(
 
         yield SubTablePath(path)
 
-        new_entries = [
-            path + (subtable_entry,) for subtable_entry in iter_subtables_fn(current)
-        ]
+        new_entries = [path + (subtable_entry,) for subtable_entry in iter_subtables_fn(current)]
 
         add_to_frontier_fn(frontier, new_entries)

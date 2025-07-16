@@ -11,6 +11,7 @@ B = Matrix(3, 1, [1, 3, 5])
 C = Matrix(4, 1, [1, 2, 4, 5])
 D = Matrix(2, 2, [1, 2, 3, 4])
 
+
 def test_docproduct():
     assert DotProduct(A, B).doit() == 22
     assert DotProduct(A.T, B).doit() == 22
@@ -24,12 +25,13 @@ def test_docproduct():
 
     raises(TypeError, lambda: DotProduct(B, C).doit())
 
+
 def test_dotproduct_symbolic():
-    A = MatrixSymbol('A', 3, 1)
-    B = MatrixSymbol('B', 3, 1)
+    A = MatrixSymbol("A", 3, 1)
+    B = MatrixSymbol("B", 3, 1)
 
     dot = DotProduct(A, B)
     assert dot.is_scalar == True
     assert unchanged(Mul, 2, dot)
     # XXX Fix forced evaluation for arithmetics with matrix expressions
-    assert dot * A == (A[0, 0]*B[0, 0] + A[1, 0]*B[1, 0] + A[2, 0]*B[2, 0])*A
+    assert dot * A == (A[0, 0] * B[0, 0] + A[1, 0] * B[1, 0] + A[2, 0] * B[2, 0]) * A

@@ -24,9 +24,7 @@ class MroError(Exception):
     """Raised if a consistent mro cannot be determined for a class."""
 
 
-def linearize_hierarchy(
-    info: TypeInfo, obj_type: Callable[[], Instance] | None = None
-) -> list[TypeInfo]:
+def linearize_hierarchy(info: TypeInfo, obj_type: Callable[[], Instance] | None = None) -> list[TypeInfo]:
     # TODO describe
     if info.mro:
         return info.mro

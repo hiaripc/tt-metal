@@ -30,7 +30,5 @@ def test_concatenate_chunks_pyarrow_strings():
     ]
     with tm.assert_produces_warning(DtypeWarning, match="have mixed types"):
         result = _concatenate_chunks(chunks)
-    expected = np.concatenate(
-        [np.array([1.5, 2.5], dtype=object), np.array(["a", "b"])]
-    )
+    expected = np.concatenate([np.array([1.5, 2.5], dtype=object), np.array(["a", "b"])])
     tm.assert_numpy_array_equal(result[0], expected)

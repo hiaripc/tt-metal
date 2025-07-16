@@ -65,9 +65,7 @@ class table__h_e_a_d(DefaultTable.DefaultTable):
                 value &= 0xFFFFFFFF
                 setattr(self, stamp, value)
             if value < 0x7C259DC0:  # January 1, 1970 00:00:00
-                log.warning(
-                    "'%s' timestamp seems very low; regarding as unix timestamp", stamp
-                )
+                log.warning("'%s' timestamp seems very low; regarding as unix timestamp", stamp)
                 value += 0x7C259DC0
                 setattr(self, stamp, value)
 

@@ -35,9 +35,7 @@ def neg_metric():
 )
 def test_validate_score_name(score_name, scoring, negate_score, expected_score_name):
     """Check that we return the right score name."""
-    assert (
-        _validate_score_name(score_name, scoring, negate_score) == expected_score_name
-    )
+    assert _validate_score_name(score_name, scoring, negate_score) == expected_score_name
 
 
 # In the following test, we check the value of the max to min ratio

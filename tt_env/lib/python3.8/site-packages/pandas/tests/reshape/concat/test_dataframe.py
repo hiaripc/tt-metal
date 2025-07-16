@@ -88,9 +88,7 @@ class TestDataFrameConcat:
         tm.assert_frame_equal(concatted_0, expected_index)
 
         # Columns/1 DataFrame
-        expected_columns = DataFrame(
-            [[0.1, 0.3], [0.2, 0.4]], index=[0, 1], columns=["A", "A"]
-        )
+        expected_columns = DataFrame([[0.1, 0.3], [0.2, 0.4]], index=[0, 1], columns=["A", "A"])
 
         concatted_columns = concat([df1, df2], axis="columns")
         tm.assert_frame_equal(concatted_columns, expected_columns)
@@ -114,9 +112,7 @@ class TestDataFrameConcat:
         tm.assert_series_equal(concatted_0_series, expected_index_series)
 
         # Columns/1 Series
-        expected_columns_series = DataFrame(
-            [[0.1, 0.3], [0.2, 0.4]], index=[0, 1], columns=[0, 1]
-        )
+        expected_columns_series = DataFrame([[0.1, 0.3], [0.2, 0.4]], index=[0, 1], columns=[0, 1])
 
         concatted_columns_series = concat([series1, series2], axis="columns")
         tm.assert_frame_equal(concatted_columns_series, expected_columns_series)
@@ -133,19 +129,13 @@ class TestDataFrameConcat:
         df = DataFrame(
             {"col": range(9)},
             dtype="int32",
-            index=(
-                pd.MultiIndex.from_product(
-                    [["A0", "A1", "A2"], ["B0", "B1", "B2"]], names=[1, 2]
-                )
-            ),
+            index=(pd.MultiIndex.from_product([["A0", "A1", "A2"], ["B0", "B1", "B2"]], names=[1, 2])),
         )
         result = concat((df.iloc[:2, :], df.iloc[-2:, :]))
         expected = DataFrame(
             {"col": [0, 1, 7, 8]},
             dtype="int32",
-            index=pd.MultiIndex.from_tuples(
-                [("A0", "B0"), ("A0", "B1"), ("A2", "B1"), ("A2", "B2")], names=[1, 2]
-            ),
+            index=pd.MultiIndex.from_tuples([("A0", "B0"), ("A0", "B1"), ("A2", "B1"), ("A2", "B2")], names=[1, 2]),
         )
         tm.assert_frame_equal(result, expected)
 
@@ -155,15 +145,11 @@ class TestDataFrameConcat:
         df = concat([df, df], axis=1)
 
         result = df.astype("category")
-        expected = DataFrame(
-            np.array(["b", "b"]).reshape(1, 2), columns=["a", "a"]
-        ).astype("category")
+        expected = DataFrame(np.array(["b", "b"]).reshape(1, 2), columns=["a", "a"]).astype("category")
         tm.assert_frame_equal(result, expected)
 
     def test_concat_dataframe_keys_bug(self, sort):
-        t1 = DataFrame(
-            {"value": Series([1, 2, 3], index=Index(["a", "b", "c"], name="id"))}
-        )
+        t1 = DataFrame({"value": Series([1, 2, 3], index=Index(["a", "b", "c"], name="id"))})
         t2 = DataFrame({"value": Series([7, 8], index=Index(["a", "b"], name="id"))})
 
         # it works

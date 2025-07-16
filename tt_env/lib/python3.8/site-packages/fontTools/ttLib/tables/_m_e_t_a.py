@@ -44,9 +44,7 @@ class table__m_e_t_a(DefaultTable.DefaultTable):
         dataMapSize = sstruct.calcsize(DATA_MAP_FORMAT)
         for i in range(header["numDataMaps"]):
             dataMapOffset = headerSize + i * dataMapSize
-            dataMap = sstruct.unpack(
-                DATA_MAP_FORMAT, data[dataMapOffset : dataMapOffset + dataMapSize]
-            )
+            dataMap = sstruct.unpack(DATA_MAP_FORMAT, data[dataMapOffset : dataMapOffset + dataMapSize])
             tag = dataMap["tag"]
             offset = dataMap["dataOffset"]
             self.data[tag] = data[offset : offset + dataMap["dataLength"]]

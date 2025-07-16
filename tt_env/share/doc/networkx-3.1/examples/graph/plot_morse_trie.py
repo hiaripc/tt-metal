@@ -48,9 +48,7 @@ morse_direct_mapping = {
 
 # Some preprocessing: sort the original mapping by code length and character
 # value
-morse_mapping_sorted = dict(
-    sorted(morse_direct_mapping.items(), key=lambda item: (len(item[1]), item[1]))
-)
+morse_mapping_sorted = dict(sorted(morse_direct_mapping.items(), key=lambda item: (len(item[1]), item[1])))
 
 # More preprocessing: create the reverse mapping to simplify lookup
 reverse_mapping = {v: k for k, v in morse_direct_mapping.items()}

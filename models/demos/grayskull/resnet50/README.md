@@ -38,7 +38,7 @@ pytest --disable-warnings models/demos/grayskull/demo/demo.py::test_demo_imagene
 ### Single Device
 
 #### Grayskull Device Performance
-+ To obtain device performance, run 
++ To obtain device performance, run
 ```python
 pytest models/demos/grayskull/resnet50/tests/test_perf_device_resnet50.py::test_perf_device
 ```

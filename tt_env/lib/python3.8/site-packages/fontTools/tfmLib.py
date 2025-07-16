@@ -160,12 +160,7 @@ class TFM:
         self._read(file)
 
     def __repr__(self):
-        return (
-            f"<TFM"
-            f" for {self.family}"
-            f" in {self.codingscheme}"
-            f" at {self.designsize:g}pt>"
-        )
+        return f"<TFM" f" for {self.family}" f" in {self.codingscheme}" f" at {self.designsize:g}pt>"
 
     def _read(self, file):
         if hasattr(file, "read"):
@@ -201,9 +196,7 @@ class TFM:
             raise TFMException(f"The header length is only {sizes.lh}!")
 
         if sizes.bc > sizes.ec + 1 or sizes.ec > 255:
-            raise TFMException(
-                f"The character code range {sizes.bc}..{sizes.ec} is illegal!"
-            )
+            raise TFMException(f"The character code range {sizes.bc}..{sizes.ec} is illegal!")
 
         if sizes.nw == 0 or sizes.nh == 0 or sizes.nd == 0 or sizes.ni == 0:
             raise TFMException("Incomplete subfiles for character dimensions!")

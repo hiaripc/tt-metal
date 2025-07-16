@@ -16,9 +16,7 @@ class FigureCanvasTkCairo(FigureCanvasCairo, FigureCanvasTk):
         self._renderer.dpi = self.figure.dpi
         self.figure.draw(self._renderer)
         buf = np.reshape(surface.get_data(), (height, width, 4))
-        _backend_tk.blit(
-            self._tkphoto, buf,
-            (2, 1, 0, 3) if sys.byteorder == "little" else (1, 2, 3, 0))
+        _backend_tk.blit(self._tkphoto, buf, (2, 1, 0, 3) if sys.byteorder == "little" else (1, 2, 3, 0))
 
 
 @_BackendTk.export

@@ -118,9 +118,7 @@ def _check_edge_connectivity(G):
             # if new methods for k == 3 or k == 4 are implemented add them here
 
         # Check the general subgraph method works by itself
-        alt_subgraph_ccs = fset(
-            [set(C.nodes()) for C in general_k_edge_subgraphs(G, k=k)]
-        )
+        alt_subgraph_ccs = fset([set(C.nodes()) for C in general_k_edge_subgraphs(G, k=k)])
         assert alt_subgraph_ccs == ccs_subgraph, "alt subgraph method failed"
 
         # Stop once k is larger than all special case methods
@@ -247,9 +245,7 @@ def test_bridge_cc():
     bridges = [(4, 8), (3, 5), (20, 21), (22, 23, 24)]
     G = nx.Graph(it.chain(*(pairwise(path) for path in cc2 + bridges)))
     bridge_ccs = fset(bridge_components(G))
-    target_ccs = fset(
-        [{1, 2, 3, 4}, {5}, {8, 9, 10}, {11, 12, 13}, {20}, {21}, {22}, {23}, {24}]
-    )
+    target_ccs = fset([{1, 2, 3, 4}, {5}, {8, 9, 10}, {11, 12, 13}, {20}, {21}, {22}, {23}, {24}])
     assert bridge_ccs == target_ccs
     _check_edge_connectivity(G)
 
@@ -311,9 +307,7 @@ def test_local_subgraph_difference():
 
     # Each clique is returned separately in k-edge-subgraphs
     subgraph_ccs = fset(aux_graph.k_edge_subgraphs(3))
-    subgraph_target = fset(
-        [{101}, {102}, {103}, {104}, {21, 22, 23, 24}, {11, 12, 13, 14}]
-    )
+    subgraph_target = fset([{101}, {102}, {103}, {104}, {21, 22, 23, 24}, {11, 12, 13, 14}])
     assert subgraph_ccs == subgraph_target
 
     # But in k-edge-ccs they are returned together

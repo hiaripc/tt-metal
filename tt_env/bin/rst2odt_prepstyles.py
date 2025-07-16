@@ -22,25 +22,22 @@ import os
 
 NAMESPACES = {
     "style": "urn:oasis:names:tc:opendocument:xmlns:style:1.0",
-    "fo": "urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0"
+    "fo": "urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0",
 }
 
 
 def prepstyle(filename):
-
     zin = zipfile.ZipFile(filename)
     styles = zin.read("styles.xml")
 
     root = etree.fromstring(styles)
-    for el in root.xpath("//style:page-layout-properties",
-                         namespaces=NAMESPACES):
+    for el in root.xpath("//style:page-layout-properties", namespaces=NAMESPACES):
         for attr in el.attrib:
             if attr.startswith("{%s}" % NAMESPACES["fo"]):
                 del el.attrib[attr]
 
     tempname = mkstemp()
-    zout = zipfile.ZipFile(os.fdopen(tempname[0], "w"), "w",
-                           zipfile.ZIP_DEFLATED)
+    zout = zipfile.ZipFile(os.fdopen(tempname[0], "w"), "w", zipfile.ZIP_DEFLATED)
 
     for item in zin.infolist():
         if item.filename == "styles.xml":
@@ -63,5 +60,5 @@ def main():
     prepstyle(filename)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

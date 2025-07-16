@@ -47,9 +47,7 @@ def test_fit_transduction(global_dtype, Estimator, parameters):
 @pytest.mark.parametrize("Estimator, parameters", ESTIMATORS)
 def test_distribution(global_dtype, Estimator, parameters):
     if parameters["kernel"] == "knn":
-        pytest.skip(
-            "Unstable test for this configuration: changes in k-NN ordering break it."
-        )
+        pytest.skip("Unstable test for this configuration: changes in k-NN ordering break it.")
     samples = np.asarray([[1.0, 0.0], [0.0, 1.0], [1.0, 1.0]], dtype=global_dtype)
     labels = [0, 1, -1]
     clf = Estimator(**parameters).fit(samples, labels)
@@ -91,9 +89,7 @@ def test_label_spreading_closed_form(global_dtype, Estimator, parameters, alpha)
     expected = np.dot(np.linalg.inv(np.eye(len(S), dtype=S.dtype) - alpha * S), Y)
     expected /= expected.sum(axis=1)[:, np.newaxis]
 
-    clf = label_propagation.LabelSpreading(
-        max_iter=100, alpha=alpha, tol=1e-10, gamma=gamma
-    )
+    clf = label_propagation.LabelSpreading(max_iter=100, alpha=alpha, tol=1e-10, gamma=gamma)
     clf.fit(X, y)
 
     assert_allclose(expected, clf.label_distributions_)
@@ -130,9 +126,7 @@ def test_label_propagation_closed_form(global_dtype):
 @pytest.mark.parametrize("index_dtype", [np.int32, np.int64])
 @pytest.mark.parametrize("dtype", [np.float32, np.float64])
 @pytest.mark.parametrize("Estimator, parameters", ESTIMATORS)
-def test_sparse_input_types(
-    accepted_sparse_type, index_dtype, dtype, Estimator, parameters
-):
+def test_sparse_input_types(accepted_sparse_type, index_dtype, dtype, Estimator, parameters):
     # This is non-regression test for #17085
     X = _convert_container([[1.0, 0.0], [0.0, 2.0], [1.0, 3.0]], accepted_sparse_type)
     X.data = X.data.astype(dtype, copy=False)
@@ -225,9 +219,7 @@ def test_predict_sparse_callable_kernel(global_dtype):
     )
     X = X.astype(global_dtype)
 
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=n_test, random_state=0
-    )
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=n_test, random_state=0)
 
     model = label_propagation.LabelSpreading(kernel=topk_rbf)
     model.fit(X_train, y_train)

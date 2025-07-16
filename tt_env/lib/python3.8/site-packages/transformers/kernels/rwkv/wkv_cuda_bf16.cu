@@ -31,7 +31,7 @@ __global__ void kernel_forward_bf16(
         float e1 = exp(pp - p);
         float e2 = exp(ww - p);
         y[ii] = bf16((e1 * aa + e2 * vv) / (e1 * bb + e2));
-        
+
         ww = w + pp;
         p = max(ww, kk);
         e1 = exp(ww - p);
@@ -72,7 +72,7 @@ __global__ void kernel_forward_with_state_bf16(
         float e1 = exp(pp - p);
         float e2 = exp(ww - p);
         y[ii] = bf16(e1 * aa + e2 * vv) / (e1 * bb + e2);
-        
+
         ww = w + pp;
         p = max(ww, kk);
         e1 = exp(ww - p);

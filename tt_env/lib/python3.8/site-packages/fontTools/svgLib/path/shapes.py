@@ -63,10 +63,7 @@ class PathBuilder(object):
         self._move("m", x, y)
 
     def _arc(self, c, rx, ry, x, y, large_arc):
-        self._add(
-            "%s%s,%s 0 %d 1 %s,%s"
-            % (c, _ntos(rx), _ntos(ry), large_arc, _ntos(x), _ntos(y))
-        )
+        self._add("%s%s,%s 0 %d 1 %s,%s" % (c, _ntos(rx), _ntos(ry), large_arc, _ntos(x), _ntos(y)))
 
     def A(self, rx, ry, x, y, large_arc=0):
         self._arc("A", rx, ry, x, y, large_arc)

@@ -10,9 +10,7 @@ from pandas.core.arrays.categorical import (
 )
 
 
-def recode_for_groupby(
-    c: Categorical, sort: bool, observed: bool
-) -> tuple[Categorical, Categorical | None]:
+def recode_for_groupby(c: Categorical, sort: bool, observed: bool) -> tuple[Categorical, Categorical | None]:
     """
     Code the categories to ensure we can groupby for categoricals.
 

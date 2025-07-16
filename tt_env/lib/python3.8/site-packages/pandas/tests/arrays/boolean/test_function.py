@@ -5,9 +5,7 @@ import pandas as pd
 import pandas._testing as tm
 
 
-@pytest.mark.parametrize(
-    "ufunc", [np.add, np.logical_or, np.logical_and, np.logical_xor]
-)
+@pytest.mark.parametrize("ufunc", [np.add, np.logical_or, np.logical_and, np.logical_xor])
 def test_ufuncs_binary(ufunc):
     # two BooleanArrays
     a = pd.array([True, False, None], dtype="boolean")
@@ -111,13 +109,9 @@ def test_value_counts_with_normalize():
 
 
 def test_diff():
-    a = pd.array(
-        [True, True, False, False, True, None, True, None, False], dtype="boolean"
-    )
+    a = pd.array([True, True, False, False, True, None, True, None, False], dtype="boolean")
     result = pd.core.algorithms.diff(a, 1)
-    expected = pd.array(
-        [None, False, True, False, True, None, None, None, None], dtype="boolean"
-    )
+    expected = pd.array([None, False, True, False, True, None, None, None, None], dtype="boolean")
     tm.assert_extension_array_equal(result, expected)
 
     ser = pd.Series(a)

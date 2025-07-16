@@ -118,10 +118,7 @@ def repr_errors(res, Klass=None, method: Optional[str] = None) -> str:
             obj_signature = str(signature(obj))
         except TypeError:
             # In particular we can't parse the signature of properties
-            obj_signature = (
-                "\nParsing of the method signature failed, "
-                "possibly because this is a property."
-            )
+            obj_signature = "\nParsing of the method signature failed, " "possibly because this is a property."
 
         obj_name = Klass.__name__ + "." + method
     else:
@@ -134,9 +131,7 @@ def repr_errors(res, Klass=None, method: Optional[str] = None) -> str:
             obj_name + obj_signature,
             res["docstring"],
             "# Errors",
-            "\n".join(
-                " - {}: {}".format(code, message) for code, message in res["errors"]
-            ),
+            "\n".join(" - {}: {}".format(code, message) for code, message in res["errors"]),
         ]
     )
     return msg
@@ -190,9 +185,7 @@ if __name__ == "__main__":
     # method = None.
     # TODO: this detection can be improved. Currently we assume that we have
     # class # methods if the second path element before last is in camel case.
-    if len(import_path_sections) >= 2 and re.match(
-        r"(?:[A-Z][a-z]*)+", import_path_sections[-2]
-    ):
+    if len(import_path_sections) >= 2 and re.match(r"(?:[A-Z][a-z]*)+", import_path_sections[-2]):
         method = import_path_sections[-1]
     else:
         method = None

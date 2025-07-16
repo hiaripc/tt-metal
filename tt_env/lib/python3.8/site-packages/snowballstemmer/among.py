@@ -1,4 +1,3 @@
-
 class Among(object):
     def __init__(self, s, substring_i, result, method=None):
         """

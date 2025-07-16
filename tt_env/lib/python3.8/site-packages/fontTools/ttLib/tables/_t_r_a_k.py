@@ -159,13 +159,9 @@ class TrackData(MutableMapping):
                 perSizeDataList += [struct.pack(PER_SIZE_VALUE_FORMAT, value)]
             offset += PER_SIZE_VALUE_FORMAT_SIZE * nSizes
         # sort size values
-        sizeDataList = [
-            struct.pack(SIZE_VALUE_FORMAT, fl2fi(sv, 16)) for sv in sorted(sizes)
-        ]
+        sizeDataList = [struct.pack(SIZE_VALUE_FORMAT, fl2fi(sv, 16)) for sv in sorted(sizes)]
 
-        data = bytesjoin(
-            [trackDataHeader] + entryDataList + sizeDataList + perSizeDataList
-        )
+        data = bytesjoin([trackDataHeader] + entryDataList + sizeDataList + perSizeDataList)
         return data
 
     def decompile(self, data, offset):
@@ -180,9 +176,7 @@ class TrackData(MutableMapping):
         sizeTableOffset = self.sizeTableOffset
         sizeTable = []
         for i in range(nSizes):
-            sizeValueData = data[
-                sizeTableOffset : sizeTableOffset + SIZE_VALUE_FORMAT_SIZE
-            ]
+            sizeValueData = data[sizeTableOffset : sizeTableOffset + SIZE_VALUE_FORMAT_SIZE]
             if len(sizeValueData) < SIZE_VALUE_FORMAT_SIZE:
                 raise TTLibError("not enough data to decompile TrackData size subtable")
             (sizeValue,) = struct.unpack(SIZE_VALUE_FORMAT, sizeValueData)
@@ -198,13 +192,9 @@ class TrackData(MutableMapping):
             perSizeOffset = entry.offset
             for j in range(nSizes):
                 size = sizeTable[j]
-                perSizeValueData = data[
-                    perSizeOffset : perSizeOffset + PER_SIZE_VALUE_FORMAT_SIZE
-                ]
+                perSizeValueData = data[perSizeOffset : perSizeOffset + PER_SIZE_VALUE_FORMAT_SIZE]
                 if len(perSizeValueData) < PER_SIZE_VALUE_FORMAT_SIZE:
-                    raise TTLibError(
-                        "not enough data to decompile per-size track values"
-                    )
+                    raise TTLibError("not enough data to decompile per-size track values")
                 (perSizeValue,) = struct.unpack(PER_SIZE_VALUE_FORMAT, perSizeValueData)
                 entry[size] = perSizeValue
                 perSizeOffset += PER_SIZE_VALUE_FORMAT_SIZE

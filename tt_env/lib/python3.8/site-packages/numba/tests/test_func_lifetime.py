@@ -8,13 +8,13 @@ import unittest
 
 
 class Dummy(object):
-
     def __add__(self, other):
         return other + 5
 
 
 def global_usecase1(x):
     return x + 1
+
 
 def global_usecase2():
     return global_obj + 1
@@ -37,7 +37,7 @@ class TestFuncLifetime(TestCase):
         def f(x):
             return x + 1
 
-        c_f = jit('int32(int32)', **jitargs)(f)
+        c_f = jit("int32(int32)", **jitargs)(f)
         self.assertPreciseEqual(c_f(1), 2)
 
         cfunc = self.get_impl(c_f)
@@ -98,25 +98,32 @@ class TestFuncLifetime(TestCase):
         When a jitted function calls into another jitted function, check
         that everything is collected as desired.
         """
+
         def mult_10(a):
             return a * 10
 
-        c_mult_10 = jit('intp(intp)', **jitargs)(mult_10)
+        c_mult_10 = jit("intp(intp)", **jitargs)(mult_10)
         c_mult_10.disable_compile()
 
         def do_math(x):
             return c_mult_10(x + 4)
 
-        c_do_math = jit('intp(intp)', **jitargs)(do_math)
+        c_do_math = jit("intp(intp)", **jitargs)(do_math)
         c_do_math.disable_compile()
 
         self.assertEqual(c_do_math(1), 50)
 
-        wrs = [weakref.ref(obj) for obj in
-               (mult_10, c_mult_10, do_math, c_do_math,
+        wrs = [
+            weakref.ref(obj)
+            for obj in (
+                mult_10,
+                c_mult_10,
+                do_math,
+                c_do_math,
                 self.get_impl(c_mult_10).__self__,
                 self.get_impl(c_do_math).__self__,
-                )]
+            )
+        ]
         obj = mult_10 = c_mult_10 = do_math = c_do_math = None
         gc.collect()
         self.assertEqual([w() for w in wrs], [None] * len(wrs))
@@ -160,5 +167,5 @@ class TestLifeTimeIssue(TestCase):
         c = dummy()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

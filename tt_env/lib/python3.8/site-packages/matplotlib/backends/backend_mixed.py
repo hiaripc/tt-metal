@@ -13,9 +13,10 @@ class MixedModeRenderer:
     complex objects, such as quad meshes, are rasterised and then
     output as images.
     """
-    def __init__(self, figure, width, height, dpi, vector_renderer,
-                 raster_renderer_class=None,
-                 bbox_inches_restore=None):
+
+    def __init__(
+        self, figure, width, height, dpi, vector_renderer, raster_renderer_class=None, bbox_inches_restore=None
+    ):
         """
         Parameters
         ----------
@@ -76,12 +77,10 @@ class MixedModeRenderer:
         # change the dpi of the figure temporarily.
         self.figure.dpi = self.dpi
         if self._bbox_inches_restore:  # when tight bbox is used
-            r = process_figure_for_rasterizing(self.figure,
-                                               self._bbox_inches_restore)
+            r = process_figure_for_rasterizing(self.figure, self._bbox_inches_restore)
             self._bbox_inches_restore = r
 
-        self._raster_renderer = self._raster_renderer_class(
-            self._width*self.dpi, self._height*self.dpi, self.dpi)
+        self._raster_renderer = self._raster_renderer_class(self._width * self.dpi, self._height * self.dpi, self.dpi)
         self._renderer = self._raster_renderer
 
     def stop_rasterizing(self):
@@ -106,14 +105,13 @@ class MixedModeRenderer:
                 gc,
                 slice_x.start * self._figdpi / self.dpi,
                 (height - slice_y.stop) * self._figdpi / self.dpi,
-                cropped_img[::-1])
+                cropped_img[::-1],
+            )
         self._raster_renderer = None
 
         # restore the figure dpi.
         self.figure.dpi = self._figdpi
 
         if self._bbox_inches_restore:  # when tight bbox is used
-            r = process_figure_for_rasterizing(self.figure,
-                                               self._bbox_inches_restore,
-                                               self._figdpi)
+            r = process_figure_for_rasterizing(self.figure, self._bbox_inches_restore, self._figdpi)
             self._bbox_inches_restore = r

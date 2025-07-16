@@ -129,9 +129,7 @@ class KernTable_format_0(object):
             # Should we also assert length == len(data)?
             data = data[6:]
         else:
-            length, coverage, subtableFormat, tupleIndex = struct.unpack(
-                ">LBBH", data[:8]
-            )
+            length, coverage, subtableFormat, tupleIndex = struct.unpack(">LBBH", data[:8])
             data = data[8:]
         assert self.format == subtableFormat, "unsupported format"
         self.coverage = coverage
@@ -139,9 +137,7 @@ class KernTable_format_0(object):
 
         self.kernTable = kernTable = {}
 
-        nPairs, searchRange, entrySelector, rangeShift = struct.unpack(
-            ">HHHH", data[:8]
-        )
+        nPairs, searchRange, entrySelector, rangeShift = struct.unpack(">HHHH", data[:8])
         data = data[8:]
 
         datas = array.array("H", data[: 6 * nPairs])
@@ -158,13 +154,9 @@ class KernTable_format_0(object):
             except IndexError:
                 # Slower, but will not throw an IndexError on an invalid
                 # glyph id.
-                kernTable[(ttFont.getGlyphName(left), ttFont.getGlyphName(right))] = (
-                    value
-                )
+                kernTable[(ttFont.getGlyphName(left), ttFont.getGlyphName(right))] = value
         if len(data) > 6 * nPairs + 4:  # Ignore up to 4 bytes excess
-            log.warning(
-                "excess data in 'kern' subtable: %d bytes", len(data) - 6 * nPairs
-            )
+            log.warning("excess data in 'kern' subtable: %d bytes", len(data) - 6 * nPairs)
 
     def compile(self, ttFont):
         nPairs = min(len(self.kernTable), 0xFFFF)
@@ -178,15 +170,13 @@ class KernTable_format_0(object):
         try:
             reverseOrder = ttFont.getReverseGlyphMap()
             kernTable = sorted(
-                (reverseOrder[left], reverseOrder[right], value)
-                for ((left, right), value) in self.kernTable.items()
+                (reverseOrder[left], reverseOrder[right], value) for ((left, right), value) in self.kernTable.items()
             )
         except KeyError:
             # Slower, but will not throw KeyError on invalid glyph id.
             getGlyphID = ttFont.getGlyphID
             kernTable = sorted(
-                (getGlyphID(left), getGlyphID(right), value)
-                for ((left, right), value) in self.kernTable.items()
+                (getGlyphID(left), getGlyphID(right), value) for ((left, right), value) in self.kernTable.items()
             )
 
         for left, right, value in kernTable:
@@ -196,10 +186,7 @@ class KernTable_format_0(object):
             version = 0
             length = len(data) + 6
             if length >= 0x10000:
-                log.warning(
-                    '"kern" subtable overflow, '
-                    "truncating length value while preserving pairs."
-                )
+                log.warning('"kern" subtable overflow, ' "truncating length value while preserving pairs.")
                 length &= 0xFFFF
             header = struct.pack(">HHBB", version, length, self.format, self.coverage)
         else:
@@ -210,9 +197,7 @@ class KernTable_format_0(object):
                 log.warning("'tupleIndex' is None; default to 0")
                 self.tupleIndex = 0
             length = len(data) + 8
-            header = struct.pack(
-                ">LBBH", length, self.coverage, self.format, self.tupleIndex
-            )
+            header = struct.pack(">LBBH", length, self.coverage, self.format, self.tupleIndex)
         return header + data
 
     def toXML(self, writer, ttFont):

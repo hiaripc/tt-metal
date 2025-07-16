@@ -8,9 +8,7 @@ import pandas._testing as tm
 
 def test_reindex_like(datetime_series):
     other = datetime_series[::2]
-    tm.assert_series_equal(
-        datetime_series.reindex(other.index), datetime_series.reindex_like(other)
-    )
+    tm.assert_series_equal(datetime_series.reindex(other.index), datetime_series.reindex_like(other))
 
     # GH#7179
     day1 = datetime(2013, 3, 5)

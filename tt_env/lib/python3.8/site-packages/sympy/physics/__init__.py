@@ -6,7 +6,9 @@ from . import units
 from .matrices import mgamma, msigma, minkowski_tensor, mdft
 
 __all__ = [
-    'units',
-
-    'mgamma', 'msigma', 'minkowski_tensor', 'mdft',
+    "units",
+    "mgamma",
+    "msigma",
+    "minkowski_tensor",
+    "mdft",
 ]

@@ -14,9 +14,7 @@ if TYPE_CHECKING:
     from .base import DocutilsRenderer
 
 
-def make_error(
-    document: nodes.document, error_msg: str, text: str, line_number: int
-) -> nodes.system_message:
+def make_error(document: nodes.document, error_msg: str, text: str, line_number: int) -> nodes.system_message:
     return document.reporter.error(
         error_msg,
         nodes.literal_block(text, text),
@@ -43,9 +41,7 @@ def default_html(text: str, source: str, line_number: int) -> list[nodes.Element
     return [raw_html]
 
 
-def html_to_nodes(
-    text: str, line_number: int, renderer: DocutilsRenderer
-) -> list[nodes.Element]:
+def html_to_nodes(text: str, line_number: int, renderer: DocutilsRenderer) -> list[nodes.Element]:
     """Convert HTML to docutils nodes."""
     if renderer.md_config.gfm_only:
         text, _ = RE_FLOW.subn(lambda s: s.group(0).replace("<", "&lt;"), text)
@@ -59,12 +55,8 @@ def html_to_nodes(
     try:
         root = tokenize_html(text).strip(inplace=True, recurse=False)
     except Exception:
-        msg_node = renderer.create_warning(
-            "HTML could not be parsed", MystWarnings.HTML_PARSE, line=line_number
-        )
-        return ([msg_node] if msg_node else []) + default_html(
-            text, renderer.document["source"], line_number
-        )
+        msg_node = renderer.create_warning("HTML could not be parsed", MystWarnings.HTML_PARSE, line=line_number)
+        return ([msg_node] if msg_node else []) + default_html(text, renderer.document["source"], line_number)
 
     if len(root) < 1:
         # if empty
@@ -72,11 +64,7 @@ def html_to_nodes(
 
     if not all(
         (enable_html_img and child.name == "img")
-        or (
-            enable_html_admonition
-            and child.name == "div"
-            and "admonition" in child.attrs.classes
-        )
+        or (enable_html_admonition and child.name == "div" and "admonition" in child.attrs.classes)
         for child in root
     ):
         return default_html(text, renderer.document["source"], line_number)
@@ -85,21 +73,9 @@ def html_to_nodes(
     for child in root:
         if child.name == "img":
             if "src" not in child.attrs:
-                return [
-                    renderer.reporter.error(
-                        "<img> missing 'src' attribute", line=line_number
-                    )
-                ]
-            content = "\n".join(
-                f":{k}: {v}"
-                for k, v in sorted(child.attrs.items())
-                if k in OPTION_KEYS_IMAGE
-            )
-            nodes_list.extend(
-                renderer.run_directive(
-                    "image", child.attrs["src"], content, line_number
-                )
-            )
+                return [renderer.reporter.error("<img> missing 'src' attribute", line=line_number)]
+            content = "\n".join(f":{k}: {v}" for k, v in sorted(child.attrs.items()) if k in OPTION_KEYS_IMAGE)
+            nodes_list.extend(renderer.run_directive("image", child.attrs["src"], content, line_number))
 
         else:
             children = child.strip().children
@@ -107,17 +83,12 @@ def html_to_nodes(
                 "".join(child.render() for child in children.pop(0))
                 if children
                 and children[0].name in ("div", "p")
-                and (
-                    "title" in children[0].attrs.classes
-                    or "admonition-title" in children[0].attrs.classes
-                )
+                and ("title" in children[0].attrs.classes or "admonition-title" in children[0].attrs.classes)
                 else "Note"
             )
 
             options = "\n".join(
-                f":{k}: {v}"
-                for k, v in sorted(child.attrs.items())
-                if k in OPTION_KEYS_ADMONITION
+                f":{k}: {v}" for k, v in sorted(child.attrs.items()) if k in OPTION_KEYS_ADMONITION
             ).rstrip()
             new_children = []
             for child in children:
@@ -126,14 +97,8 @@ def html_to_nodes(
                     new_children.append(Data("\n\n"))
                 else:
                     new_children.append(child)
-            content = (
-                options
-                + ("\n\n" if options else "")
-                + "".join(child.render() for child in new_children).lstrip()
-            )
+            content = options + ("\n\n" if options else "") + "".join(child.render() for child in new_children).lstrip()
 
-            nodes_list.extend(
-                renderer.run_directive("admonition", title, content, line_number)
-            )
+            nodes_list.extend(renderer.run_directive("admonition", title, content, line_number))
 
     return nodes_list

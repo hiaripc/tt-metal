@@ -133,6 +133,5 @@ class Duration:
         """
         if self._frame != rhs._frame:
             raise ValueError(
-                f"Cannot {func} Durations with different frames.\n"
-                f"LHS: {self._frame}\n"
-                f"RHS: {rhs._frame}")
+                f"Cannot {func} Durations with different frames.\n" f"LHS: {self._frame}\n" f"RHS: {rhs._frame}"
+            )

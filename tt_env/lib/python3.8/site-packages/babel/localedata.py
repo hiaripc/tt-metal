@@ -26,7 +26,7 @@ from typing import Any
 
 _cache: dict[str, Any] = {}
 _cache_lock = threading.RLock()
-_dirname = os.path.join(os.path.dirname(__file__), 'locale-data')
+_dirname = os.path.join(os.path.dirname(__file__), "locale-data")
 _windows_reserved_name_re = re.compile("^(con|prn|aux|nul|com[0-9]|lpt[0-9])$", re.I)
 
 
@@ -89,9 +89,8 @@ def locale_identifiers() -> list[str]:
     """
     return [
         stem
-        for stem, extension in
-        (os.path.splitext(filename) for filename in os.listdir(_dirname))
-        if extension == '.dat' and stem != 'root'
+        for stem, extension in (os.path.splitext(filename) for filename in os.listdir(_dirname))
+        if extension == ".dat" and stem != "root"
     ]
 
 
@@ -110,7 +109,7 @@ def _is_non_likely_script(name: str) -> bool:
         return False
 
     if lang and script and not territory and not variant and not rest:
-        likely_subtag = get_global('likely_subtags').get(lang)
+        likely_subtag = get_global("likely_subtags").get(lang)
         _, _, likely_script, *_ = parse_locale(likely_subtag)
         return script != likely_script
     return False
@@ -147,21 +146,22 @@ def load(name: os.PathLike[str] | str, merge_inherited: bool = True) -> dict[str
         data = _cache.get(name)
         if not data:
             # Load inherited data
-            if name == 'root' or not merge_inherited:
+            if name == "root" or not merge_inherited:
                 data = {}
             else:
                 from babel.core import get_global
-                parent = get_global('parent_exceptions').get(name)
+
+                parent = get_global("parent_exceptions").get(name)
                 if not parent:
                     if _is_non_likely_script(name):
-                        parent = 'root'
+                        parent = "root"
                     else:
-                        parts = name.split('_')
+                        parts = name.split("_")
                         parent = "root" if len(parts) == 1 else "_".join(parts[:-1])
                 data = load(parent).copy()
             filename = resolve_locale_filename(name)
-            with open(filename, 'rb') as fileobj:
-                if name != 'root' and merge_inherited:
+            with open(filename, "rb") as fileobj:
+                if name != "root" and merge_inherited:
                     merge(data, pickle.load(fileobj))
                 else:
                     data = pickle.load(fileobj)

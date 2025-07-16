@@ -84,9 +84,7 @@ def type_fullname(typ: Type, node: SymbolNode | None = None) -> str | None:
     return None
 
 
-def get_undocumented_ref_info_json(
-    tree: MypyFile, type_map: dict[Expression, Type]
-) -> list[dict[str, object]]:
+def get_undocumented_ref_info_json(tree: MypyFile, type_map: dict[Expression, Type]) -> list[dict[str, object]]:
     visitor = RefInfoVisitor(type_map)
     tree.accept(visitor)
     return visitor.data

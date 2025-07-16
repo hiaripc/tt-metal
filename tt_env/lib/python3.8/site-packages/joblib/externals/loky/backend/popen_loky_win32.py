@@ -21,9 +21,7 @@ def _path_eq(p1, p2):
     return p1 == p2 or os.path.normcase(p1) == os.path.normcase(p2)
 
 
-WINENV = hasattr(sys, "_base_executable") and not _path_eq(
-    sys.executable, sys._base_executable
-)
+WINENV = hasattr(sys, "_base_executable") and not _path_eq(sys.executable, sys._base_executable)
 
 
 def _close_handles(*handles):
@@ -53,9 +51,7 @@ class Popen(_Popen):
     method = "loky"
 
     def __init__(self, process_obj):
-        prep_data = spawn.get_preparation_data(
-            process_obj._name, getattr(process_obj, "init_main_module", True)
-        )
+        prep_data = spawn.get_preparation_data(process_obj._name, getattr(process_obj, "init_main_module", True))
 
         # read end of pipe will be duplicated by the child process
         # -- see spawn_main() in spawn.py.
@@ -104,9 +100,7 @@ class Popen(_Popen):
             self.returncode = None
             self._handle = hp
             self.sentinel = int(hp)
-            self.finalizer = util.Finalize(
-                self, _close_handles, (self.sentinel, int(rhandle))
-            )
+            self.finalizer = util.Finalize(self, _close_handles, (self.sentinel, int(rhandle)))
 
             # send information to child
             set_spawning_popen(self)
@@ -149,14 +143,10 @@ def main(pipe_handle, parent_pid=None):
     assert is_forking(sys.argv), "Not forking"
 
     if parent_pid is not None:
-        source_process = _winapi.OpenProcess(
-            _winapi.SYNCHRONIZE | _winapi.PROCESS_DUP_HANDLE, False, parent_pid
-        )
+        source_process = _winapi.OpenProcess(_winapi.SYNCHRONIZE | _winapi.PROCESS_DUP_HANDLE, False, parent_pid)
     else:
         source_process = None
-    new_handle = reduction.duplicate(
-        pipe_handle, source_process=source_process
-    )
+    new_handle = reduction.duplicate(pipe_handle, source_process=source_process)
     fd = msvcrt.open_osfhandle(new_handle, os.O_RDONLY)
     parent_sentinel = source_process
 

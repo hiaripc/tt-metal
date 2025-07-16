@@ -101,9 +101,7 @@ def test_mask_stringdtype(frame_or_series):
         index=["id1", "id2", "id3", "id4"],
         dtype=StringDtype(),
     )
-    filtered_obj = DataFrame(
-        {"A": ["this", "that"]}, index=["id2", "id3"], dtype=StringDtype()
-    )
+    filtered_obj = DataFrame({"A": ["this", "that"]}, index=["id2", "id3"], dtype=StringDtype())
     expected = DataFrame(
         {"A": [NA, "this", "that", NA]},
         index=["id1", "id2", "id3", "id4"],
@@ -127,9 +125,7 @@ def test_mask_where_dtype_timedelta():
     expected = DataFrame(np.full(5, np.nan, dtype="timedelta64[ns]"))
     tm.assert_frame_equal(df.mask(df.notna()), expected)
 
-    expected = DataFrame(
-        [np.nan, np.nan, np.nan, Timedelta("3 day"), Timedelta("4 day")]
-    )
+    expected = DataFrame([np.nan, np.nan, np.nan, Timedelta("3 day"), Timedelta("4 day")])
     tm.assert_frame_equal(df.where(df > Timedelta(2, unit="d")), expected)
 
 

@@ -11,7 +11,8 @@ def f0(a, b):
 
 @njit
 def f1(begin1, end1, begin2, end2):
-    if begin1 > begin2: return f1(begin2, end2, begin1, end1)
+    if begin1 > begin2:
+        return f1(begin2, end2, begin1, end1)
     return end1 + 1 >= begin2
 
 
@@ -22,12 +23,12 @@ def f0_2(a, b):
 
 @njit
 def f1_2(begin1, end1, begin2, end2):
-    if begin1 > begin2: return f1_2(begin2, end2, begin1, end1)
+    if begin1 > begin2:
+        return f1_2(begin2, end2, begin1, end1)
     return end1 + 1 >= begin2
 
 
 class TestSysStdinAssignment(unittest.TestCase):
-
     def test_no_reassignment_of_stdout(self):
         """
         https://github.com/numba/numba/issues/3027
@@ -62,6 +63,5 @@ class TestSysStdinAssignment(unittest.TestCase):
         self.assertNotEqual(sys.stdout, None)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
-

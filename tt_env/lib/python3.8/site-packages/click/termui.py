@@ -149,9 +149,7 @@ def prompt(
     if value_proc is None:
         value_proc = convert_type(type, default)
 
-    prompt = _build_prompt(
-        text, prompt_suffix, show_default, default, show_choices, type
-    )
+    prompt = _build_prompt(text, prompt_suffix, show_default, default, show_choices, type)
 
     if confirmation_prompt:
         if confirmation_prompt is True:
@@ -446,9 +444,7 @@ def clear() -> None:
     echo("\033[2J\033[1;1H", nl=False)
 
 
-def _interpret_color(
-    color: t.Union[int, t.Tuple[int, int, int], str], offset: int = 0
-) -> str:
+def _interpret_color(color: t.Union[int, t.Tuple[int, int, int], str], offset: int = 0) -> str:
     if isinstance(color, int):
         return f"{38 + offset};5;{color:d}"
 

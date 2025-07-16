@@ -29,16 +29,12 @@ def insert_uninit_checks(ir: FuncIR) -> None:
     cleanup_cfg(ir.blocks)
 
     cfg = get_cfg(ir.blocks)
-    must_defined = analyze_must_defined_regs(
-        ir.blocks, cfg, set(ir.arg_regs), all_values(ir.arg_regs, ir.blocks)
-    )
+    must_defined = analyze_must_defined_regs(ir.blocks, cfg, set(ir.arg_regs), all_values(ir.arg_regs, ir.blocks))
 
     ir.blocks = split_blocks_at_uninits(ir.blocks, must_defined.before)
 
 
-def split_blocks_at_uninits(
-    blocks: list[BasicBlock], pre_must_defined: AnalysisDict[Value]
-) -> list[BasicBlock]:
+def split_blocks_at_uninits(blocks: list[BasicBlock], pre_must_defined: AnalysisDict[Value]) -> list[BasicBlock]:
     new_blocks: list[BasicBlock] = []
 
     init_registers = []

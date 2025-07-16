@@ -51,9 +51,7 @@ class TestIntervalTree:
         expected = np.array([0, 4, -1], dtype="intp")
         tm.assert_numpy_array_equal(result, expected)
 
-        with pytest.raises(
-            KeyError, match="'indexer does not intersect a unique set of intervals'"
-        ):
+        with pytest.raises(KeyError, match="'indexer does not intersect a unique set of intervals'"):
             tree.get_indexer(np.array([3.0]))
 
     @pytest.mark.parametrize(
@@ -107,9 +105,7 @@ class TestIntervalTree:
         left = np.array([0, 0, 0], dtype=dtype)
         tree = IntervalTree(left, left + 1)
 
-        with pytest.raises(
-            KeyError, match="'indexer does not intersect a unique set of intervals'"
-        ):
+        with pytest.raises(KeyError, match="'indexer does not intersect a unique set of intervals'"):
             tree.get_indexer(np.array([0.5]))
 
         indexer, missing = tree.get_indexer_non_unique(np.array([0.5]))
@@ -121,9 +117,7 @@ class TestIntervalTree:
         expected = np.array([], dtype="intp")
         tm.assert_numpy_array_equal(result, expected)
 
-    @pytest.mark.parametrize(
-        "leaf_size", [skipif_32bit(1), skipif_32bit(10), skipif_32bit(100), 10000]
-    )
+    @pytest.mark.parametrize("leaf_size", [skipif_32bit(1), skipif_32bit(10), skipif_32bit(100), 10000])
     def test_get_indexer_closed(self, closed, leaf_size):
         x = np.arange(1000, dtype="float64")
         found = x.astype("intp")

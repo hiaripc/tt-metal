@@ -9,7 +9,7 @@ from .usympy import unify, rebuild
 from .rewrite import rewriterule
 
 __all__ = [
-    'unify', 'rebuild',
-
-    'rewriterule',
+    "unify",
+    "rebuild",
+    "rewriterule",
 ]

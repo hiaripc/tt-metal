@@ -82,16 +82,12 @@ class table_V_D_M_X_(DefaultTable.DefaultTable):
             # make sure startsz and endsz match the calculated values
             minSize = min(group.keys())
             maxSize = max(group.keys())
-            assert (
-                startsz == minSize
-            ), "startsz (%s) must equal min yPelHeight (%s): group %d" % (
+            assert startsz == minSize, "startsz (%s) must equal min yPelHeight (%s): group %d" % (
                 group.startsz,
                 minSize,
                 groupIndex,
             )
-            assert (
-                endsz == maxSize
-            ), "endsz (%s) must equal max yPelHeight (%s): group %d" % (
+            assert endsz == maxSize, "endsz (%s) must equal max yPelHeight (%s): group %d" % (
                 group.endsz,
                 maxSize,
                 groupIndex,
@@ -141,9 +137,7 @@ class table_V_D_M_X_(DefaultTable.DefaultTable):
         if not (self.version == 0 or self.version == 1):
             from fontTools import ttLib
 
-            raise ttLib.TTLibError(
-                "unknown format for VDMX table: version %s" % self.version
-            )
+            raise ttLib.TTLibError("unknown format for VDMX table: version %s" % self.version)
         data = sstruct.pack(VDMX_HeaderFmt, self)
         for ratio in self.ratRanges:
             data += sstruct.pack(VDMX_RatRangeFmt, ratio)

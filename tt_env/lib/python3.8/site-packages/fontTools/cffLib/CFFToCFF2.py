@@ -46,11 +46,7 @@ def _convertCFFToCFF2(cff, otFont):
     localSubrs = (
         [getattr(fd.Private, "Subrs", []) for fd in fdArray]
         if fdArray
-        else (
-            [topDict.Private.Subrs]
-            if hasattr(topDict, "Private") and hasattr(topDict.Private, "Subrs")
-            else []
-        )
+        else ([topDict.Private.Subrs] if hasattr(topDict, "Private") and hasattr(topDict.Private, "Subrs") else [])
     )
 
     for glyphName in charStrings.keys():
@@ -82,11 +78,7 @@ def _convertCFFToCFF2(cff, otFont):
         thisLocalSubrs = (
             localSubrs[fdIndex]
             if fdIndex is not None
-            else (
-                getattr(topDict.Private, "Subrs", [])
-                if hasattr(topDict, "Private")
-                else []
-            )
+            else (getattr(topDict.Private, "Subrs", []) if hasattr(topDict, "Private") else [])
         )
 
         # Intentionally use custom type for nominalWidthX, such that any
@@ -245,9 +237,7 @@ def main(args=None):
         "fonttools cffLib.CFFToCFF2",
         description="Upgrade a CFF font to CFF2.",
     )
-    parser.add_argument(
-        "input", metavar="INPUT.ttf", help="Input OTF file with CFF table."
-    )
+    parser.add_argument("input", metavar="INPUT.ttf", help="Input OTF file with CFF table.")
     parser.add_argument(
         "-o",
         "--output",
@@ -262,19 +252,13 @@ def main(args=None):
         help="Don't set the output font's timestamp to the current time.",
     )
     loggingGroup = parser.add_mutually_exclusive_group(required=False)
-    loggingGroup.add_argument(
-        "-v", "--verbose", action="store_true", help="Run more verbosely."
-    )
-    loggingGroup.add_argument(
-        "-q", "--quiet", action="store_true", help="Turn verbosity off."
-    )
+    loggingGroup.add_argument("-v", "--verbose", action="store_true", help="Run more verbosely.")
+    loggingGroup.add_argument("-q", "--quiet", action="store_true", help="Turn verbosity off.")
     options = parser.parse_args(args)
 
     from fontTools import configLogger
 
-    configLogger(
-        level=("DEBUG" if options.verbose else "ERROR" if options.quiet else "INFO")
-    )
+    configLogger(level=("DEBUG" if options.verbose else "ERROR" if options.quiet else "INFO"))
 
     import os
 
@@ -282,11 +266,7 @@ def main(args=None):
     if not os.path.isfile(infile):
         parser.error("No such file '{}'".format(infile))
 
-    outfile = (
-        makeOutputFileName(infile, overWrite=True, suffix="-CFF2")
-        if not options.output
-        else options.output
-    )
+    outfile = makeOutputFileName(infile, overWrite=True, suffix="-CFF2") if not options.output else options.output
 
     font = TTFont(infile, recalcTimestamp=options.recalc_timestamp, recalcBBoxes=False)
 

@@ -22,7 +22,7 @@ import pyarrow as pa
 
 # the types where to_pandas_dtype returns a non-numpy dtype
 cases = [
-    (pa.timestamp('ns', tz='UTC'), "datetime64[ns, UTC]"),
+    (pa.timestamp("ns", tz="UTC"), "datetime64[ns, UTC]"),
 ]
 
 

@@ -5,7 +5,6 @@ import unittest
 
 
 class TestMap(unittest.TestCase):
-
     def test_basic_map_external_func(self):
         func = njit(lambda x: x + 10)
 
@@ -35,7 +34,6 @@ class TestMap(unittest.TestCase):
 
 
 class TestFilter(unittest.TestCase):
-
     def test_basic_filter_external_func(self):
         func = njit(lambda x: x > 0)
 
@@ -64,7 +62,6 @@ class TestFilter(unittest.TestCase):
 
 
 class TestReduce(unittest.TestCase):
-
     def test_basic_reduce_external_func(self):
         func = njit(lambda x, y: x + y)
 
@@ -76,10 +73,10 @@ class TestReduce(unittest.TestCase):
         self.assertEqual(impl(), cfunc())
 
     def test_basic_reduce_closure(self):
-
         def impl():
             def func(x, y):
                 return x + y
+
             return reduce(func, range(-10, 10), 100)
 
         cfunc = njit(impl)
@@ -87,5 +84,5 @@ class TestReduce(unittest.TestCase):
         self.assertEqual(impl(), cfunc())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

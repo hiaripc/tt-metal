@@ -120,21 +120,13 @@ def optimizeWidths(widths):
     cumMaxD = cumSum(widths, op=max, decreasing=True)
 
     # Cost per nominal choice, without default consideration.
-    nomnCostU = missingdict(
-        lambda x: cumFrqU[x] + cumFrqU[x - 108] + cumFrqU[x - 1132] * 3
-    )
-    nomnCostD = missingdict(
-        lambda x: cumFrqD[x] + cumFrqD[x + 108] + cumFrqD[x + 1132] * 3
-    )
+    nomnCostU = missingdict(lambda x: cumFrqU[x] + cumFrqU[x - 108] + cumFrqU[x - 1132] * 3)
+    nomnCostD = missingdict(lambda x: cumFrqD[x] + cumFrqD[x + 108] + cumFrqD[x + 1132] * 3)
     nomnCost = missingdict(lambda x: nomnCostU[x] + nomnCostD[x] - widths[x])
 
     # Cost-saving per nominal choice, by best default choice.
-    dfltCostU = missingdict(
-        lambda x: max(cumMaxU[x], cumMaxU[x - 108] * 2, cumMaxU[x - 1132] * 5)
-    )
-    dfltCostD = missingdict(
-        lambda x: max(cumMaxD[x], cumMaxD[x + 108] * 2, cumMaxD[x + 1132] * 5)
-    )
+    dfltCostU = missingdict(lambda x: max(cumMaxU[x], cumMaxU[x - 108] * 2, cumMaxU[x - 1132] * 5))
+    dfltCostD = missingdict(lambda x: max(cumMaxD[x], cumMaxD[x + 108] * 2, cumMaxD[x + 1132] * 5))
     dfltCost = missingdict(lambda x: max(dfltCostU[x], dfltCostD[x]))
 
     # Combined cost per nominal choice.
@@ -173,9 +165,7 @@ def main(args=None):
         "fonttools cffLib.width",
         description=main.__doc__,
     )
-    parser.add_argument(
-        "inputs", metavar="FILE", type=str, nargs="+", help="Input TTF files"
-    )
+    parser.add_argument("inputs", metavar="FILE", type=str, nargs="+", help="Input TTF files")
     parser.add_argument(
         "-b",
         "--brute-force",

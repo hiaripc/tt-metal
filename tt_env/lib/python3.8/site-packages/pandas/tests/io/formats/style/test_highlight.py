@@ -15,9 +15,7 @@ from pandas.io.formats.style import Styler
 @pytest.fixture(params=[(None, "float64"), (NA, "Int64")])
 def df(request):
     # GH 45804
-    return DataFrame(
-        {"A": [0, np.nan, 10], "B": [1, request.param[0], 2]}, dtype=request.param[1]
-    )
+    return DataFrame({"A": [0, np.nan, 10], "B": [1, request.param[0], 2]}, dtype=request.param[1])
 
 
 @pytest.fixture
@@ -36,12 +34,7 @@ def test_highlight_null(styler):
 
 def test_highlight_null_subset(styler):
     # GH 31345
-    result = (
-        styler.highlight_null(color="red", subset=["A"])
-        .highlight_null(color="green", subset=["B"])
-        ._compute()
-        .ctx
-    )
+    result = styler.highlight_null(color="red", subset=["A"]).highlight_null(color="green", subset=["B"])._compute().ctx
     expected = {
         (1, 0): [("background-color", "red")],
         (1, 1): [("background-color", "green")],

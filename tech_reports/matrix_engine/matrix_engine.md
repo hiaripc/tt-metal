@@ -6,14 +6,14 @@ The matrix engine supports the following operations: matrix mult, reduction, elt
 
 ## Operations
 
-### Matrix Mult 
+### Matrix Mult
 
 The WH matrix engine performs 8x16 x 16x16 = 8x16 in a single cycle. \
 This is 2*8\*16\*16 = 4096 muladds in a single cycle. At 1GHz, this is 4 TFLOPs per matrix engine. \
-The 8x16 is the smallest matrix that can be fed into in0, and 16x16 is the 
+The 8x16 is the smallest matrix that can be fed into in0, and 16x16 is the
 smallest matrix that can be fed into in1.
 
-If the input matrices fed into the engine are "shorter" than 8x16, for example 1x16, the engine will still perform 8x16 x 16x16 = 8x16, but the effective throughput will be 1/8. 
+If the input matrices fed into the engine are "shorter" than 8x16, for example 1x16, the engine will still perform 8x16 x 16x16 = 8x16, but the effective throughput will be 1/8.
 Thus, for 1x16 x 16x16 matricies, the effective throughput is 0.5 TFLOP per matrix engine.
 
 MATH_FIDELITY is used for higher precision, and TFLOPs are calculated by dividing by the MATH_FIDELITY value.
@@ -25,7 +25,7 @@ HiFi4 -> 1 TFLOPs
 
 ### Reduction: Addition and Max
 The WH matrix engine performs 16x16 reduce max/average operations in a single cycle. \
-This is 2*16\*16 multiply + adds in a single cycle. At 1GHz, this is 0.512 TFLOPs per matrix engine. 
+This is 2*16\*16 multiply + adds in a single cycle. At 1GHz, this is 0.512 TFLOPs per matrix engine.
 
 Reduce max does not use MATH_FIDELITY; however reduce average does use MATH_FIDELITY for higher precision, and TFLOPs are calculated by dividing by the MATH_FIDELITY value.
 
@@ -65,7 +65,7 @@ Math Fidelity specifies the number of times an operation is run to consume the f
 LoFi -> SrcA register: uses 1 hidden bit + 4 most significant bits of the mantissa (MSB of the mantissa), SrcB register: uses 1 hidden bit + 6 MSB of the mantissa \
 HiFi2 -> SrcA register: uses 1 hidden bit + next 4 bits of LSBs of the mantissa, SrcB register: uses 1 hidden bit + 6 MSB of the mantissa \
 HiFi3 -> SrcA register: uses 1 hidden bit + 4 MSB of the mantissa, SrcB register: Uses 1 hidden bit + next 6 LSB of the mantissa \
-HiFi4 -> SrcA register: uses 1 hidden bit + next 4 bits of LSBs of the mantissa, SrcB register: Uses 1 hidden bit + next 6 LSB of the mantissa 
+HiFi4 -> SrcA register: uses 1 hidden bit + next 4 bits of LSBs of the mantissa, SrcB register: Uses 1 hidden bit + next 6 LSB of the mantissa
 
 ### Math Approx Mode
 
@@ -84,6 +84,3 @@ Warning: If this flag is set, the math destination register can fit as half as m
 Wormhole has the ability to do accumulation in the L1 memory, the packer will read the input address, and accumulate it with the values read from dest, then write back into the same address.
 This feature is useful for accumulations in higher precision, and then a final pack call can be done to convert into lower precision (for example accumulate in fp32, then final output as float16_b).
 In order to enable this feature, `packer_l1_acc` must be set.
-
-
-

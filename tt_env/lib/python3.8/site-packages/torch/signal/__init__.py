@@ -1,5 +1,3 @@
 from . import windows
 
-__all__ = [
-    'windows'
-]
+__all__ = ["windows"]

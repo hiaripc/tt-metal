@@ -17,9 +17,7 @@ from mypy.types import (
 from mypy.typevars import has_no_typevars
 
 
-def infer_decorator_signature_if_simple(
-    dec: Decorator, analyzer: SemanticAnalyzerInterface
-) -> None:
+def infer_decorator_signature_if_simple(dec: Decorator, analyzer: SemanticAnalyzerInterface) -> None:
     """Try to infer the type of the decorated function.
 
     This lets us resolve additional references to decorated functions

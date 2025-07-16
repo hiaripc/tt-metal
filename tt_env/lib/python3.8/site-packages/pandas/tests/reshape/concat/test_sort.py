@@ -46,9 +46,7 @@ class TestConcatSort:
 
     def test_concat_inner_sort(self, sort):
         # https://github.com/pandas-dev/pandas/pull/20613
-        df1 = DataFrame(
-            {"a": [1, 2], "b": [1, 2], "c": [1, 2]}, columns=["b", "a", "c"]
-        )
+        df1 = DataFrame({"a": [1, 2], "b": [1, 2], "c": [1, 2]}, columns=["b", "a", "c"])
         df2 = DataFrame({"a": [1, 2], "b": [3, 4]}, index=[3, 4])
 
         with tm.assert_produces_warning(None):
@@ -71,9 +69,7 @@ class TestConcatSort:
         )
         tm.assert_frame_equal(result, expected)
 
-        result = pd.concat(
-            [df, df[["c", "b"]]], join="inner", sort=True, ignore_index=True
-        )
+        result = pd.concat([df, df[["c", "b"]]], join="inner", sort=True, ignore_index=True)
         expected = expected[["b", "c"]]
         tm.assert_frame_equal(result, expected)
 
@@ -87,9 +83,7 @@ class TestConcatSort:
 
     def test_concat_frame_with_sort_false(self):
         # GH 43375
-        result = pd.concat(
-            [DataFrame({i: i}, index=[i]) for i in range(2, 0, -1)], sort=False
-        )
+        result = pd.concat([DataFrame({i: i}, index=[i]) for i in range(2, 0, -1)], sort=False)
         expected = DataFrame([[2, np.nan], [np.nan, 1]], index=[2, 1], columns=[2, 1])
 
         tm.assert_frame_equal(result, expected)

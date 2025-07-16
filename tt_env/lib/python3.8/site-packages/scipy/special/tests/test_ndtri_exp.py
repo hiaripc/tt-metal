@@ -27,18 +27,11 @@ class TestNdtriExp:
     for handling very small values and values very close to zero.
     """
 
-    @pytest.mark.parametrize(
-        "test_input", [-1e1, -1e2, -1e10, -1e20, -np.finfo(float).max]
-    )
+    @pytest.mark.parametrize("test_input", [-1e1, -1e2, -1e10, -1e20, -np.finfo(float).max])
     def test_very_small_arg(self, test_input, uniform_random_points):
         scale = test_input
         points = scale * (0.5 * uniform_random_points + 0.5)
-        assert_func_equal(
-            log_ndtr_ndtri_exp,
-            lambda y: y, points,
-            rtol=1e-14,
-            nan_ok=True
-        )
+        assert_func_equal(log_ndtr_ndtri_exp, lambda y: y, points, rtol=1e-14, nan_ok=True)
 
     @pytest.mark.parametrize(
         "interval,expected_rtol",
@@ -52,12 +45,7 @@ class TestNdtriExp:
     def test_in_interval(self, interval, expected_rtol, uniform_random_points):
         left, right = interval
         points = (right - left) * uniform_random_points + left
-        assert_func_equal(
-            log_ndtr_ndtri_exp,
-            lambda y: y, points,
-            rtol=expected_rtol,
-            nan_ok=True
-        )
+        assert_func_equal(log_ndtr_ndtri_exp, lambda y: y, points, rtol=expected_rtol, nan_ok=True)
 
     def test_extreme(self):
         # bigneg is not quite the largest negative double precision value.

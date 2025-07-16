@@ -219,9 +219,7 @@ def main(args=None):
     from fontTools.ttLib import TTFont
     import argparse
 
-    parser = argparse.ArgumentParser(
-        "fonttools pens.svgPathPen", description="Generate SVG from text"
-    )
+    parser = argparse.ArgumentParser("fonttools pens.svgPathPen", description="Generate SVG from text")
     parser.add_argument("font", metavar="font.ttf", help="Font file.")
     parser.add_argument("text", metavar="text", nargs="?", help="Text string.")
     parser.add_argument(
@@ -291,10 +289,7 @@ def main(args=None):
         width += glyph.width
 
     print('<?xml version="1.0" encoding="UTF-8"?>')
-    print(
-        '<svg width="%d" height="%d" xmlns="http://www.w3.org/2000/svg">'
-        % (width, ascent - descent)
-    )
+    print('<svg width="%d" height="%d" xmlns="http://www.w3.org/2000/svg">' % (width, ascent - descent))
     print(s, end="")
     print("</svg>")
 

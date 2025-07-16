@@ -25,9 +25,7 @@ class RefInfoSuite(DataSuite):
         options.export_ref_info = True  # This is the flag we are testing
 
         src = "\n".join(testcase.input)
-        result = build.build(
-            sources=[BuildSource("main", None, src)], options=options, alt_lib_path=test_temp_dir
-        )
+        result = build.build(sources=[BuildSource("main", None, src)], options=options, alt_lib_path=test_temp_dir)
         assert not result.errors
 
         major, minor = sys.version_info[:2]
@@ -40,6 +38,4 @@ class RefInfoSuite(DataSuite):
         for item in data:
             a.append(f"{item['line']}:{item['column']}:{item['target']}")
 
-        assert_string_arrays_equal(
-            testcase.output, a, f"Invalid output ({testcase.file}, line {testcase.line})"
-        )
+        assert_string_arrays_equal(testcase.output, a, f"Invalid output ({testcase.file}, line {testcase.line})")

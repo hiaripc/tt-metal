@@ -24,7 +24,10 @@ Tensors = Sequence[Tensor]
 TensorOrTensors = Union[Tensor, Tensors]
 
 
-def layerwise_sandbox(module: nn.Sequential, device: torch.device,) -> Generator[nn.Module, None, None]:
+def layerwise_sandbox(
+    module: nn.Sequential,
+    device: torch.device,
+) -> Generator[nn.Module, None, None]:
     """Copies layers for ease to profile. It doesn't modify the given
     module.
     """
@@ -41,7 +44,12 @@ def detach(batch: Batch) -> None:
         batch[i] = x.detach().requires_grad_(x.requires_grad)
 
 
-def profile_times(module: nn.Sequential, sample: Union[List[Any], Tensor], timeout: float, device: torch.device,) -> List[int]:
+def profile_times(
+    module: nn.Sequential,
+    sample: Union[List[Any], Tensor],
+    timeout: float,
+    device: torch.device,
+) -> List[int]:
     """Profiles elapsed times per layer."""
     if any(p.grad is not None for p in module.parameters()):
         raise ValueError("some parameter already has gradient")
@@ -82,7 +90,11 @@ def profile_times(module: nn.Sequential, sample: Union[List[Any], Tensor], timeo
 
 
 def profile_sizes(
-    module: nn.Sequential, input: Union[List[Any], Tensor], chunks: int, param_scale: float, device: torch.device,
+    module: nn.Sequential,
+    input: Union[List[Any], Tensor],
+    chunks: int,
+    param_scale: float,
+    device: torch.device,
 ) -> List[int]:
     """Profiles CUDA memory usage per layer."""
     if device.type != "cuda":

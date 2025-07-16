@@ -19,10 +19,7 @@ class TestFreq:
         idx = DatetimeIndex(["20180101", "20180103", "20180105"])
 
         # setting with an incompatible freq
-        msg = (
-            "Inferred frequency 2D from passed values does not conform to "
-            "passed frequency 5D"
-        )
+        msg = "Inferred frequency 2D from passed values does not conform to " "passed frequency 5D"
         with pytest.raises(ValueError, match=msg):
             idx._data.freq = "5D"
 

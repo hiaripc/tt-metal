@@ -128,9 +128,7 @@ def test_explained_variance_components_10_20(X_sparse, kind, solver):
     )
 
     # Assert that 20 components has higher explained variance than 10
-    assert (
-        svd_20.explained_variance_ratio_.sum() > svd_10.explained_variance_ratio_.sum()
-    )
+    assert svd_20.explained_variance_ratio_.sum() > svd_10.explained_variance_ratio_.sum()
 
 
 @pytest.mark.parametrize("solver", SVD_SOLVERS)
@@ -151,9 +149,7 @@ def test_singular_values_consistency(solver):
     )
 
     # Compare to the 2-norms of the score vectors
-    assert_allclose(
-        pca.singular_values_, np.sqrt(np.sum(X_pca**2.0, axis=0)), rtol=1e-2
-    )
+    assert_allclose(pca.singular_values_, np.sqrt(np.sum(X_pca**2.0, axis=0)), rtol=1e-2)
 
 
 @pytest.mark.parametrize("solver", SVD_SOLVERS)
@@ -197,16 +193,12 @@ def test_truncated_svd_eq_pca(X_sparse):
     assert_allclose(svd.components_, pca.components_)
 
 
-@pytest.mark.parametrize(
-    "algorithm, tol", [("randomized", 0.0), ("arpack", 1e-6), ("arpack", 0.0)]
-)
+@pytest.mark.parametrize("algorithm, tol", [("randomized", 0.0), ("arpack", 1e-6), ("arpack", 0.0)])
 @pytest.mark.parametrize("kind", ("dense", "sparse"))
 def test_fit_transform(X_sparse, algorithm, tol, kind):
     # fit_transform(X) should equal fit(X).transform(X)
     X = X_sparse if kind == "sparse" else X_sparse.toarray()
-    svd = TruncatedSVD(
-        n_components=5, n_iter=7, random_state=42, algorithm=algorithm, tol=tol
-    )
+    svd = TruncatedSVD(n_components=5, n_iter=7, random_state=42, algorithm=algorithm, tol=tol)
     X_transformed_1 = svd.fit_transform(X)
     X_transformed_2 = svd.fit(X).transform(X)
     assert_allclose(X_transformed_1, X_transformed_2)

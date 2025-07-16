@@ -64,10 +64,7 @@ class Circle:
 
     def inside(self, outer_circle, tolerance=_CIRCLE_INSIDE_TOLERANCE):
         dist = self.radius + hypot(*_vector_between(self.centre, outer_circle.centre))
-        return (
-            isclose(outer_circle.radius, dist, rel_tol=_CIRCLE_INSIDE_TOLERANCE)
-            or outer_circle.radius > dist
-        )
+        return isclose(outer_circle.radius, dist, rel_tol=_CIRCLE_INSIDE_TOLERANCE) or outer_circle.radius > dist
 
     def concentric(self, other):
         return self.centre == other.centre

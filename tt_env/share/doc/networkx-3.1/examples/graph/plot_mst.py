@@ -3,8 +3,8 @@
 Minimum Spanning Tree
 =====================
 
-A minimum spanning tree (MST) is a subset of edges in a weighted, 
-connected graph that connects all vertices together with the 
+A minimum spanning tree (MST) is a subset of edges in a weighted,
+connected graph that connects all vertices together with the
 minimum possible total edge weight. The `minimum_spanning_tree`
 function is used to compare the original graph with its MST.
 
@@ -42,9 +42,7 @@ pos = nx.spring_layout(G)
 nx.draw_networkx_nodes(G, pos, node_color="lightblue", node_size=500)
 nx.draw_networkx_edges(G, pos, edge_color="grey")
 nx.draw_networkx_labels(G, pos, font_size=12, font_family="sans-serif")
-nx.draw_networkx_edge_labels(
-    G, pos, edge_labels={(u, v): d["weight"] for u, v, d in G.edges(data=True)}
-)
+nx.draw_networkx_edge_labels(G, pos, edge_labels={(u, v): d["weight"] for u, v, d in G.edges(data=True)})
 nx.draw_networkx_edges(T, pos, edge_color="green", width=2)
 plt.axis("off")
 plt.show()

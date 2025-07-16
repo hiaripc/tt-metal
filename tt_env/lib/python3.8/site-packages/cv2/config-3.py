@@ -1,6 +1,4 @@
-PYTHON_EXTENSIONS_PATHS = [
-    LOADER_DIR
-] + PYTHON_EXTENSIONS_PATHS
+PYTHON_EXTENSIONS_PATHS = [LOADER_DIR] + PYTHON_EXTENSIONS_PATHS
 
 ci_and_not_headless = False
 
@@ -19,6 +17,4 @@ if sys.platform.startswith("linux") and ci_and_not_headless:
 
 # Qt will throw warning on Linux if fonts are not found
 if sys.platform.startswith("linux") and ci_and_not_headless:
-    os.environ["QT_QPA_FONTDIR"] = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)), "qt", "fonts"
-    )
+    os.environ["QT_QPA_FONTDIR"] = os.path.join(os.path.dirname(os.path.abspath(__file__)), "qt", "fonts")

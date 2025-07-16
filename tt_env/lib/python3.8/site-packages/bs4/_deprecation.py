@@ -48,9 +48,7 @@ def _deprecated_alias(old_name: str, new_name: str, version: str):
     return alias
 
 
-def _deprecated_function_alias(
-    old_name: str, new_name: str, version: str
-) -> Callable[[Any], Any]:
+def _deprecated_function_alias(old_name: str, new_name: str, version: str) -> Callable[[Any], Any]:
     def alias(self, *args: Any, **kwargs: Any) -> Any:
         ":meta private:"
         warnings.warn(

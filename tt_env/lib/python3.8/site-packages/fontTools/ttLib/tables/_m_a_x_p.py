@@ -93,9 +93,7 @@ class table__m_a_x_p(DefaultTable.DefaultTable):
                     maxPoints = max(maxPoints, nPoints)
                     maxContours = max(maxContours, nContours)
                 elif g.isComposite():
-                    nPoints, nContours, componentDepth = g.getCompositeMaxpValues(
-                        glyfTable
-                    )
+                    nPoints, nContours, componentDepth = g.getCompositeMaxpValues(glyfTable)
                     maxCompositePoints = max(maxCompositePoints, nPoints)
                     maxCompositeContours = max(maxCompositeContours, nContours)
                     maxComponentElements = max(maxComponentElements, len(g.components))

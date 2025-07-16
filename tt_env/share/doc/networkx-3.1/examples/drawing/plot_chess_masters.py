@@ -65,9 +65,7 @@ def chess_pgn_graph(pgn_file="chess_masters_WCC.pgn.bz2"):
 
 G = chess_pgn_graph()
 
-print(
-    f"Loaded {G.number_of_edges()} chess games between {G.number_of_nodes()} players\n"
-)
+print(f"Loaded {G.number_of_edges()} chess games between {G.number_of_nodes()} players\n")
 
 # identify connected components of the undirected version
 H = G.to_undirected()

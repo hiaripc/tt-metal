@@ -132,9 +132,7 @@ class TTSMIBackend:
         for i, device in enumerate(self.devices):
             board_id = self.device_infos[i]["board_id"]
             board_type = self.device_infos[i]["board_type"]
-            pci_dev_id = (
-                device.get_pci_interface_id() if not device.is_remote() else "N/A"
-            )
+            pci_dev_id = device.get_pci_interface_id() if not device.is_remote() else "N/A"
             if device.as_wh():
                 suffix = " R" if device.is_remote() else " L"
                 board_type = board_type + suffix
@@ -152,10 +150,7 @@ class TTSMIBackend:
         table_2.add_column("Device Series")
         table_2.add_column("Board Number")
         for i, device in enumerate(self.devices):
-            if (
-                not device.is_remote()
-                and self.device_infos[i]["board_type"] != "GALAXY"
-            ):
+            if not device.is_remote() and self.device_infos[i]["board_type"] != "GALAXY":
                 board_id = self.device_infos[i]["board_id"]
                 board_type = self.device_infos[i]["board_type"]
                 pci_dev_id = device.get_pci_interface_id()
@@ -214,9 +209,7 @@ class TTSMIBackend:
             val = int(self.smbus_telem_info[board_num]["DDR_SPEED"], 16)
             return f"{val}"
         if self.smbus_telem_info[board_num]["DDR_STATUS"] is not None:
-            dram_speed_raw = (
-                int(self.smbus_telem_info[board_num]["DDR_STATUS"], 16) >> 24
-            )
+            dram_speed_raw = int(self.smbus_telem_info[board_num]["DDR_STATUS"], 16) >> 24
             if dram_speed_raw == 0:
                 return "16G"
             elif dram_speed_raw == 1:
@@ -278,9 +271,7 @@ class TTSMIBackend:
             for i in range(num_channels):
                 if self.smbus_telem_info[board_num]["DDR_STATUS"] is None:
                     return False
-                dram_status = (
-                    int(self.smbus_telem_info[board_num]["DDR_STATUS"], 16) >> (4 * i)
-                ) & 0xF
+                dram_status = (int(self.smbus_telem_info[board_num]["DDR_STATUS"], 16) >> (4 * i)) & 0xF
                 if dram_status != 2:
                     return False
                 return True
@@ -289,9 +280,7 @@ class TTSMIBackend:
             for i in range(num_channels):
                 if self.smbus_telem_info[board_num]["DDR_STATUS"] is None:
                     return False
-                dram_status = (
-                    int(self.smbus_telem_info[board_num]["DDR_STATUS"], 16) >> (4 * i)
-                ) & 0xF
+                dram_status = (int(self.smbus_telem_info[board_num]["DDR_STATUS"], 16) >> (4 * i)) & 0xF
                 if dram_status != 1:
                     return False
                 return True
@@ -316,9 +305,9 @@ class TTSMIBackend:
                 dev_info[field] = self.get_board_id(board_num)
             elif field == "coords":
                 if self.devices[board_num].as_wh():
-                    dev_info[field] = (
-                        f"({self.devices[board_num].as_wh().get_local_coord().shelf_x}, {self.devices[board_num].as_wh().get_local_coord().shelf_y}, {self.devices[board_num].as_wh().get_local_coord().rack_x}, {self.devices[board_num].as_wh().get_local_coord().rack_y})"
-                    )
+                    dev_info[
+                        field
+                    ] = f"({self.devices[board_num].as_wh().get_local_coord().shelf_x}, {self.devices[board_num].as_wh().get_local_coord().shelf_y}, {self.devices[board_num].as_wh().get_local_coord().rack_x}, {self.devices[board_num].as_wh().get_local_coord().rack_y})"
                 else:
                     dev_info[field] = "N/A"
             elif field == "dram_status":
@@ -353,11 +342,7 @@ class TTSMIBackend:
             else 0
         )
         asic_temperature = (
-            (
-                self.convert_signed_16_16_to_float(
-                    int(self.smbus_telem_info[board_num]["ASIC_TEMPERATURE"], 16)
-                )
-            )
+            (self.convert_signed_16_16_to_float(int(self.smbus_telem_info[board_num]["ASIC_TEMPERATURE"], 16)))
             if self.smbus_telem_info[board_num]["ASIC_TEMPERATURE"] is not None
             else 0
         )
@@ -384,9 +369,7 @@ class TTSMIBackend:
         else:
             voltage = 10000
         power = int(self.smbus_telem_info[board_num]["TDP"], 16) & 0xFFFF
-        asic_temperature = (
-            int(self.smbus_telem_info[board_num]["ASIC_TEMPERATURE"], 16) & 0xFFFF
-        ) / 16
+        asic_temperature = (int(self.smbus_telem_info[board_num]["ASIC_TEMPERATURE"], 16) & 0xFFFF) / 16
         aiclk = int(self.smbus_telem_info[board_num]["AICLK"], 16) & 0xFFFF
 
         chip_telemetry = {
@@ -565,9 +548,7 @@ def mobo_reset_from_json(json_dict) -> dict:
                 for entry in mobo_dict_list:
                     if "nb_host_pci_idx" in entry.keys() and entry["nb_host_pci_idx"]:
                         # remove the list of WH PCIe index's from the reset list
-                        wh_link_pci_indices = list(
-                            set(wh_link_pci_indices) - set(entry["nb_host_pci_idx"])
-                        )
+                        wh_link_pci_indices = list(set(wh_link_pci_indices) - set(entry["nb_host_pci_idx"]))
                 json_dict["wh_link_reset"]["pci_index"] = wh_link_pci_indices
             except Exception as e:
                 print(

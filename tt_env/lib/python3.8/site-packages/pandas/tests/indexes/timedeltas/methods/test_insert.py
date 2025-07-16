@@ -73,9 +73,7 @@ class TestTimedeltaIndexInsert:
             assert result.name == expected.name
             assert result.freq == expected.freq
 
-    @pytest.mark.parametrize(
-        "null", [None, np.nan, np.timedelta64("NaT"), pd.NaT, pd.NA]
-    )
+    @pytest.mark.parametrize("null", [None, np.nan, np.timedelta64("NaT"), pd.NaT, pd.NA])
     def test_insert_nat(self, null):
         # GH 18295 (test missing)
         idx = timedelta_range("1day", "3day")
@@ -97,9 +95,7 @@ class TestTimedeltaIndexInsert:
         result = idx.insert(0, item2)
         tm.assert_index_equal(result, expected)
 
-    @pytest.mark.parametrize(
-        "item", [0, np.int64(0), np.float64(0), np.array(0), np.datetime64(456, "us")]
-    )
+    @pytest.mark.parametrize("item", [0, np.int64(0), np.float64(0), np.array(0), np.datetime64(456, "us")])
     def test_insert_mismatched_types_raises(self, item):
         # GH#33703 dont cast these to td64
         tdi = TimedeltaIndex(["4day", "1day", "2day"], name="idx")

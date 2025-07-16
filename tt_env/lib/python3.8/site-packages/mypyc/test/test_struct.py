@@ -50,10 +50,7 @@ class TestStruct(unittest.TestCase):
     def test_struct_str(self) -> None:
         r = RStruct("Foo", ["a", "b"], [bool_rprimitive, object_rprimitive])
         assert str(r) == "Foo{a:bool, b:object}"
-        assert (
-            repr(r) == "<RStruct Foo{a:<RPrimitive builtins.bool>, "
-            "b:<RPrimitive builtins.object>}>"
-        )
+        assert repr(r) == "<RStruct Foo{a:<RPrimitive builtins.bool>, " "b:<RPrimitive builtins.object>}>"
         r1 = RStruct("Bar", ["c"], [int32_rprimitive])
         assert str(r1) == "Bar{c:i32}"
         assert repr(r1) == "<RStruct Bar{c:<RPrimitive i32>}>"
@@ -78,9 +75,7 @@ class TestStruct(unittest.TestCase):
         r4 = RStruct("FooBar", ["a", "b"], [bool_rprimitive, int32_rprimitive])
 
         # number of types different
-        r5 = RStruct(
-            "FooBarBaz", ["a", "b", "c"], [bool_rprimitive, int_rprimitive, bool_rprimitive]
-        )
+        r5 = RStruct("FooBarBaz", ["a", "b", "c"], [bool_rprimitive, int_rprimitive, bool_rprimitive])
 
         assert is_runtime_subtype(r1, r) is True
         assert is_runtime_subtype(r2, r) is False

@@ -14,6 +14,7 @@ from bs4.element import (
     ResultSet,
 )
 
+
 class TestNamedspacedAttribute:
     def test_name_may_be_none_or_missing(self):
         a = NamespacedAttribute("xmlns", None)

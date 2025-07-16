@@ -14,7 +14,7 @@
 
 ### [Llama 3.1/3.2](demos/llama3)
 - Improved the decode performance of the 1B/3B/8B/11B text models (for 8B, increased from ~23 t/s/u to ~28 t/s/u) by using BFP4 weights (instead of BFP8) for FF1 and FF3 in the MLP.
-- Added the option to specify custom model configurations, with two defaults for performance and accuracy already provided. 
+- Added the option to specify custom model configurations, with two defaults for performance and accuracy already provided.
 
 ## November 18, 2024
 
@@ -70,7 +70,7 @@
 ### [Mistral7B](demos/wormhole/mistral7b)
 - Updated the demo to support multiple batches of users
 
-### [Mamba-2.8B](demos/wormhole/mamba) 
+### [Mamba-2.8B](demos/wormhole/mamba)
 - Updated the demo to use the full prefill graph instead of processing a single token of the prompt at a time using decode
 
 ### [Mixtral7Bx8](demos/t3000/mixtral8x7b)

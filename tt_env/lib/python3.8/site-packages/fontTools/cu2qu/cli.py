@@ -156,9 +156,7 @@ def _main(args=None):
             os.mkdir(output_dir)
         elif not os.path.isdir(output_dir):
             parser.error("'%s' is not a directory" % output_dir)
-        output_paths = [
-            os.path.join(output_dir, os.path.basename(p)) for p in options.infiles
-        ]
+        output_paths = [os.path.join(output_dir, os.path.basename(p)) for p in options.infiles]
     elif options.output_file:
         output_paths = [options.output_file]
     else:

@@ -10,19 +10,19 @@ from matplotlib.testing.decorators import _image_directories
 
 # Tests of the image comparison algorithm.
 @pytest.mark.parametrize(
-    'im1, im2, tol, expect_rms',
+    "im1, im2, tol, expect_rms",
     [
         # Comparison of an image and the same image with minor differences.
         # This expects the images to compare equal under normal tolerance, and
         # have a small RMS.
-        ('basn3p02.png', 'basn3p02-minorchange.png', 10, None),
+        ("basn3p02.png", "basn3p02-minorchange.png", 10, None),
         # Now test with no tolerance.
-        ('basn3p02.png', 'basn3p02-minorchange.png', 0, 6.50646),
+        ("basn3p02.png", "basn3p02-minorchange.png", 0, 6.50646),
         # Comparison with an image that is shifted by 1px in the X axis.
-        ('basn3p02.png', 'basn3p02-1px-offset.png', 0, 90.15611),
+        ("basn3p02.png", "basn3p02-1px-offset.png", 0, 90.15611),
         # Comparison with an image with half the pixels shifted by 1px in the X
         # axis.
-        ('basn3p02.png', 'basn3p02-half-1px-offset.png', 0, 63.75),
+        ("basn3p02.png", "basn3p02-half-1px-offset.png", 0, 63.75),
         # Comparison of an image and the same image scrambled.
         # This expects the images to compare completely different, with a very
         # large RMS.
@@ -32,18 +32,18 @@ from matplotlib.testing.decorators import _image_directories
         # value of R, G and B, but in a totally different position.
         # Test with no tolerance to make sure that we pick up even a very small
         # RMS error.
-        ('basn3p02.png', 'basn3p02-scrambled.png', 0, 172.63582),
+        ("basn3p02.png", "basn3p02-scrambled.png", 0, 172.63582),
         # Comparison of an image and a slightly brighter image.
         # The two images are solid color, with the second image being exactly 1
         # color value brighter.
         # This expects the images to compare equal under normal tolerance, and
         # have an RMS of exactly 1.
-        ('all127.png', 'all128.png', 0, 1),
+        ("all127.png", "all128.png", 0, 1),
         # Now test the reverse comparison.
-        ('all128.png', 'all127.png', 0, 1),
-    ])
-def test_image_comparison_expect_rms(im1, im2, tol, expect_rms, tmp_path,
-                                     monkeypatch):
+        ("all128.png", "all127.png", 0, 1),
+    ],
+)
+def test_image_comparison_expect_rms(im1, im2, tol, expect_rms, tmp_path, monkeypatch):
     """
     Compare two images, expecting a particular RMS error.
 
@@ -63,11 +63,10 @@ def test_image_comparison_expect_rms(im1, im2, tol, expect_rms, tmp_path,
     # the diff to result_dir, rather than to the source tree
     result_im2 = result_dir / im1
     shutil.copyfile(baseline_dir / im2, result_im2)
-    results = compare_images(
-        baseline_dir / im1, result_im2, tol=tol, in_decorator=True)
+    results = compare_images(baseline_dir / im1, result_im2, tol=tol, in_decorator=True)
 
     if expect_rms is None:
         assert results is None
     else:
         assert results is not None
-        assert results['rms'] == approx(expect_rms, abs=1e-4)
+        assert results["rms"] == approx(expect_rms, abs=1e-4)

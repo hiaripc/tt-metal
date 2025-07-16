@@ -53,35 +53,22 @@ plt.suptitle("SNAP Summarization")
 base_options = {"with_labels": True, "edgecolors": "black", "node_size": 500}
 
 ax1 = plt.subplot(1, 2, 1)
-plt.title(
-    "Original (%s nodes, %s edges)"
-    % (original_graph.number_of_nodes(), original_graph.number_of_edges())
-)
+plt.title("Original (%s nodes, %s edges)" % (original_graph.number_of_nodes(), original_graph.number_of_edges()))
 pos = nx.spring_layout(original_graph, seed=7482934)
 node_colors = [d["color"] for _, d in original_graph.nodes(data=True)]
 
 edge_type_visual_weight_lookup = {"Weak": 1.0, "Strong": 3.0}
-edge_weights = [
-    edge_type_visual_weight_lookup[d["type"]]
-    for _, _, d in original_graph.edges(data=True)
-]
+edge_weights = [edge_type_visual_weight_lookup[d["type"]] for _, _, d in original_graph.edges(data=True)]
 
-nx.draw_networkx(
-    original_graph, pos=pos, node_color=node_colors, width=edge_weights, **base_options
-)
+nx.draw_networkx(original_graph, pos=pos, node_color=node_colors, width=edge_weights, **base_options)
 
 node_attributes = ("color",)
 edge_attributes = ("type",)
-summary_graph = nx.snap_aggregation(
-    original_graph, node_attributes, edge_attributes, prefix="S-"
-)
+summary_graph = nx.snap_aggregation(original_graph, node_attributes, edge_attributes, prefix="S-")
 
 plt.subplot(1, 2, 2)
 
-plt.title(
-    "SNAP Aggregation (%s nodes, %s edges)"
-    % (summary_graph.number_of_nodes(), summary_graph.number_of_edges())
-)
+plt.title("SNAP Aggregation (%s nodes, %s edges)" % (summary_graph.number_of_nodes(), summary_graph.number_of_edges()))
 summary_pos = nx.spring_layout(summary_graph, seed=8375428)
 node_colors = []
 for node in summary_graph:

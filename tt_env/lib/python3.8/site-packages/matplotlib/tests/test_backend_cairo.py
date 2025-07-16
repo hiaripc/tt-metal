@@ -3,11 +3,10 @@ import numpy as np
 import pytest
 
 from matplotlib.testing.decorators import check_figures_equal
-from matplotlib import (
-    collections as mcollections, patches as mpatches, path as mpath)
+from matplotlib import collections as mcollections, patches as mpatches, path as mpath
 
 
-@pytest.mark.backend('cairo')
+@pytest.mark.backend("cairo")
 @check_figures_equal(extensions=["png"])
 def test_patch_alpha_coloring(fig_test, fig_ref):
     """
@@ -26,23 +25,20 @@ def test_patch_alpha_coloring(fig_test, fig_ref):
     ax = fig_ref.subplots()
     ax.set_xlim([-1, 2])
     ax.set_ylim([-1, 2])
-    patch = mpatches.PathPatch(cut_star1,
-                               linewidth=5, linestyle='dashdot',
-                               facecolor=(1, 0, 0, 0.5),
-                               edgecolor=(0, 0, 1, 0.75))
+    patch = mpatches.PathPatch(
+        cut_star1, linewidth=5, linestyle="dashdot", facecolor=(1, 0, 0, 0.5), edgecolor=(0, 0, 1, 0.75)
+    )
     ax.add_patch(patch)
-    patch = mpatches.PathPatch(cut_star2,
-                               linewidth=5, linestyle='dashdot',
-                               facecolor=(1, 0, 0, 0.5),
-                               edgecolor=(0, 0, 1, 0.75))
+    patch = mpatches.PathPatch(
+        cut_star2, linewidth=5, linestyle="dashdot", facecolor=(1, 0, 0, 0.5), edgecolor=(0, 0, 1, 0.75)
+    )
     ax.add_patch(patch)
 
     # Test: path collection
     ax = fig_test.subplots()
     ax.set_xlim([-1, 2])
     ax.set_ylim([-1, 2])
-    col = mcollections.PathCollection([cut_star1, cut_star2],
-                                      linewidth=5, linestyles='dashdot',
-                                      facecolor=(1, 0, 0, 0.5),
-                                      edgecolor=(0, 0, 1, 0.75))
+    col = mcollections.PathCollection(
+        [cut_star1, cut_star2], linewidth=5, linestyles="dashdot", facecolor=(1, 0, 0, 0.5), edgecolor=(0, 0, 1, 0.75)
+    )
     ax.add_collection(col)

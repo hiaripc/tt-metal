@@ -1,13 +1,12 @@
 from .cartan_type import Standard_Cartan
 from sympy.core.backend import eye
 
-class TypeD(Standard_Cartan):
 
+class TypeD(Standard_Cartan):
     def __new__(cls, n):
         if n < 3:
             raise ValueError("n cannot be less than 3")
         return Standard_Cartan.__new__(cls, "D", n)
-
 
     def dimension(self):
         """Dmension of the vector space V underlying the Lie algebra
@@ -32,7 +31,7 @@ class TypeD(Standard_Cartan):
         """
 
         n = self.n
-        root = [0]*n
+        root = [0] * n
         root[i] = 1
         root[j] = -1
         return root
@@ -68,13 +67,12 @@ class TypeD(Standard_Cartan):
 
         n = self.n
         if i < n:
-            return self.basic_root(i-1, i)
+            return self.basic_root(i - 1, i)
         else:
-            root = [0]*n
-            root[n-2] = 1
-            root[n-1] = 1
+            root = [0] * n
+            root[n - 2] = 1
+            root[n - 1] = 1
             return root
-
 
     def positive_roots(self):
         """
@@ -96,14 +94,14 @@ class TypeD(Standard_Cartan):
         n = self.n
         posroots = {}
         k = 0
-        for i in range(0, n-1):
-            for j in range(i+1, n):
-               k += 1
-               posroots[k] = self.basic_root(i, j)
-               k += 1
-               root = self.basic_root(i, j)
-               root[j] = 1
-               posroots[k] = root
+        for i in range(0, n - 1):
+            for j in range(i + 1, n):
+                k += 1
+                posroots[k] = self.basic_root(i, j)
+                k += 1
+                root = self.basic_root(i, j)
+                root[j] = 1
+                posroots[k] = root
         return posroots
 
     def roots(self):
@@ -112,7 +110,7 @@ class TypeD(Standard_Cartan):
         """
 
         n = self.n
-        return 2*n*(n-1)
+        return 2 * n * (n - 1)
 
     def cartan_matrix(self):
         """
@@ -137,15 +135,15 @@ class TypeD(Standard_Cartan):
         """
 
         n = self.n
-        m = 2*eye(n)
+        m = 2 * eye(n)
         i = 1
-        while i < n-2:
-           m[i,i+1] = -1
-           m[i,i-1] = -1
-           i += 1
-        m[n-2, n-3] = -1
-        m[n-3, n-1] = -1
-        m[n-1, n-3] = -1
+        while i < n - 2:
+            m[i, i + 1] = -1
+            m[i, i - 1] = -1
+            i += 1
+        m[n - 2, n - 3] = -1
+        m[n - 3, n - 1] = -1
+        m[n - 1, n - 3] = -1
         m[0, 1] = -1
         return m
 
@@ -154,7 +152,7 @@ class TypeD(Standard_Cartan):
         Returns the number of independent generators of D_n
         """
         n = self.n
-        return n*(n-1)/2
+        return n * (n - 1) / 2
 
     def lie_algebra(self):
         """
@@ -162,14 +160,14 @@ class TypeD(Standard_Cartan):
         """
 
         n = self.n
-        return "so(" + str(2*n) + ")"
+        return "so(" + str(2 * n) + ")"
 
     def dynkin_diagram(self):
         n = self.n
-        diag = " "*4*(n-3) + str(n-1) + "\n"
-        diag += " "*4*(n-3) + "0\n"
-        diag += " "*4*(n-3) +"|\n"
-        diag += " "*4*(n-3) + "|\n"
-        diag += "---".join("0" for i in range(1,n)) + "\n"
-        diag += "   ".join(str(i) for i in range(1, n-1)) + "   "+str(n)
+        diag = " " * 4 * (n - 3) + str(n - 1) + "\n"
+        diag += " " * 4 * (n - 3) + "0\n"
+        diag += " " * 4 * (n - 3) + "|\n"
+        diag += " " * 4 * (n - 3) + "|\n"
+        diag += "---".join("0" for i in range(1, n)) + "\n"
+        diag += "   ".join(str(i) for i in range(1, n - 1)) + "   " + str(n)
         return diag

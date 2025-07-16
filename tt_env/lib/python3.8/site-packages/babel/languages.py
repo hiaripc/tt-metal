@@ -35,9 +35,9 @@ def get_official_languages(territory: str, regional: bool = False, de_facto: boo
 
     languages = get_global("territory_languages").get(territory, {})
     pairs = [
-        (info['population_percent'], language)
+        (info["population_percent"], language)
         for language, info in languages.items()
-        if info.get('official_status') in allowed_stati
+        if info.get("official_status") in allowed_stati
     ]
     pairs.sort(reverse=True)
     return tuple(lang for _, lang in pairs)

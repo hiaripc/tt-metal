@@ -81,13 +81,9 @@ def get_package_properties(package_id: str) -> ModuleProperties:
             # It's a module inside a package.  There's nothing else to walk/yield.
             subpackages = []
     else:
-        all_packages = pkgutil.walk_packages(
-            path, prefix=package.__name__ + ".", onerror=lambda r: None
-        )
+        all_packages = pkgutil.walk_packages(path, prefix=package.__name__ + ".", onerror=lambda r: None)
         subpackages = [qualified_name for importer, qualified_name, ispkg in all_packages]
-    return ModuleProperties(
-        name=name, file=file, path=path, all=pkg_all, is_c_module=is_c, subpackages=subpackages
-    )
+    return ModuleProperties(name=name, file=file, path=path, all=pkg_all, is_c_module=is_c, subpackages=subpackages)
 
 
 def worker(tasks: Queue[str], results: Queue[str | ModuleProperties], sys_path: list[str]) -> None:

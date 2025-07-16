@@ -78,8 +78,5 @@ class AuthenticationKey(bytes):
         try:
             assert_spawning(self)
         except RuntimeError:
-            raise TypeError(
-                "Pickling an AuthenticationKey object is "
-                "disallowed for security reasons"
-            )
+            raise TypeError("Pickling an AuthenticationKey object is " "disallowed for security reasons")
         return AuthenticationKey, (bytes(self),)

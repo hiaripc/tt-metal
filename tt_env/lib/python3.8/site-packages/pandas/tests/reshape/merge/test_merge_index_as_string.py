@@ -148,13 +148,9 @@ def test_merge_indexes_and_columns_on(left_df, right_df, on, how):
         (["inner", "outer"], ["inner", "outer"], "outer"),
     ],
 )
-def test_merge_indexes_and_columns_lefton_righton(
-    left_df, right_df, left_on, right_on, how
-):
+def test_merge_indexes_and_columns_lefton_righton(left_df, right_df, left_on, right_on, how):
     # Construct expected result
-    expected = compute_expected(
-        left_df, right_df, left_on=left_on, right_on=right_on, how=how
-    )
+    expected = compute_expected(left_df, right_df, left_on=left_on, right_on=right_on, how=how)
 
     # Perform merge
     result = left_df.merge(right_df, left_on=left_on, right_on=right_on, how=how)
@@ -172,15 +168,11 @@ def test_join_indexes_and_columns_on(df1, df2, left_index, join_type):
     # Result
     expected = (
         left_df.reset_index()
-        .join(
-            right_df, on=["outer", "inner"], how=join_type, lsuffix="_x", rsuffix="_y"
-        )
+        .join(right_df, on=["outer", "inner"], how=join_type, lsuffix="_x", rsuffix="_y")
         .set_index(left_index)
     )
 
     # Perform join
-    result = left_df.join(
-        right_df, on=["outer", "inner"], how=join_type, lsuffix="_x", rsuffix="_y"
-    )
+    result = left_df.join(right_df, on=["outer", "inner"], how=join_type, lsuffix="_x", rsuffix="_y")
 
     tm.assert_frame_equal(result, expected, check_like=True)

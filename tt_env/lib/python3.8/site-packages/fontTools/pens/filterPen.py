@@ -222,9 +222,7 @@ class _DecomposingFilterPenMixin:
                 if self.include != include_bak:
                     self.include = include_bak
         else:
-            _PassThruComponentsMixin.addComponent(
-                self, baseGlyphName, transformation, **kwargs
-            )
+            _PassThruComponentsMixin.addComponent(self, baseGlyphName, transformation, **kwargs)
 
 
 class DecomposingFilterPen(_DecomposingFilterPenMixin, DecomposingPen, FilterPen):
@@ -233,9 +231,7 @@ class DecomposingFilterPen(_DecomposingFilterPenMixin, DecomposingPen, FilterPen
     pass
 
 
-class DecomposingFilterPointPen(
-    _DecomposingFilterPenMixin, DecomposingPointPen, FilterPointPen
-):
+class DecomposingFilterPointPen(_DecomposingFilterPenMixin, DecomposingPointPen, FilterPointPen):
     """Filter point pen that draws components as regular contours."""
 
     pass

@@ -5,7 +5,7 @@ Subgraphs
 Example of partitioning a directed graph with nodes labeled as
 supported and unsupported nodes into a list of subgraphs
 that contain only entirely supported or entirely unsupported nodes.
-Adopted from 
+Adopted from
 https://github.com/lobpcg/python_examples/blob/master/networkx_example.py
 """
 
@@ -69,9 +69,7 @@ def graph_partitioning(G, plotting=True):
     # And use the sets, specifying the components, to partition
     # the original directed graph into a list of directed subgraphs
     # that contain only entirely supported or entirely unsupported nodes.
-    subgraphs = [
-        H.subgraph(c).copy() for c in nx.connected_components(H.to_undirected())
-    ]
+    subgraphs = [H.subgraph(c).copy() for c in nx.connected_components(H.to_undirected())]
 
     return subgraphs, G_minus_H
 

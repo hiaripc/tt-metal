@@ -57,13 +57,9 @@ def _check_children_consistency(parent, left, right):
     assert parent.right_child is right
 
     # each sample from the parent is propagated to one of the two children
-    assert len(left.sample_indices) + len(right.sample_indices) == len(
-        parent.sample_indices
-    )
+    assert len(left.sample_indices) + len(right.sample_indices) == len(parent.sample_indices)
 
-    assert set(left.sample_indices).union(set(right.sample_indices)) == set(
-        parent.sample_indices
-    )
+    assert set(left.sample_indices).union(set(right.sample_indices)) == set(parent.sample_indices)
 
     # samples are sent either to the left or the right node, never to both
     assert set(left.sample_indices).intersection(set(right.sample_indices)) == set()
@@ -83,9 +79,7 @@ def _check_children_consistency(parent, left, right):
     ],
 )
 def test_grow_tree(n_bins, constant_hessian, stopping_param, shrinkage):
-    X_binned, all_gradients, all_hessians = _make_training_data(
-        n_bins=n_bins, constant_hessian=constant_hessian
-    )
+    X_binned, all_gradients, all_hessians = _make_training_data(n_bins=n_bins, constant_hessian=constant_hessian)
     n_samples = X_binned.shape[0]
 
     if stopping_param == "max_leaf_nodes":
@@ -176,9 +170,7 @@ def test_predictor_from_grower():
     # Check that the node structure can be converted into a predictor
     # object to perform predictions at scale
     # We pass undefined binning_thresholds because we won't use predict anyway
-    predictor = grower.make_predictor(
-        binning_thresholds=np.zeros((X_binned.shape[1], n_bins))
-    )
+    predictor = grower.make_predictor(binning_thresholds=np.zeros((X_binned.shape[1], n_bins)))
     assert predictor.nodes.shape[0] == 5
     assert predictor.nodes["is_leaf"].sum() == 3
 
@@ -199,9 +191,7 @@ def test_predictor_from_grower():
         dtype=np.uint8,
     )
     missing_values_bin_idx = n_bins - 1
-    predictions = predictor.predict_binned(
-        input_data, missing_values_bin_idx, n_threads
-    )
+    predictions = predictor.predict_binned(input_data, missing_values_bin_idx, n_threads)
     expected_targets = [1, 1, 1, 1, 1, 1, -1, -1, -1]
     assert np.allclose(predictions, expected_targets)
 
@@ -331,9 +321,7 @@ def test_input_validation():
         TreeGrower(X_binned_float, all_gradients, all_hessians)
 
     X_binned_C_array = np.ascontiguousarray(X_binned)
-    with pytest.raises(
-        ValueError, match="X_binned should be passed as Fortran contiguous array"
-    ):
+    with pytest.raises(ValueError, match="X_binned should be passed as Fortran contiguous array"):
         TreeGrower(X_binned_C_array, all_gradients, all_hessians)
 
 
@@ -359,15 +347,11 @@ def test_missing_value_predict_only():
     gradients = rng.normal(size=n_samples).astype(G_H_DTYPE)
     hessians = np.ones(shape=1, dtype=G_H_DTYPE)
 
-    grower = TreeGrower(
-        X_binned, gradients, hessians, min_samples_leaf=5, has_missing_values=False
-    )
+    grower = TreeGrower(X_binned, gradients, hessians, min_samples_leaf=5, has_missing_values=False)
     grower.grow()
 
     # We pass undefined binning_thresholds because we won't use predict anyway
-    predictor = grower.make_predictor(
-        binning_thresholds=np.zeros((X_binned.shape[1], X_binned.max() + 1))
-    )
+    predictor = grower.make_predictor(binning_thresholds=np.zeros((X_binned.shape[1], X_binned.max() + 1)))
 
     # go from root to a leaf, always following node with the most samples.
     # That's the path nans are supposed to take
@@ -503,9 +487,7 @@ def test_grow_tree_categories():
     # prediction
     known_cat_bitsets = np.zeros((1, 8), dtype=np.uint32)  # ignored anyway
     f_idx_map = np.array([0], dtype=np.uint32)
-    prediction = predictor.predict(
-        np.array([[np.nan]]), known_cat_bitsets, f_idx_map, n_threads
-    )
+    prediction = predictor.predict(np.array([[np.nan]]), known_cat_bitsets, f_idx_map, n_threads)
     assert_allclose(prediction, [-1])
 
 
@@ -539,26 +521,16 @@ def test_ohe_equivalence(min_samples_leaf, n_unique_categories, target):
         "max_leaf_nodes": None,
     }
 
-    grower = TreeGrower(
-        X_binned, gradients, hessians, is_categorical=[True], **grower_params
-    )
+    grower = TreeGrower(X_binned, gradients, hessians, is_categorical=[True], **grower_params)
     grower.grow()
     # we pass undefined bin_thresholds because we won't use predict()
-    predictor = grower.make_predictor(
-        binning_thresholds=np.zeros((1, n_unique_categories))
-    )
-    preds = predictor.predict_binned(
-        X_binned, missing_values_bin_idx=255, n_threads=n_threads
-    )
+    predictor = grower.make_predictor(binning_thresholds=np.zeros((1, n_unique_categories)))
+    preds = predictor.predict_binned(X_binned, missing_values_bin_idx=255, n_threads=n_threads)
 
     grower_ohe = TreeGrower(X_ohe, gradients, hessians, **grower_params)
     grower_ohe.grow()
-    predictor_ohe = grower_ohe.make_predictor(
-        binning_thresholds=np.zeros((X_ohe.shape[1], n_unique_categories))
-    )
-    preds_ohe = predictor_ohe.predict_binned(
-        X_ohe, missing_values_bin_idx=255, n_threads=n_threads
-    )
+    predictor_ohe = grower_ohe.make_predictor(binning_thresholds=np.zeros((X_ohe.shape[1], n_unique_categories)))
+    preds_ohe = predictor_ohe.predict_binned(X_ohe, missing_values_bin_idx=255, n_threads=n_threads)
 
     assert predictor.get_max_depth() <= predictor_ohe.get_max_depth()
     if target == "binary" and n_unique_categories > 2:
@@ -588,9 +560,7 @@ def test_grower_interaction_constraints():
     for seed in range(20):
         rng = np.random.RandomState(seed)
 
-        X_binned = rng.randint(
-            0, n_bins - 1, size=(n_samples, n_features), dtype=X_BINNED_DTYPE
-        )
+        X_binned = rng.randint(0, n_bins - 1, size=(n_samples, n_features), dtype=X_BINNED_DTYPE)
         X_binned = np.asfortranarray(X_binned)
         gradients = rng.normal(size=n_samples).astype(G_H_DTYPE)
         hessians = np.ones(shape=1, dtype=G_H_DTYPE)
@@ -627,24 +597,14 @@ def test_grower_interaction_constraints():
                 continue
             # Ensure that each node uses a subset of features of its parent node.
             parent_interaction_cst_indices = set(node.interaction_cst_indices)
-            right_interactions_cst_indices = set(
-                node.right_child.interaction_cst_indices
-            )
+            right_interactions_cst_indices = set(node.right_child.interaction_cst_indices)
             left_interactions_cst_indices = set(node.left_child.interaction_cst_indices)
 
-            assert right_interactions_cst_indices.issubset(
-                parent_interaction_cst_indices
-            )
-            assert left_interactions_cst_indices.issubset(
-                parent_interaction_cst_indices
-            )
+            assert right_interactions_cst_indices.issubset(parent_interaction_cst_indices)
+            assert left_interactions_cst_indices.issubset(parent_interaction_cst_indices)
             # The features used for split must have been present in the root's
             # constraint set.
             assert node.split_info.feature_idx in root_constraint_set
 
     # Make sure that every feature is used at least once as split for the root node.
-    assert (
-        len(set(root_feature_splits))
-        == len(set().union(*interaction_cst))
-        == n_features
-    )
+    assert len(set(root_feature_splits)) == len(set().union(*interaction_cst)) == n_features

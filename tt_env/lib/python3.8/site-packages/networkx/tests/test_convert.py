@@ -237,12 +237,8 @@ class TestConvert:
         assert self.edgelists_equal(nx.MultiGraph(nx.DiGraph(edges1)).edges(), edges1)
         assert self.edgelists_equal(nx.MultiGraph(nx.DiGraph(edges2)).edges(), edges1)
 
-        assert self.edgelists_equal(
-            nx.MultiGraph(nx.MultiDiGraph(edges1)).edges(), edges1
-        )
-        assert self.edgelists_equal(
-            nx.MultiGraph(nx.MultiDiGraph(edges2)).edges(), edges1
-        )
+        assert self.edgelists_equal(nx.MultiGraph(nx.MultiDiGraph(edges1)).edges(), edges1)
+        assert self.edgelists_equal(nx.MultiGraph(nx.MultiDiGraph(edges2)).edges(), edges1)
 
         assert self.edgelists_equal(nx.Graph(nx.MultiDiGraph(edges1)).edges(), edges1)
         assert self.edgelists_equal(nx.Graph(nx.MultiDiGraph(edges2)).edges(), edges1)

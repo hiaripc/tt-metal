@@ -41,9 +41,7 @@ def buildSparseVarRegion(support, axisTags):
     for i, tag in enumerate(axisTags):
         if tag not in support:
             continue
-        self.SparseVarRegionAxis.append(
-            buildSparseVarRegionAxis(i, support.get(tag, (0, 0, 0)))
-        )
+        self.SparseVarRegionAxis.append(buildSparseVarRegionAxis(i, support.get(tag, (0, 0, 0))))
     self.SparseRegionCount = len(self.SparseVarRegionAxis)
     return self
 
@@ -112,14 +110,10 @@ def VarData_calculateNumShorts(self, optimize=False):
             items[i] = _reorderItem(items[i], mapping)
 
     if longWords:
-        self.NumShorts = (
-            max((i for i, b in enumerate(byte_lengths) if b > 2), default=-1) + 1
-        )
+        self.NumShorts = max((i for i, b in enumerate(byte_lengths) if b > 2), default=-1) + 1
         self.NumShorts |= 0x8000
     else:
-        self.NumShorts = (
-            max((i for i, b in enumerate(byte_lengths) if b > 1), default=-1) + 1
-        )
+        self.NumShorts = max((i for i, b in enumerate(byte_lengths) if b > 1), default=-1) + 1
 
     self.VarRegionCount = len(self.VarRegionIndex)
     return self

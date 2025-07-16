@@ -16,9 +16,7 @@ def test_compare_axis(align_axis):
     if align_axis in (1, "columns"):
         indices = pd.Index([0, 2])
         columns = pd.Index(["self", "other"])
-        expected = pd.DataFrame(
-            [["a", "x"], ["c", "z"]], index=indices, columns=columns
-        )
+        expected = pd.DataFrame([["a", "x"], ["c", "z"]], index=indices, columns=columns)
         tm.assert_frame_equal(result, expected)
     else:
         indices = pd.MultiIndex.from_product([[0, 2], ["self", "other"]])
@@ -45,9 +43,7 @@ def test_compare_various_formats(keep_shape, keep_equal):
         indices = pd.Index([0, 1, 2])
         columns = pd.Index(["self", "other"])
         if keep_equal:
-            expected = pd.DataFrame(
-                [["a", "x"], ["b", "b"], ["c", "z"]], index=indices, columns=columns
-            )
+            expected = pd.DataFrame([["a", "x"], ["b", "b"], ["c", "z"]], index=indices, columns=columns)
         else:
             expected = pd.DataFrame(
                 [["a", "x"], [np.nan, np.nan], ["c", "z"]],
@@ -57,9 +53,7 @@ def test_compare_various_formats(keep_shape, keep_equal):
     else:
         indices = pd.Index([0, 2])
         columns = pd.Index(["self", "other"])
-        expected = pd.DataFrame(
-            [["a", "x"], ["c", "z"]], index=indices, columns=columns
-        )
+        expected = pd.DataFrame([["a", "x"], ["c", "z"]], index=indices, columns=columns)
     tm.assert_frame_equal(result, expected)
 
 
@@ -93,9 +87,7 @@ def test_compare_multi_index():
 
     result = s1.compare(s2, align_axis=0)
 
-    indices = pd.MultiIndex.from_arrays(
-        [[0, 0, 1, 1], [0, 0, 2, 2], ["self", "other", "self", "other"]]
-    )
+    indices = pd.MultiIndex.from_arrays([[0, 0, 1, 1], [0, 0, 2, 2], ["self", "other", "self", "other"]])
     expected = pd.Series(["a", "x", "c", "z"], index=indices)
     tm.assert_series_equal(result, expected)
 

@@ -95,8 +95,7 @@ class DefusedXMLParser(_XMLParser):
                 raise TypeError("'html=True' is no longer supported.")
             else:
                 warnings.warn(
-                    "'html' keyword argument is no longer supported. Pass "
-                    "in arguments as keyword arguments.",
+                    "'html' keyword argument is no longer supported. Pass " "in arguments as keyword arguments.",
                     category=DeprecationWarning,
                 )
 
@@ -118,9 +117,7 @@ class DefusedXMLParser(_XMLParser):
     def defused_start_doctype_decl(self, name, sysid, pubid, has_internal_subset):
         raise DTDForbidden(name, sysid, pubid)
 
-    def defused_entity_decl(
-        self, name, is_parameter_entity, value, base, sysid, pubid, notation_name
-    ):
+    def defused_entity_decl(self, name, is_parameter_entity, value, base, sysid, pubid, notation_name):
         raise EntitiesForbidden(name, value, base, sysid, pubid, notation_name)
 
     def defused_unparsed_entity_decl(self, name, base, sysid, pubid, notation_name):
@@ -135,9 +132,7 @@ class DefusedXMLParser(_XMLParser):
 # XMLParse is a typo, keep it for backwards compatibility
 XMLTreeBuilder = XMLParse = XMLParser = DefusedXMLParser
 
-parse, iterparse, fromstring = _generate_etree_functions(
-    DefusedXMLParser, _TreeBuilder, _parse, _iterparse
-)
+parse, iterparse, fromstring = _generate_etree_functions(DefusedXMLParser, _TreeBuilder, _parse, _iterparse)
 XML = fromstring
 
 

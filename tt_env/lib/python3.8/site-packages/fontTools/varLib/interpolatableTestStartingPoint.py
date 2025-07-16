@@ -36,9 +36,7 @@ def test_starting_point(glyph0, glyph1, ix, tolerance, matching):
 
         num_points = len(glyph1.points[ix])
         leeway = 3
-        if not reverse and (
-            proposed_point <= leeway or proposed_point >= num_points - leeway
-        ):
+        if not reverse and (proposed_point <= leeway or proposed_point >= num_points - leeway):
             # Try harder
 
             # Recover the covariance matrix from the GreenVectors.
@@ -72,24 +70,15 @@ def test_starting_point(glyph0, glyph1, ix, tolerance, matching):
                 transforms.append(trans)
 
             trans = transforms[0]
-            new_c0 = (
-                [complex(*trans.transformPoint((pt.real, pt.imag))) for pt in c0[0]],
-            ) + c0[1:]
+            new_c0 = ([complex(*trans.transformPoint((pt.real, pt.imag))) for pt in c0[0]],) + c0[1:]
             trans = transforms[1]
             new_contour1 = []
             for c1 in contour1:
-                new_c1 = (
-                    [
-                        complex(*trans.transformPoint((pt.real, pt.imag)))
-                        for pt in c1[0]
-                    ],
-                ) + c1[1:]
+                new_c1 = ([complex(*trans.transformPoint((pt.real, pt.imag))) for pt in c1[0]],) + c1[1:]
                 new_contour1.append(new_c1)
 
             # Next few lines duplicate from above.
-            costs = [
-                vdiff_hypot2_complex(new_c0[0], new_c1[0]) for new_c1 in new_contour1
-            ]
+            costs = [vdiff_hypot2_complex(new_c0[0], new_c1[0]) for new_c1 in new_contour1]
             min_cost_idx, min_cost = min(enumerate(costs), key=lambda x: x[1])
             first_cost = costs[0]
             if min_cost < first_cost * tolerance:

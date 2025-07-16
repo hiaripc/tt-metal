@@ -89,9 +89,7 @@ class GroupDefinition(Statement):
 
     def glyphSet(self, groups=None):
         if groups is not None and self.name in groups:
-            raise VoltLibError(
-                'Group "%s" contains itself.' % (self.name), self.location
-            )
+            raise VoltLibError('Group "%s" contains itself.' % (self.name), self.location)
         if self.glyphs_ is None:
             if groups is None:
                 groups = set({self.name})
@@ -158,9 +156,7 @@ class GroupName(Expression):
             self.glyphs_ = group.glyphSet(groups)
             return self.glyphs_
         else:
-            raise VoltLibError(
-                'Group "%s" is used but undefined.' % (self.group), self.location
-            )
+            raise VoltLibError('Group "%s" is used but undefined.' % (self.group), self.location)
 
     def __str__(self):
         return f' GROUP "{self.group}"'

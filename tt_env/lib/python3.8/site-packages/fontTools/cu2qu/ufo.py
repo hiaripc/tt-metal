@@ -185,9 +185,7 @@ def _glyphs_to_quadratic(glyphs, max_err, reverse_direction, stats, all_quadrati
         if not all(s[0] == tag for s in segments[1:]):
             incompatible[i] = [s[0] for s in segments]
         elif tag == "curve":
-            new_segments = _segments_to_quadratic(
-                segments, max_err, stats, all_quadratic
-            )
+            new_segments = _segments_to_quadratic(segments, max_err, stats, all_quadratic)
             if all_quadratic or new_segments != segments:
                 glyphs_modified = True
             segments = new_segments
@@ -203,9 +201,7 @@ def _glyphs_to_quadratic(glyphs, max_err, reverse_direction, stats, all_quadrati
     return glyphs_modified
 
 
-def glyphs_to_quadratic(
-    glyphs, max_err=None, reverse_direction=False, stats=None, all_quadratic=True
-):
+def glyphs_to_quadratic(glyphs, max_err=None, reverse_direction=False, stats=None, all_quadratic=True):
     """Convert the curves of a set of compatible of glyphs to quadratic.
 
     All curves will be converted to quadratic at once, ensuring interpolation
@@ -229,9 +225,7 @@ def glyphs_to_quadratic(
         max_errors = [max_err] * len(glyphs)
     assert len(max_errors) == len(glyphs)
 
-    return _glyphs_to_quadratic(
-        glyphs, max_errors, reverse_direction, stats, all_quadratic
-    )
+    return _glyphs_to_quadratic(glyphs, max_errors, reverse_direction, stats, all_quadratic)
 
 
 def fonts_to_quadratic(
@@ -306,9 +300,7 @@ def fonts_to_quadratic(
                 glyphs.append(font[name])
                 cur_max_errors.append(error)
         try:
-            if _glyphs_to_quadratic(
-                glyphs, cur_max_errors, reverse_direction, stats, all_quadratic
-            ):
+            if _glyphs_to_quadratic(glyphs, cur_max_errors, reverse_direction, stats, all_quadratic):
                 modified.add(name)
         except IncompatibleGlyphsError as exc:
             logger.error(exc)
@@ -319,10 +311,7 @@ def fonts_to_quadratic(
 
     if modified and dump_stats:
         spline_lengths = sorted(stats.keys())
-        logger.info(
-            "New spline lengths: %s"
-            % (", ".join("%s: %d" % (l, stats[l]) for l in spline_lengths))
-        )
+        logger.info("New spline lengths: %s" % (", ".join("%s: %d" % (l, stats[l]) for l in spline_lengths)))
 
     if remember_curve_type:
         for font in fonts:

@@ -11,9 +11,7 @@ import pandas._testing as tm
 class TestDropLevel:
     def test_droplevel(self, frame_or_series):
         # GH#20342
-        cols = MultiIndex.from_tuples(
-            [("c", "e"), ("d", "f")], names=["level_1", "level_2"]
-        )
+        cols = MultiIndex.from_tuples([("c", "e"), ("d", "f")], names=["level_1", "level_2"])
         mi = MultiIndex.from_tuples([(1, 2), (5, 6), (9, 10)], names=["a", "b"])
         df = DataFrame([[3, 4], [7, 8], [11, 12]], index=mi, columns=cols)
         if frame_or_series is not DataFrame:

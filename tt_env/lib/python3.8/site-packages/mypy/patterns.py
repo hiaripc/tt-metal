@@ -111,9 +111,7 @@ class MappingPattern(Pattern):
     values: list[Pattern]
     rest: NameExpr | None
 
-    def __init__(
-        self, keys: list[Expression], values: list[Pattern], rest: NameExpr | None
-    ) -> None:
+    def __init__(self, keys: list[Expression], values: list[Pattern], rest: NameExpr | None) -> None:
         super().__init__()
         assert len(keys) == len(values)
         self.keys = keys
